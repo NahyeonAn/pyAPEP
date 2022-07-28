@@ -44,7 +44,7 @@ extensions = [     'sphinx.ext.autosummary',
                     'sphinx.ext.ifconfig',
                     'sphinx.ext.viewcode',
                     'sphinx.ext.githubpages',
-                    'sphinx.ext.imgmath'
+                    'sphinx.ext.pngmath'
 ]
 
 latex_documents = [
