@@ -13,7 +13,7 @@ Tutorials
 Here's tutorials.
 
 
-Class documentation and details
+Class documentation 
 ----------------------------------
 
 .. currentmodule:: simsep
