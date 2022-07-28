@@ -31,14 +31,21 @@ release = '1.0.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 html_baseurl = 'https://nahyeonan.github.io/pyAPEP/'
-extensions = [ 'sphinx.ext.githubpages',
-                'sphinx.ext.autosummary',
-                'sphinx.ext.autodoc',
-                'sphinx.ext.mathjax',
-                'sphinx.ext.viewcode',
-                'sphinx.ext.napoleon',
-                'sphinx.ext.intersphinx',
-                'sphinx.ext.extlinks',
+extensions = [     'sphinx.ext.autosummary',
+                    'sphinx.ext.doctest',
+                    'sphinx.ext.intersphinx',
+                    'sphinx.ext.todo',
+                    'sphinx.ext.coverage',
+                    'sphinx.ext.mathjax',
+                    'sphinx.ext.ifconfig',
+                    'sphinx.ext.napoleon',
+                    "sphinx_rtd_theme",
+                    'sphinx.ext.autodoc',
+                    'sphinx.ext.imgmath',
+                    'sphinx.ext.ifconfig',
+                    'sphinx.ext.viewcode',
+                    'sphinx.ext.githubpages',
+                    'recommonmark'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
