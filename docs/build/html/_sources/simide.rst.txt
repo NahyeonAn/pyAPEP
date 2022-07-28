@@ -13,3 +13,9 @@ Tutorials
 
 Class documentation and details
 ----------------------------------
+.. automodule:: pyAPEP.simide
+    :special-members:
+    :members:
+
+
+---------------------------------

@@ -7,6 +7,7 @@
   <title>Ideal PSA simulation module (pyAPEP.simide) &mdash; pyAPEP 1.0.0 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+    <link rel="canonical" href="https://nahyeonan.github.io/pyAPEP/simide.html" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -46,7 +47,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tutorials">Tutorials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#class-documentation-and-details">Class documentation and details</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simide">Class documentation and details</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="simsep.html">Real PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code>)</a></li>
@@ -83,7 +84,7 @@
            <div itemprop="articleBody">
              
   <section id="ideal-psa-simulation-module-pyapep-simide">
-<h1>Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)<a class="headerlink" href="#ideal-psa-simulation-module-pyapep-simide" title="Permalink to this heading"></a></h1>
+<h1>Ideal PSA simulation module (<a class="reference internal" href="#module-pyAPEP.simide" title="pyAPEP.simide"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code></a>)<a class="headerlink" href="#ideal-psa-simulation-module-pyapep-simide" title="Permalink to this heading"></a></h1>
 <p>detailed discriptions are here.</p>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
@@ -92,8 +93,109 @@
 <section id="tutorials">
 <h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading"></a></h2>
 </section>
-<section id="class-documentation-and-details">
-<h2>Class documentation and details<a class="headerlink" href="#class-documentation-and-details" title="Permalink to this heading"></a></h2>
+<section id="module-pyAPEP.simide">
+<span id="class-documentation-and-details"></span><h2>Class documentation and details<a class="headerlink" href="#module-pyAPEP.simide" title="Permalink to this heading"></a></h2>
+<p>This module contains objects to characterize the pure-component adsorption
+isotherms from experimental or simulated data. These will be fed into the
+IAST functions in pyiast.py.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyAPEP.simide.</span></span><span class="sig-name descname"><span class="pre">IdealColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn" title="Permalink to this definition"></a></dt>
+<dd><p>Class to characterize pure-component isotherm data with an analytical model.
+Data fitting is done during instantiation.</p>
+<p>Models supported are as follows. Here, <span class="math">L</span> is the gas uptake,
+<span class="math">P</span> is pressure (fugacity technically).</p>
+<ul class="simple">
+<li><p>Langmuir isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M\frac{KP}{1+KP},</span></p>
+</div><ul class="simple">
+<li><p>Quadratic isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}</span></p>
+</div><ul class="simple">
+<li><p>Brunauer-Emmett-Teller (BET) adsorption isotherm</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}</span></p>
+</div><ul class="simple">
+<li><p>Dual-site Langmuir (DSLangmuir) adsorption isotherm</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M_1\frac{K_1 P}{1+K_1 P} +  M_2\frac{K_2 P}{1+K_2 P}</span></p>
+</div><ul class="simple">
+<li><p>Asymptotic approximation to the Temkin Isotherm</p></li>
+</ul>
+<p>(see DOI: 10.1039/C3CP55039G)</p>
+<div class="math">
+<p><span class="math">L(P) = M\frac{KP}{1+KP} + M \theta (\frac{KP}{1+KP})^2 (\frac{KP}{1+KP} -1)</span></p>
+</div><ul class="simple">
+<li><p>Henry’s law. Only use if your data is linear, and do not necessarily trust
+IAST results from Henry’s law if the result required an extrapolation
+of your data; Henry’s law is unrealistic because the adsorption sites
+will saturate at higher pressures.</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = K_H P</span></p>
+</div><dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pyAPEP.simide.IdealColumn.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.feedcond">
+<span class="sig-name descname"><span class="pre">feedcond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_feed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_feed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_feed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.feedcond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.feedcond" title="Permalink to this definition"></a></dt>
+<dd><p>Input feed condtions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.isofunct">
+<span class="sig-name descname"><span class="pre">isofunct</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.isofunct"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.isofunct" title="Permalink to this definition"></a></dt>
+<dd><p>Given stored model parameters, compute loading at pressure P.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pressure</strong> – Float or Array pressure (in corresponding units as df
+in instantiation)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predicted loading at pressure P (in corresponding units as df
+in instantiation) using fitted model params in <cite>self.params</cite>.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Float or Array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.opercond">
+<span class="sig-name descname"><span class="pre">opercond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_low</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.opercond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.opercond" title="Permalink to this definition"></a></dt>
+<dd><p>Input operation condtions</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.runideal">
+<span class="sig-name descname"><span class="pre">runideal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.runideal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.runideal" title="Permalink to this definition"></a></dt>
+<dd><p>Run the ideal PSA simulation.</p>
+</dd></dl>
+
+</dd></dl>
+
+<hr class="docutils" />
 </section>
 </section>
 
