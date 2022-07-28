@@ -15,3 +15,15 @@ Here's tutorials.
 
 Class documentation and details
 ----------------------------------
+
+.. currentmodule:: simsep
+.. autofunction:: Ergun
+
+.. currentmodule:: simsep
+.. autofunction:: Ergun_test
+
+.. currentmodule:: pyAPEP.simsep
+.. autofunction:: change_node_fn
+
+.. currentmodule:: pyAPEP.simsep
+.. autofunction:: column
