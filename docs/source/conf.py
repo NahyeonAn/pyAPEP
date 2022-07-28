@@ -36,7 +36,6 @@ extensions = [     'sphinx.ext.autosummary',
                     'sphinx.ext.intersphinx',
                     'sphinx.ext.todo',
                     'sphinx.ext.coverage',
-                    'sphinx.ext.mathjax',
                     'sphinx.ext.ifconfig',
                     'sphinx.ext.napoleon',
                     "sphinx_rtd_theme",
@@ -45,7 +44,13 @@ extensions = [     'sphinx.ext.autosummary',
                     'sphinx.ext.ifconfig',
                     'sphinx.ext.viewcode',
                     'sphinx.ext.githubpages',
+                    'sphinx.ext.imgmath'
 ]
+
+latex_documents = [
+    ('index', 'simide', 'simsep', 'manual'),
+]
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

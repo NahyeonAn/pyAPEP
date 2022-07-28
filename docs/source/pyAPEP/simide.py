@@ -41,7 +41,7 @@ class IdealColumn:
     
     .. math::
     
-        L(P) = M\\frac{KP}{1+KP},
+        L(P) = M \\frac{KP}{1+KP},
         
     * Quadratic isotherm model
     
