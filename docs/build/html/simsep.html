@@ -97,6 +97,66 @@
 <section id="module-pyAPEP.simsep">
 <span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-pyAPEP.simsep" title="Permalink to this heading"></a></h2>
 <p>simsep - Python module for real PSA simulation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyAPEP.simsep.</span></span><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column" title="Permalink to this definition"></a></dt>
+<dd><p>Class to characterize pure-component isotherm data with an analytical model.
+Data fitting is done during instantiation.</p>
+<p>Models supported are as follows. Here, <span class="math">L</span> is the gas uptake,
+<span class="math">P</span> is pressure (fugacity technically).</p>
+<ul class="simple">
+<li><p>Langmuir isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M\frac{KP}{1+KP},</span></p>
+</div><ul class="simple">
+<li><p>Quadratic isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}</span></p>
+</div><ul class="simple">
+<li><p>Brunauer-Emmett-Teller (BET) adsorption isotherm</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}</span></p>
+</div><ul class="simple">
+<li><p>Dual-site Langmuir (DSLangmuir) adsorption isotherm</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = M_1\frac{K_1 P}{1+K_1 P} +  M_2\frac{K_2 P}{1+K_2 P}</span></p>
+</div><ul class="simple">
+<li><p>Asymptotic approximation to the Temkin Isotherm</p></li>
+</ul>
+<p>(see DOI: 10.1039/C3CP55039G)</p>
+<div class="math">
+<p><span class="math">L(P) = M\frac{KP}{1+KP} + M \theta (\frac{KP}{1+KP})^2 (\frac{KP}{1+KP} -1)</span></p>
+</div><ul class="simple">
+<li><p>Henry’s law. Only use if your data is linear, and do not necessarily trust
+IAST results from Henry’s law if the result required an extrapolation
+of your data; Henry’s law is unrealistic because the adsorption sites
+will saturate at higher pressures.</p></li>
+</ul>
+<div class="math">
+<p><span class="math">L(P) = K_H P</span></p>
+</div><dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.__str__">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.__str__" title="Permalink to this definition"></a></dt>
+<dd><p>Return str(self).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pyAPEP.simsep.column.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 

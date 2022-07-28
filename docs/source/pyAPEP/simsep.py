@@ -86,6 +86,55 @@ def change_node_fn(z_raw, y_raw, N_new):
 
 # %% Column class
 class column:
+    """
+    Class to characterize pure-component isotherm data with an analytical model.
+    Data fitting is done during instantiation.
+    
+    Models supported are as follows. Here, :math:`L` is the gas uptake,
+    :math:`P` is pressure (fugacity technically).
+    
+    * Langmuir isotherm model
+    
+    .. math::
+    
+        L(P) = M\\frac{KP}{1+KP},
+        
+    * Quadratic isotherm model
+    
+    .. math::
+    
+        L(P) = M \\frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
+        
+    * Brunauer-Emmett-Teller (BET) adsorption isotherm
+    
+    .. math::
+    
+        L(P) = M\\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}
+        
+    * Dual-site Langmuir (DSLangmuir) adsorption isotherm
+    
+    .. math::
+    
+        L(P) = M_1\\frac{K_1 P}{1+K_1 P} +  M_2\\frac{K_2 P}{1+K_2 P}
+        
+    * Asymptotic approximation to the Temkin Isotherm
+    (see DOI: 10.1039/C3CP55039G)
+    
+    .. math::
+    
+        L(P) = M\\frac{KP}{1+KP} + M \\theta (\\frac{KP}{1+KP})^2 (\\frac{KP}{1+KP} -1)
+        
+    * Henry's law. Only use if your data is linear, and do not necessarily trust
+      IAST results from Henry's law if the result required an extrapolation
+      of your data; Henry's law is unrealistic because the adsorption sites
+      will saturate at higher pressures.
+      
+    .. math::
+    
+        L(P) = K_H P
+        
+    """
+    
     def __init__(self, L, A_cross, n_component, 
                  N_node = 11, E_balance = True):
         self._L = L
