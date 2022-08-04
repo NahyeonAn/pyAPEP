@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ideal PSA simulation module (pyAPEP.simide) &mdash; pyAPEP 1.0.0 documentation</title>
@@ -46,10 +46,16 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pyAPEP.html">pyAPEP</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="isofit.html">Isotherm fitting module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mixture-isotherm-function-definition">1. Mixture isotherm function definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#ideal-column-definition">2. Ideal column definition</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#feed-condition-setting">3. Feed condition setting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#operating-condition-setting">4. Operating condition setting</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#simulation-run">5. Simulation run</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simide">Class documentation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tutorials">Tutorials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simide">Class documentation and details</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="simsep.html">Real PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code>)</a></li>
@@ -103,27 +109,27 @@
 </dd>
 </dl>
 <p>In next section, detailed steps are explained.</p>
+<hr class="docutils" />
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
-<ol class="arabic simple">
-<li><p>Mixture isotherm function definition</p></li>
-</ol>
+<section id="mixture-isotherm-function-definition">
+<h3>1. Mixture isotherm function definition<a class="headerlink" href="#mixture-isotherm-function-definition" title="Permalink to this heading"></a></h3>
 <p>Here, we define the mixture isotherm function with <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 <span class="c1"># iso1 and iso2 == Pure isotherm function of each componet.</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="2">
-<li><p>Ideal column definition</p></li>
-</ol>
+</section>
+<section id="ideal-column-definition">
+<h3>2. Ideal column definition<a class="headerlink" href="#ideal-column-definition" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_comp</span> <span class="o">=</span> <span class="mi">2</span>                                       <span class="c1"># The number of components</span>
 <span class="n">Column1</span> <span class="o">=</span> <span class="n">simi</span><span class="o">.</span><span class="n">IdealColumn</span><span class="p">(</span><span class="n">num_comp</span><span class="p">,</span> <span class="n">iso_mix</span><span class="p">,</span> <span class="p">)</span>    <span class="c1"># Ideal column definition</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                     <span class="c1"># Chek input condition</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="3">
-<li><p>Feed condition setting</p></li>
-</ol>
+</section>
+<section id="feed-condition-setting">
+<h3>3. Feed condition setting<a class="headerlink" href="#feed-condition-setting" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_feed</span> <span class="o">=</span> <span class="mi">8</span>                              <span class="c1"># Feed presure (bar)</span>
 <span class="n">T_feed</span> <span class="o">=</span> <span class="mi">300</span>                            <span class="c1"># Feed temperature (K)</span>
 <span class="n">y_feed</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">]</span>                     <span class="c1"># Feed mole fraction (mol/mol)</span>
@@ -132,9 +138,9 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="4">
-<li><p>Operating condition setting</p></li>
-</ol>
+</section>
+<section id="operating-condition-setting">
+<h3>4. Operating condition setting<a class="headerlink" href="#operating-condition-setting" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_high</span> <span class="o">=</span> <span class="mi">8</span>                          <span class="c1"># High pressure (bar)</span>
 <span class="n">P_low</span>  <span class="o">=</span> <span class="mi">1</span>                          <span class="c1"># Low pressure (bar)</span>
 
@@ -142,23 +148,18 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>
 </pre></div>
 </div>
-<ol class="arabic simple" start="5">
-<li><p>Simulation run</p></li>
-</ol>
+</section>
+<section id="simulation-run">
+<h3>5. Simulation run<a class="headerlink" href="#simulation-run" title="Permalink to this heading"></a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_ext</span> <span class="o">=</span> <span class="n">Column1</span><span class="o">.</span><span class="n">runideal</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">x_ext</span><span class="p">)</span>                        <span class="c1">#return tail gas composition of each gas</span>
 </pre></div>
 </div>
 </section>
-<section id="theory">
-<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p>Here’s theories.</p>
 </section>
-<section id="tutorials">
-<h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading"></a></h2>
-</section>
+<hr class="docutils" />
 <section id="module-pyAPEP.simide">
-<span id="class-documentation-and-details"></span><h2>Class documentation and details<a class="headerlink" href="#module-pyAPEP.simide" title="Permalink to this heading"></a></h2>
+<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-pyAPEP.simide" title="Permalink to this heading"></a></h2>
 <p>This module contains objects to characterize the pure-component adsorption
 isotherms from experimental or simulated data. These will be fed into the
 IAST functions in pyiast.py.</p>
@@ -259,6 +260,11 @@ in instantiation) using fitted model params in <cite>self.params</cite>.</p>
 
 </dd></dl>
 
+</section>
+<hr class="docutils" />
+<section id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
+<p>Here’s theories.</p>
 <hr class="docutils" />
 </section>
 </section>

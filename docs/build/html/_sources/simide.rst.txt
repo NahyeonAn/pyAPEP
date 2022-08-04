@@ -17,10 +17,13 @@ Then users need to 5-steps to simulate.
 
 In next section, detailed steps are explained.
 
+------------------------------------------------------
+
 Usage
 -------
 
 1. Mixture isotherm function definition
+''''''''''''''''''''''''''''''''''''''''''''''
 
 Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
 
@@ -30,6 +33,7 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
     # iso1 and iso2 == Pure isotherm function of each componet.
 
 2. Ideal column definition
+''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
@@ -38,6 +42,7 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
     print(Column1)                                     # Chek input condition
 
 3. Feed condition setting
+''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
@@ -49,6 +54,7 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
     print(Column1) 
 
 4. Operating condition setting
+''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
@@ -59,23 +65,16 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
     print(Column1)
 
 5. Simulation run
+''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
     x_ext = Column1.runideal()
     print(x_ext)                        #return tail gas composition of each gas
 
+----------------------------------------
 
-Theory
--------
-Here's theories.
-
-
-Tutorials
----------
-
-
-Class documentation and details
+Class documentation
 ----------------------------------
 .. automodule:: pyAPEP.simide
     :special-members:
@@ -83,3 +82,9 @@ Class documentation and details
 
 
 ---------------------------------
+
+Theory
+-------
+Here's theories.
+
+--------------------------------
