@@ -133,8 +133,10 @@ iso_fun_lists = None, iso_fun_index = None, tol = 1.0E-5):
     :param q: Acutal or simulated uptake list of given P
     :param iso_par_nums: The number of parameters to isotherm fitting (dtype : list)
     :param iso_fun_lists: Isotherm candidates
+    :param iso_fun_index: ?
+    :param tol: Tolerance
     
-    :return: iso_best, x_best, str_best, fnval_best
+    :return: best_isotherm, parameters, fn_type, val_err
     """
     
     if iso_fun_lists == None:
@@ -196,6 +198,21 @@ def fit_diffT(p_list, q_list, T_list, i_ref,
         iso_fun_lists = None, 
         iso_fun_index = None,
         tol = 1.0E-5):
+
+    """
+    Function to fit isotherm model for given datast.
+    
+    :param p_list: Partial pressure list
+    :param q_list: Acutal or simulated uptake list of given P
+    :param T_list: Temperature list
+    :param i_ref: Reference temperature index in T_list
+    :param iso_par_nums: The number of parameters to isotherm fitting
+    :param iso_fun_lists: Isotherm candidates list
+    :param iso_fun_index: ?
+    :param tol: Tolerance
+    
+    :return: var_return (iso_all, iso_params, str_best, err_fit_all, dH, T_ref, theta_list)
+    """
 
     p_ref = p_list[i_ref]
     q_ref = q_list[i_ref]
@@ -296,6 +313,19 @@ def ln_gamma_i(x,Lamb, C, piA_RT):
 
 #%% RAST 2: RAST mixture isotherm model
 def rast(isotherm_list,P_i,T, Lamb, C):
+    
+    """
+    Function to develop mixture isotherm model with RAST.
+    
+    :param isotherm_list: Pure isotherm function list of each components
+    :param P_i: Partial pressure list of each components
+    :param T: Temperature
+    :param Lamb: Lambda matrix?
+    :param C: ?
+    
+    :return: q_return
+    """
+    
     if len(Lamb.shape) != 2:
         print('Lambda should be N x N array or matrix!')
         return
@@ -447,6 +477,17 @@ def iso2isoArr(iso_P_only, dH,T_ref):
 
 # %% IAST funciton
 def IAST(isotherm_list, P_i, T):
+    
+    """
+    Function to fit isotherm model for given datast.
+    
+    :param isotherm_list: Pure isotherm function list of each components
+    :param P_i: Partial pressure of each components
+    :param T: Temperature
+    
+    :return: q_return
+    """
+    
     if len(isotherm_list) != len(P_i):
         print('# of funcitons in "isotherm_list" should match the dimension of "P_i!"')
         return

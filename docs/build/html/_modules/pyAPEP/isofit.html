@@ -205,8 +205,10 @@
 <span class="sd">    :param q: Acutal or simulated uptake list of given P</span>
 <span class="sd">    :param iso_par_nums: The number of parameters to isotherm fitting (dtype : list)</span>
 <span class="sd">    :param iso_fun_lists: Isotherm candidates</span>
+<span class="sd">    :param iso_fun_index: ?</span>
+<span class="sd">    :param tol: Tolerance</span>
 <span class="sd">    </span>
-<span class="sd">    :return: iso_best, x_best, str_best, fnval_best</span>
+<span class="sd">    :return: best_isotherm, parameters, fn_type, val_err</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="n">iso_fun_lists</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -263,11 +265,26 @@
 
 <span class="c1">#%% Fitting for different T (Heat of adsorption)</span>
 
-<span class="k">def</span> <span class="nf">fit_diffT</span><span class="p">(</span><span class="n">p_list</span><span class="p">,</span> <span class="n">q_list</span><span class="p">,</span> <span class="n">T_list</span><span class="p">,</span> <span class="n">i_ref</span><span class="p">,</span>
+<div class="viewcode-block" id="fit_diffT"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.fit_diffT">[docs]</a><span class="k">def</span> <span class="nf">fit_diffT</span><span class="p">(</span><span class="n">p_list</span><span class="p">,</span> <span class="n">q_list</span><span class="p">,</span> <span class="n">T_list</span><span class="p">,</span> <span class="n">i_ref</span><span class="p">,</span>
         <span class="n">iso_par_nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
         <span class="n">iso_fun_lists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
         <span class="n">iso_fun_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0E-5</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to fit isotherm model for given datast.</span>
+<span class="sd">    </span>
+<span class="sd">    :param p_list: Partial pressure list</span>
+<span class="sd">    :param q_list: Acutal or simulated uptake list of given P</span>
+<span class="sd">    :param T_list: Temperature list</span>
+<span class="sd">    :param i_ref: Reference temperature index in T_list</span>
+<span class="sd">    :param iso_par_nums: The number of parameters to isotherm fitting</span>
+<span class="sd">    :param iso_fun_lists: Isotherm candidates list</span>
+<span class="sd">    :param iso_fun_index: ?</span>
+<span class="sd">    :param tol: Tolerance</span>
+<span class="sd">    </span>
+<span class="sd">    :return: var_return (iso_all, iso_params, str_best, err_fit_all, dH, T_ref, theta_list)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">p_ref</span> <span class="o">=</span> <span class="n">p_list</span><span class="p">[</span><span class="n">i_ref</span><span class="p">]</span>
     <span class="n">q_ref</span> <span class="o">=</span> <span class="n">q_list</span><span class="p">[</span><span class="n">i_ref</span><span class="p">]</span>
@@ -338,7 +355,7 @@
     <span class="c1">#err_fit_all = np.mean(diff_all**2)</span>
     <span class="n">var_return</span> <span class="o">=</span> <span class="p">(</span><span class="n">iso_all</span><span class="p">,</span> <span class="n">iso_params</span><span class="p">,</span> <span class="n">str_best</span><span class="p">,</span> <span class="n">err_fit_all</span><span class="p">,</span>
             <span class="n">dH</span><span class="p">,</span> <span class="n">T_ref</span><span class="p">,</span> <span class="n">theta_list</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">var_return</span>
+    <span class="k">return</span> <span class="n">var_return</span></div>
     <span class="c1">#return iso_all, fnval_ref, theta_list, err_fit_all, dH, T_ref, iso_params</span>
 
 <span class="c1">#%% RAST 1: (ln \gamma)</span>
@@ -367,7 +384,20 @@
     <span class="k">return</span> <span class="n">ln_gamma</span>
 
 <span class="c1">#%% RAST 2: RAST mixture isotherm model</span>
-<span class="k">def</span> <span class="nf">rast</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span><span class="n">P_i</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="n">Lamb</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+<div class="viewcode-block" id="rast"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.rast">[docs]</a><span class="k">def</span> <span class="nf">rast</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span><span class="n">P_i</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="n">Lamb</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to develop mixture isotherm model with RAST.</span>
+<span class="sd">    </span>
+<span class="sd">    :param isotherm_list: Pure isotherm function list of each components</span>
+<span class="sd">    :param P_i: Partial pressure list of each components</span>
+<span class="sd">    :param T: Temperature</span>
+<span class="sd">    :param Lamb: Lambda matrix?</span>
+<span class="sd">    :param C: ?</span>
+<span class="sd">    </span>
+<span class="sd">    :return: q_return</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">Lamb</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lambda should be N x N array or matrix!&#39;</span><span class="p">)</span>
         <span class="k">return</span>
@@ -511,14 +541,25 @@
         <span class="n">q_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">iso_list</span><span class="p">[</span><span class="n">ii</span><span class="p">](</span><span class="n">P_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
     <span class="n">q_tot</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_re</span><span class="o">/</span><span class="n">q_pure</span><span class="p">))</span>
     <span class="n">q_return</span> <span class="o">=</span> <span class="n">q_tot</span><span class="o">*</span><span class="n">x_re</span>
-    <span class="k">return</span> <span class="n">q_return</span>
+    <span class="k">return</span> <span class="n">q_return</span></div>
 <span class="k">def</span> <span class="nf">iso2isoArr</span><span class="p">(</span><span class="n">iso_P_only</span><span class="p">,</span> <span class="n">dH</span><span class="p">,</span><span class="n">T_ref</span><span class="p">):</span>
     <span class="n">iso_PT</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">iso_P_only</span><span class="p">(</span><span class="n">Arrh</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">dH</span><span class="p">,</span><span class="n">T_ref</span><span class="p">)</span><span class="o">*</span><span class="n">P</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">iso_PT</span>
 
 
 <span class="c1"># %% IAST funciton</span>
-<span class="k">def</span> <span class="nf">IAST</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span> <span class="n">P_i</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+<div class="viewcode-block" id="IAST"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.IAST">[docs]</a><span class="k">def</span> <span class="nf">IAST</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span> <span class="n">P_i</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function to fit isotherm model for given datast.</span>
+<span class="sd">    </span>
+<span class="sd">    :param isotherm_list: Pure isotherm function list of each components</span>
+<span class="sd">    :param P_i: Partial pressure of each components</span>
+<span class="sd">    :param T: Temperature</span>
+<span class="sd">    </span>
+<span class="sd">    :return: q_return</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P_i</span><span class="p">):</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;# of funcitons in &quot;isotherm_list&quot; should match the dimension of &quot;P_i!&quot;&#39;</span><span class="p">)</span>
         <span class="k">return</span>
@@ -631,7 +672,7 @@
         <span class="n">q_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">iso_list</span><span class="p">[</span><span class="n">ii</span><span class="p">](</span><span class="n">P_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
     <span class="n">q_tot</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_re</span><span class="o">/</span><span class="n">q_pure</span><span class="p">))</span>
     <span class="n">q_return</span> <span class="o">=</span> <span class="n">q_tot</span><span class="o">*</span><span class="n">x_re</span>
-    <span class="k">return</span> <span class="n">q_return</span>            
+    <span class="k">return</span> <span class="n">q_return</span>            </div>
 
 
 <span class="c1">#%% Main Test</span>

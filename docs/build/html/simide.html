@@ -17,6 +17,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -45,6 +46,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="pyAPEP.html">pyAPEP</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="isofit.html">Isotherm fitting module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tutorials">Tutorials</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simide">Class documentation and details</a></li>
@@ -85,7 +87,69 @@
              
   <section id="ideal-psa-simulation-module-pyapep-simide">
 <h1>Ideal PSA simulation module (<a class="reference internal" href="#module-pyAPEP.simide" title="pyAPEP.simide"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code></a>)<a class="headerlink" href="#ideal-psa-simulation-module-pyapep-simide" title="Permalink to this heading"></a></h1>
-<p>detailed discriptions are here.</p>
+<p>This module enables ideal PSA simulation using isotherm function and operating conditions.</p>
+<p>First, import simide into Python after installation.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyAPEP.simide</span> <span class="k">as</span> <span class="nn">simide</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>Then users need to 5-steps to simulate.</dt><dd><ol class="arabic simple">
+<li><p>Mixture isotherm function definition</p></li>
+<li><p>Ideal column definition</p></li>
+<li><p>Feed condition setting</p></li>
+<li><p>Operating condition setting</p></li>
+<li><p>Simulation run</p></li>
+</ol>
+</dd>
+</dl>
+<p>In next section, detailed steps are explained.</p>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Mixture isotherm function definition</p></li>
+</ol>
+<p>Here, we define the mixture isotherm function with <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="c1"># iso1 and iso2 == Pure isotherm function of each componet.</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Ideal column definition</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_comp</span> <span class="o">=</span> <span class="mi">2</span>                                       <span class="c1"># The number of components</span>
+<span class="n">Column1</span> <span class="o">=</span> <span class="n">simi</span><span class="o">.</span><span class="n">IdealColumn</span><span class="p">(</span><span class="n">num_comp</span><span class="p">,</span> <span class="n">iso_mix</span><span class="p">,</span> <span class="p">)</span>    <span class="c1"># Ideal column definition</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                     <span class="c1"># Chek input condition</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Feed condition setting</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_feed</span> <span class="o">=</span> <span class="mi">8</span>                              <span class="c1"># Feed presure (bar)</span>
+<span class="n">T_feed</span> <span class="o">=</span> <span class="mi">300</span>                            <span class="c1"># Feed temperature (K)</span>
+<span class="n">y_feed</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">]</span>                     <span class="c1"># Feed mole fraction (mol/mol)</span>
+
+<span class="n">Column1</span><span class="o">.</span><span class="n">feedcond</span><span class="p">(</span><span class="n">P_feed</span><span class="p">,</span> <span class="n">T_feed</span><span class="p">,</span> <span class="n">y_feed</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Operating condition setting</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_high</span> <span class="o">=</span> <span class="mi">8</span>                          <span class="c1"># High pressure (bar)</span>
+<span class="n">P_low</span>  <span class="o">=</span> <span class="mi">1</span>                          <span class="c1"># Low pressure (bar)</span>
+
+<span class="n">Column1</span><span class="o">.</span><span class="n">opercond</span><span class="p">(</span><span class="n">P_high</span><span class="p">,</span> <span class="n">P_low</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Simulation run</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_ext</span> <span class="o">=</span> <span class="n">Column1</span><span class="o">.</span><span class="n">runideal</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x_ext</span><span class="p">)</span>                        <span class="c1">#return tail gas composition of each gas</span>
+</pre></div>
+</div>
+</section>
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
 <p>Here’s theories.</p>
@@ -103,43 +167,43 @@ IAST functions in pyiast.py.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyAPEP.simide.</span></span><span class="sig-name descname"><span class="pre">IdealColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn" title="Permalink to this definition"></a></dt>
 <dd><p>Class to characterize pure-component isotherm data with an analytical model.
 Data fitting is done during instantiation.</p>
-<p>Models supported are as follows. Here, <span class="math">L</span> is the gas uptake,
-<span class="math">P</span> is pressure (fugacity technically).</p>
+<p>Models supported are as follows. Here, <span class="math notranslate nohighlight">\(L\)</span> is the gas uptake,
+<span class="math notranslate nohighlight">\(P\)</span> is pressure (fugacity technically).</p>
 <ul class="simple">
 <li><p>Langmuir isotherm model</p></li>
 </ul>
-<div class="math">
-<p><span class="math">L(P) = M \frac{KP}{1+KP},</span></p>
-</div><ul class="simple">
+<div class="math notranslate nohighlight">
+\[L(P) = M \frac{KP}{1+KP},\]</div>
+<ul class="simple">
 <li><p>Quadratic isotherm model</p></li>
 </ul>
-<div class="math">
-<p><span class="math">L(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}</span></p>
-</div><ul class="simple">
+<div class="math notranslate nohighlight">
+\[L(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}\]</div>
+<ul class="simple">
 <li><p>Brunauer-Emmett-Teller (BET) adsorption isotherm</p></li>
 </ul>
-<div class="math">
-<p><span class="math">L(P) = M\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}</span></p>
-</div><ul class="simple">
+<div class="math notranslate nohighlight">
+\[L(P) = M\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}\]</div>
+<ul class="simple">
 <li><p>Dual-site Langmuir (DSLangmuir) adsorption isotherm</p></li>
 </ul>
-<div class="math">
-<p><span class="math">L(P) = M_1\frac{K_1 P}{1+K_1 P} +  M_2\frac{K_2 P}{1+K_2 P}</span></p>
-</div><ul class="simple">
+<div class="math notranslate nohighlight">
+\[L(P) = M_1\frac{K_1 P}{1+K_1 P} +  M_2\frac{K_2 P}{1+K_2 P}\]</div>
+<ul class="simple">
 <li><p>Asymptotic approximation to the Temkin Isotherm</p></li>
 </ul>
 <p>(see DOI: 10.1039/C3CP55039G)</p>
-<div class="math">
-<p><span class="math">L(P) = M\frac{KP}{1+KP} + M \theta (\frac{KP}{1+KP})^2 (\frac{KP}{1+KP} -1)</span></p>
-</div><ul class="simple">
+<div class="math notranslate nohighlight">
+\[L(P) = M\frac{KP}{1+KP} + M \theta (\frac{KP}{1+KP})^2 (\frac{KP}{1+KP} -1)\]</div>
+<ul class="simple">
 <li><p>Henry’s law. Only use if your data is linear, and do not necessarily trust
 IAST results from Henry’s law if the result required an extrapolation
 of your data; Henry’s law is unrealistic because the adsorption sites
 will saturate at higher pressures.</p></li>
 </ul>
-<div class="math">
-<p><span class="math">L(P) = K_H P</span></p>
-</div><dl class="py method">
+<div class="math notranslate nohighlight">
+\[L(P) = K_H P\]</div>
+<dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.__init__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
