@@ -73,9 +73,7 @@ class IdealColumn:
       of your data; Henry's law is unrealistic because the adsorption sites
       will saturate at higher pressures.
       
-    .. math::
-    
-        L(P) = K_H P
+    .. math:: L(P) = K_H P
         
     """
     

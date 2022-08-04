@@ -2,9 +2,6 @@
 This module performs the heart of the IAST calculations, given the
 pure-component adsorption isotherm models from the `isotherms` module.
 """
-from __future__ import absolute_import
-from __future__ import print_function
-
 #%% Importing
 # numericals
 import numpy as np
