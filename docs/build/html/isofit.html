@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Isotherm fitting module (pyAPEP.isofit) &mdash; pyAPEP 1.0.0 documentation</title>
@@ -44,9 +44,14 @@
 <li class="toctree-l1"><a class="reference internal" href="Installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="pyAPEP.html">pyAPEP</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Isotherm fitting module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#tutorials">Tutorials</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#functions">Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#finding-best-isotherm-function">1. Finding best isotherm function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pure-isotherm-function-condidates">Pure isotherm function condidates</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#fitting-isotherm-for-different-temperature">2. Fitting isotherm for different temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developing-mixuture-isotherm-with-rast">3. Developing mixuture isotherm with RAST</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#developing-mixuture-isotherm-with-iast">4. Developing mixuture isotherm with IAST</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="simide.html">Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</a></li>
@@ -86,10 +91,6 @@
   <section id="isotherm-fitting-module-pyapep-isofit">
 <h1>Isotherm fitting module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)<a class="headerlink" href="#isotherm-fitting-module-pyapep-isofit" title="Permalink to this heading"></a></h1>
 <p>detailed discriptions are here.</p>
-<section id="theory">
-<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p>Here’s theories.</p>
-</section>
 <section id="tutorials">
 <h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading"></a></h2>
 <p>For this tutorial on pyIAST, enter the <cite>/test</cite> directory of pyIAST. While you can type this code into the Python shell, I highly recommend instead opening a <a class="reference external" href="http://jupyter.org/">Jupyter Notebook</a>.</p>
@@ -98,9 +99,128 @@
 </pre></div>
 </div>
 <p>For our tutorial, we have the pure-component methane and ethane adsorption isotherm data for metal-organic framework IRMOF-1 in Fig 1. We seek to predict the methane and ethane uptake in the presence of a binary mixture of methane and ethane in IRMOF-1 at the same temperature. As an example for this tutorial, we seek to predict the methane and ethane uptake of IRMOF-1 in the presence a 5/95 mol % ethane/methane mixture at a total pressure of 65.0 bar and 298 K.</p>
+<p>In this module, four main functions exist.</p>
+<ol class="arabic simple">
+<li><p>Finding best isotherm function (<code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>)</p></li>
+<li><p>Fitting isotherm for different temperature (<code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_diffT</span></code>)</p></li>
+<li><p>Developing mixuture isotherm with RAST (<code class="xref py py-mod docutils literal notranslate"><span class="pre">rast</span></code>)</p></li>
+<li><p>Developing mixuture isotherm with IAST (<code class="xref py py-mod docutils literal notranslate"><span class="pre">iast</span></code>)</p></li>
+</ol>
 </section>
-<section id="functions">
-<h2>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h2>
+<section id="finding-best-isotherm-function">
+<h2>1. Finding best isotherm function<a class="headerlink" href="#finding-best-isotherm-function" title="Permalink to this heading"></a></h2>
+<p>Function to find best isotherm model for given datast with multiple isotherm and optimizer candidates.</p>
+<section id="pure-isotherm-function-condidates">
+<h3>Pure isotherm function condidates<a class="headerlink" href="#pure-isotherm-function-condidates" title="Permalink to this heading"></a></h3>
+<blockquote>
+<div><p><strong>1-parameter model</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Arrh</p></li>
+</ul>
+<div class="math">
+<p><span class="math">q(P) =</span></p>
+</div></div></blockquote>
+<p><strong>2-parameters models</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Langmuir isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">q(P) = M\\frac{KP}{1+KP},</span></p>
+</div><ul class="simple">
+<li><p>Freundlich isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">q(P) = kP^n,</span></p>
+</div></div></blockquote>
+<p><strong>3-parameters models</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Quadratic isotherm model</p></li>
+</ul>
+<div class="math">
+<p><span class="math">q(P) = M \\frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}</span></p>
+</div><ul class="simple">
+<li><p>Sips adsorption isotherm</p></li>
+</ul>
+<div class="math">
+<p><span class="math">q(P) = \\frac{q_m K P^n}{1+K P^n}</span></p>
+</div></div></blockquote>
+<p><strong>4-parameters models</strong></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Dual-site Langmuir (DSLangmuir) adsorption isotherm</p></li>
+</ul>
+<div class="math">
+<p><span class="math">q(P) = M_1\\frac{K_1 P}{1+K_1 P} +  M_2\\frac{K_2 P}{1+K_2 P}</span></p>
+</div></div></blockquote>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyAPEP.isofit.best_isomodel">
+<span class="sig-prename descclassname"><span class="pre">pyAPEP.isofit.</span></span><span class="sig-name descname"><span class="pre">best_isomodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_par_nums</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_fun_lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_fun_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/isofit.html#best_isomodel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.isofit.best_isomodel" title="Permalink to this definition"></a></dt>
+<dd><p>Function to find best isotherm model for given datast with multiple isotherm and optimizer candidates.</p>
+<p>Models supported are as follows. Here, <span class="math">q</span> is the gas uptake,
+<span class="math">P</span> is partial pressure (fugacity technically).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P</strong> – Partial pressure list</p></li>
+<li><p><strong>q</strong> – Acutal or simulated uptake list of given P</p></li>
+<li><p><strong>iso_par_nums</strong> – The number of parameters to isotherm fitting (dtype : list)</p></li>
+<li><p><strong>iso_fun_lists</strong> – Isotherm candidates</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>iso_best, x_best, str_best, fnval_best</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+<section id="fitting-isotherm-for-different-temperature">
+<h2>2. Fitting isotherm for different temperature<a class="headerlink" href="#fitting-isotherm-for-different-temperature" title="Permalink to this heading"></a></h2>
+<p>Using heat of adsorption, isotherm parameter fitting at different temperature.</p>
+<div class="math">
+<p><span class="math">a(P, T) = \\exp {\\frac{\\vartriangle H_{ads,i}}{R}(\\frac{1}{T}-\\frac{T}{T_{ref}})},</span></p>
+</div><p>where <span class="math">H_{ads,i}</span> is heat of adsorption and <span class="math">T_{ref}</span> is reference temperature.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyAPEP.isofit.fit_diffT">
+<span class="sig-prename descclassname"><span class="pre">pyAPEP.isofit.</span></span><span class="sig-name descname"><span class="pre">fit_diffT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">p_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_par_nums</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_fun_lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_fun_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/isofit.html#fit_diffT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.isofit.fit_diffT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="developing-mixuture-isotherm-with-rast">
+<h2>3. Developing mixuture isotherm with RAST<a class="headerlink" href="#developing-mixuture-isotherm-with-rast" title="Permalink to this heading"></a></h2>
+<p>RAST : Real adsorbed solution Theory</p>
+<blockquote>
+<div><blockquote>
+<div><p><strong>Modified Raoult’ law</strong></p>
+<div class="math">
+<p><span class="math">y_i \\phi  P = x_i \\gamma_i P^{\\circ}_i,</span></p>
+</div></div></blockquote>
+<p>where  <span class="math">\\phi</span> is fugacity coefficient and <span class="math">\\gamma_i</span> is activity coefficient.</p>
+</div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyAPEP.isofit.rast">
+<span class="sig-prename descclassname"><span class="pre">pyAPEP.isofit.</span></span><span class="sig-name descname"><span class="pre">rast</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">isotherm_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Lamb</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">C</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/isofit.html#rast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.isofit.rast" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="developing-mixuture-isotherm-with-iast">
+<h2>4. Developing mixuture isotherm with IAST<a class="headerlink" href="#developing-mixuture-isotherm-with-iast" title="Permalink to this heading"></a></h2>
+<p>IAST : Ideal adsorbed solution Theory</p>
+<blockquote>
+<div><p><strong>Raoult’ law</strong></p>
+<div class="math">
+<p><span class="math">P^{\\circ}_i = y_i \\frac{P}{x_i}</span></p>
+</div></div></blockquote>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyAPEP.isofit.IAST">
+<span class="sig-prename descclassname"><span class="pre">pyAPEP.isofit.</span></span><span class="sig-name descname"><span class="pre">IAST</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">isotherm_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/isofit.html#IAST"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.isofit.IAST" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 </section>
 

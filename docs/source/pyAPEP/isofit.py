@@ -127,54 +127,7 @@ iso_fun_lists = None, iso_fun_index = None, tol = 1.0E-5):
     Function to find best isotherm model for given datast with multiple isotherm and optimizer candidates.
     
     Models supported are as follows. Here, :math:`q` is the gas uptake,
-    :math:`P` is partial pressure (fugacity technically).
-    
-    Pure isotherm function condidates
-    ----------------------------------
-    
-    ###### 1-parameter model
-    
-        * Arrh
-        
-        .. math::
-            q(P) = 
-        
-    ###### 2-parameter models
-        
-        * Langmuir isotherm model
-        
-        .. math::
-        
-            q(P) = M\\frac{KP}{1+KP},
-        
-        *Freundlich isotherm model
-
-        .. math::
-
-            q(P) = kP^n,
-    
-    ###### 3-parameter models
-
-        * Quadratic isotherm model
-        
-        .. math::
-        
-            q(P) = M \\frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
-            
-        * Sips adsorption isotherm
-        
-        .. math::
-        
-            q(P) = \\frac{q_m K P^n}{1+K P^n}
-    
-    ###### 4-parameter models
-    
-    * Dual-site Langmuir (DSLangmuir) adsorption isotherm
-    
-    .. math::
-    
-        q(P) = M_1\\frac{K_1 P}{1+K_1 P} +  M_2\\frac{K_2 P}{1+K_2 P}
-    
+    :math:`P` is partial pressure (fugacity technically).  
 
     :param P: Partial pressure list
     :param q: Acutal or simulated uptake list of given P
