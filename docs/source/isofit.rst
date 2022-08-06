@@ -142,6 +142,37 @@ Function structures
 Theory
 --------
 
+Finding best isotherm function algorithm
+''''''''''''''''''''''''''''''''''''''''''
+
+이 알고리즘은 일반적으로 사용되는 5개의 isotherm function candidates 와 python optimizer candidate 로부터 주어진 data 에 가장 적절한 isothem function 과 그 parameter 를 도출한다. 알고리즘의 전반적인 내용은 아래 그림과 같다.
+
+(알고리즘 그림 들어가면 좋을듯)
+
+5개의 isotherm function 은 Arrh, Lang, Freu, Quad, Sips, DSLang 이며 각 수식은 아래와 같다. 
+
++-----------------+--------+-----------------------------------------------------------------------+
+| # of parameters | Name   | Equation                                                              |
++=================+========+=======================================================================+
+| 1               | Arrh   | :math: q(P) =                                                         |
++-----------------+--------+-----------------------------------------------------------------------+
+| 2               | Lang   | :math: q(P) = M\frac{KP}{1+KP}                                        |
++                 +--------+-----------------------------------------------------------------------+
+|                 | Freu   | :math: q(P) = kP^n                                                     
++-----------------+--------+-----------------------------------------------------------------------+
+| 3               | Quad   | :math: q(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}                |
++                 +--------+-----------------------------------------------------------------------+
+|                 | Sips   | :math: q(P) =\frac{q_m K P^n}{1+K P^n}                                |
++-----------------+--------+-----------------------------------------------------------------------+
+| 4               | DSLang | :math: q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}  |
++-----------------+--------+-----------------------------------------------------------------------+
+
+
+.. note::
+   사용자는 candidates 로 사용하고자 하는 모델의 parameter 개수를 고려하여 data sample 을 제공해야한다. 예를 들어 Dual site Langmuir 함수를 candidates 에 포함하고자 한다면 사용자는 3 개 이상의 data sample 이 필요하다.
+
+
+
 Pure isotherm function condidates
 ''''''''''''''''''''''''''''''''''
 
@@ -167,7 +198,7 @@ Pure isotherm function condidates
 
          q(P) = kP^n,
          
-   **3-parameters models**+
+   **3-parameters models**
 
       * Quadratic isotherm model
 
@@ -189,16 +220,16 @@ Pure isotherm function condidates
 
          q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}
 
-blalba
-'''''''
+Adosption at different temperature (using heat of adsorption)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 .. math::
    a(P, T) = \exp { \frac { \vartriangle H_{ads,i}}{R}\left( \frac{1}{T}-\frac{T}{T_{ref}}\right)},
 
 where :math:`H_{ads,i}` is heat of adsorption and :math:`T_{ref}` is reference temperature.
 
-blalba
-''''''''''
+Real adsorbed solution theory (RAST)
+''''''''''''''''''''''''''''''''''''''''
 
     **Modified Raoult' law**
 
@@ -206,13 +237,20 @@ blalba
       y_i \phi  P = x_i \gamma_i P^{\circ}_i,
 
    where  :math:`\phi` is fugacity coefficient and :math:`\gamma_i` is activity coefficient.
+   
+   **Spreading pressure**
+   
 
-blablaaa
-''''''''''
+Ideal adsorbed solution theory (IAST)
+''''''''''''''''''''''''''''''''''''''''
 
 **Raoult' law**
 
    .. math::
 
       P^{\circ}_i = y_i \frac{P}{x_i}
+      
+**Spreading pressure**
+
+
 ----------------------------------------
