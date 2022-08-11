@@ -31,50 +31,12 @@ def check_isotherm(n_comp, isotherm_fun,):
 
 class IdealColumn:
     """
-    Class to characterize pure-component isotherm data with an analytical model.
-    Data fitting is done during instantiation.
+    A `IdealColumn` class is instantiated by passing it the pure-component adsorption isotherm in the form of a Pandas DataFrame. The least squares data fitting is done here.
     
-    Models supported are as follows. Here, :math:`L` is the gas uptake,
-    :math:`P` is pressure (fugacity technically).
-    
-    * Langmuir isotherm model
-    
-    .. math::
-    
-        L(P) = M \\frac{KP}{1+KP},
-        
-    * Quadratic isotherm model
-    
-    .. math::
-    
-        L(P) = M \\frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
-        
-    * Brunauer-Emmett-Teller (BET) adsorption isotherm
-    
-    .. math::
-    
-        L(P) = M\\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}
-        
-    * Dual-site Langmuir (DSLangmuir) adsorption isotherm
-    
-    .. math::
-    
-        L(P) = M_1\\frac{K_1 P}{1+K_1 P} +  M_2\\frac{K_2 P}{1+K_2 P}
-        
-    * Asymptotic approximation to the Temkin Isotherm
-    (see DOI: 10.1039/C3CP55039G)
-    
-    .. math::
-    
-        L(P) = M\\frac{KP}{1+KP} + M \\theta (\\frac{KP}{1+KP})^2 (\\frac{KP}{1+KP} -1)
-        
-    * Henry's law. Only use if your data is linear, and do not necessarily trust
-      IAST results from Henry's law if the result required an extrapolation
-      of your data; Henry's law is unrealistic because the adsorption sites
-      will saturate at higher pressures.
-      
-    .. math:: L(P) = K_H P
-        
+    :param n_comp: The number of components in the PSA system.
+    :param isotherm_fun: Mixture isotherm function (could be optain from :py:mod:`pyAPEP.isofit`)
+
+    :rtype: IdealColumn
     """
     
     def __init__(self, n_comp, isotherm_fun = None,):
@@ -99,17 +61,7 @@ class IdealColumn:
             self._str = {'isotherm' : True,
                         'feedcond': False,
                         'opercond': False,}
-            
-        """
-        Instantiation. A `IdealColumn` class is instantiated by passing it the
-        pure-component adsorption isotherm in the form of a Pandas DataFrame.
-        The least squares data fitting is done here.
         
-        :param n_comp: DataFrame pure-component adsorption isotherm data
-        :param isotherm_fun: String key for loading column in df
-        
-        :rtype: IdealColumn
-        """
 
     def isofunct(self, n_comp, isotherm_fun):
         """
@@ -119,7 +71,7 @@ class IdealColumn:
             in instantiation)
         :return: predicted loading at pressure P (in corresponding units as df
             in instantiation) using fitted model params in `self.params`.
-        :rtype: Float or Array
+        :rtype: Float or Array.
         """
         if check_isotherm(n_comp, isotherm_fun):
             self._isofun = isotherm_fun
@@ -132,6 +84,11 @@ class IdealColumn:
         """
         Input feed condtions
         
+        :param P_feed: Feed pressure (bar).
+        :param T_feed: Feed temperature (K).
+        :param y_feed: Feed composition (mol/mol)
+        
+        :return:
         """
         if len(y_feed) != self._n_comp:
             print("Dim. of y_feed (feed composition)" )
@@ -159,6 +116,10 @@ class IdealColumn:
         """
         Input operation condtions
         
+        :param P_high: Operating pressure during the adsorption step (bar).
+        :param P_low: Operating pressure during the desorption step (bar).
+        
+        :return:
         """
         self._P_high = P_high
         self._P_low = P_low
@@ -168,6 +129,9 @@ class IdealColumn:
         """
         Run the ideal PSA simulation.
         
+        :param tol: Tolerance for mismatch between uptake :math:`x_{guess}` and calculated :math:`x_i`.
+        
+        :return: Tail gas mole fraction of each component
         """
         isomix = self._isofun
         y_feed = self._y_feed

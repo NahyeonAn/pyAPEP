@@ -166,44 +166,18 @@ IAST functions in pyiast.py.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyAPEP.simide.</span></span><span class="sig-name descname"><span class="pre">IdealColumn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn" title="Permalink to this definition"></a></dt>
-<dd><p>Class to characterize pure-component isotherm data with an analytical model.
-Data fitting is done during instantiation.</p>
-<p>Models supported are as follows. Here, <span class="math notranslate nohighlight">\(L\)</span> is the gas uptake,
-<span class="math notranslate nohighlight">\(P\)</span> is pressure (fugacity technically).</p>
-<ul class="simple">
-<li><p>Langmuir isotherm model</p></li>
+<dd><p>A <cite>IdealColumn</cite> class is instantiated by passing it the pure-component adsorption isotherm in the form of a Pandas DataFrame. The least squares data fitting is done here.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_comp</strong> – The number of components in the PSA system.</p></li>
+<li><p><strong>isotherm_fun</strong> – Mixture isotherm function (could be optain from <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)</p></li>
 </ul>
-<div class="math notranslate nohighlight">
-\[L(P) = M \frac{KP}{1+KP},\]</div>
-<ul class="simple">
-<li><p>Quadratic isotherm model</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[L(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}\]</div>
-<ul class="simple">
-<li><p>Brunauer-Emmett-Teller (BET) adsorption isotherm</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[L(P) = M\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}\]</div>
-<ul class="simple">
-<li><p>Dual-site Langmuir (DSLangmuir) adsorption isotherm</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[L(P) = M_1\frac{K_1 P}{1+K_1 P} +  M_2\frac{K_2 P}{1+K_2 P}\]</div>
-<ul class="simple">
-<li><p>Asymptotic approximation to the Temkin Isotherm</p></li>
-</ul>
-<p>(see DOI: 10.1039/C3CP55039G)</p>
-<div class="math notranslate nohighlight">
-\[L(P) = M\frac{KP}{1+KP} + M \theta (\frac{KP}{1+KP})^2 (\frac{KP}{1+KP} -1)\]</div>
-<ul class="simple">
-<li><p>Henry’s law. Only use if your data is linear, and do not necessarily trust
-IAST results from Henry’s law if the result required an extrapolation
-of your data; Henry’s law is unrealistic because the adsorption sites
-will saturate at higher pressures.</p></li>
-</ul>
-<div class="math notranslate nohighlight">
-\[L(P) = K_H P\]</div>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#pyAPEP.simide.IdealColumn" title="pyAPEP.simide.IdealColumn">IdealColumn</a></p>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_comp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isotherm_fun</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.__init__" title="Permalink to this definition"></a></dt>
@@ -225,6 +199,18 @@ will saturate at higher pressures.</p></li>
 <dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.feedcond">
 <span class="sig-name descname"><span class="pre">feedcond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_feed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_feed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_feed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.feedcond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.feedcond" title="Permalink to this definition"></a></dt>
 <dd><p>Input feed condtions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P_feed</strong> – Feed pressure (bar).</p></li>
+<li><p><strong>T_feed</strong> – Feed temperature (K).</p></li>
+<li><p><strong>y_feed</strong> – Feed composition (mol/mol)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -241,7 +227,7 @@ in instantiation)</p>
 in instantiation) using fitted model params in <cite>self.params</cite>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Float or Array</p>
+<dd class="field-odd"><p>Float or Array.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -250,12 +236,31 @@ in instantiation) using fitted model params in <cite>self.params</cite>.</p>
 <dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.opercond">
 <span class="sig-name descname"><span class="pre">opercond</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_high</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_low</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.opercond"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.opercond" title="Permalink to this definition"></a></dt>
 <dd><p>Input operation condtions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P_high</strong> – Operating pressure during the adsorption step (bar).</p></li>
+<li><p><strong>P_low</strong> – Operating pressure during the desorption step (bar).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simide.IdealColumn.runideal">
 <span class="sig-name descname"><span class="pre">runideal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simide.html#IdealColumn.runideal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simide.IdealColumn.runideal" title="Permalink to this definition"></a></dt>
 <dd><p>Run the ideal PSA simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>tol</strong> – Tolerance for mismatch between uptake <span class="math notranslate nohighlight">\(x_{guess}\)</span> and calculated <span class="math notranslate nohighlight">\(x_i\)</span>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Tail gas mole fraction of each component</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -264,7 +269,35 @@ in instantiation) using fitted model params in <cite>self.params</cite>.</p>
 <hr class="docutils" />
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p>Here’s theories.</p>
+<p>(공정 그림 있으면 설명하기 쉬울듯 with notation)</p>
+<p>Ideal PSA 의 주요 assumption 은 아래와 같다.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Extremely fast mass &amp; heat transfer between gas and solid phases</p></li>
+<li><p>The operation of the ideal PSA process is isothermal by perfectly controlling temperature.</p></li>
+<li><p>The operation cycle consists of two steps: adsorption and desorption steps.</p></li>
+<li><p>During the adsorption step, 100% of raffinate gas is produced and the capacity of the adsorbent bed is fully used with perfectly controlled step time.</p></li>
+<li><p>During the desorption step, the detrimental influence of the void fraction on the tail gas purity is ignored.</p></li>
+<li><p>Uniform pressure distribution is assumed all along the adsorbent bed of the PSA process.</p></li>
+</ul>
+</div></blockquote>
+<p>Ideal PSA simulation 을 통해 tail gas 에서의 조성을 도출할 수 있으며, <span class="math notranslate nohighlight">\(x_{guess}\)</span> 와 계산된 <span class="math notranslate nohighlight">\(x\)</span> 와의 mismatch 를 최소화 하는 방향으로 solution 이 도출된다.</p>
+<div class="math notranslate nohighlight">
+\[\min_{x_{guess}} ||x-x_{guess}||^2_2\]</div>
+<p>such that</p>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[x = \frac{\vartriangle q_1}{\vartriangle q_1 + \vartriangle q_2}\]</div>
+<div class="math notranslate nohighlight">
+\[\vartriangle q_1 = q_{1,high} - q_{1,low}\]</div>
+<div class="math notranslate nohighlight">
+\[\vartriangle q_2 = q_{2,high} - q_{2,low}\]</div>
+<div class="math notranslate nohighlight">
+\[q_{1,high}, q_{2,high} = f_{IAST} \left(P_{high}, T, y \right )\]</div>
+<div class="math notranslate nohighlight">
+\[q_{1,low}, q_{2,low} = f_{IAST} \left(P_{low}, T, x_{guess} \right )\]</div>
+</div></blockquote>
+<p>where <span class="math notranslate nohighlight">\(y\)</span> is the mole fraction in gas phase during the adsorption step.</p>
 <hr class="docutils" />
 </section>
 </section>

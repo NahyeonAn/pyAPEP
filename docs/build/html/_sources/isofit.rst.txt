@@ -142,77 +142,144 @@ Function structures
 Theory
 --------
 
-Pure isotherm function condidates
-''''''''''''''''''''''''''''''''''
+Finding best isotherm function algorithm
+''''''''''''''''''''''''''''''''''''''''''
 
-   **1-parameter model**
+이 알고리즘은 일반적으로 사용되는 5개의 isotherm function candidates 와 python optimizer candidate 로부터 주어진 data 에 가장 적절한 isothem function 과 그 parameter 를 도출한다. 알고리즘의 전반적인 내용은 아래 그림과 같다.
 
-      * Arrh
+(알고리즘 그림 들어가면 좋을듯)
+
+5개의 isotherm function 은 Arrh, Langmuir (Lang), Freundlich (Freu), Quadratic (Quad), Sips, Dual-site Langmuir (DSLang) 이며 각 수식은 아래와 같다. 
+
++-----------+--------+-----------------------------------------------------------------------+
+| # of      | Name   | Equation                                                              |
+|parameters |        |                                                                       |
++===========+========+=======================================================================+
+|     1     | Arrh   | :math:`q(P) =`                                                        |
++-----------+--------+-----------------------------------------------------------------------+
+|     2     | Lang   | :math:`q(P) = M\frac{KP}{1+KP}`                                       |
++           +--------+-----------------------------------------------------------------------+
+|           | Freu   | :math:`q(P) = kP^n`                                                   |
++-----------+--------+-----------------------------------------------------------------------+
+|     3     | Quad   | :math:`q(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}`               |
++           +--------+-----------------------------------------------------------------------+
+|           | Sips   | :math:`q(P) =\frac{q_m K P^n}{1+K P^n}`                               |
++-----------+--------+-----------------------------------------------------------------------+
+|     4     | DSLang | :math:`q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}` |
++-----------+--------+-----------------------------------------------------------------------+
+
+
+.. note::
+   사용자는 candidates 로 사용하고자 하는 모델의 parameter 개수를 고려하여 data sample 을 제공해야한다. 예를 들어 Dual site Langmuir 함수를 candidates 에 포함하고자 한다면 사용자는 3 개 이상의 data sample 이 필요하다.
+
+
+
+.. Pure isotherm function condidates
+.. ''''''''''''''''''''''''''''''''''
+
+..    **1-parameter model**
+
+..       * Arrh
    
-      .. math::
+..       .. math::
 
-         q(P) = 
+..          q(P) = 
             
-   **2-parameters models**
+..    **2-parameters models**
 
-      * Langmuir isotherm model
+..       * Langmuir isotherm model
 
-      .. math::
+..       .. math::
 
-         q(P) = M\frac{KP}{1+KP},
+..          q(P) = M\frac{KP}{1+KP},
 
-      * Freundlich isotherm model
+..       * Freundlich isotherm model
 
-      .. math::
+..       .. math::
 
-         q(P) = kP^n,
+..          q(P) = kP^n,
          
-   **3-parameters models**+
+..    **3-parameters models**
 
-      * Quadratic isotherm model
+..       * Quadratic isotherm model
 
-      .. math::
+..       .. math::
          
-         q(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
+..          q(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
 
-      * Sips adsorption isotherm
+..       * Sips adsorption isotherm
 
-      .. math::
+..       .. math::
 
-         q(P) =\frac{q_m K P^n}{1+K P^n}
+..          q(P) =\frac{q_m K P^n}{1+K P^n}
          
-   **4-parameters models**
+..    **4-parameters models**
 
-      * Dual-site Langmuir (DSLangmuir) adsorption isotherm
+..       * Dual-site Langmuir (DSLangmuir) adsorption isotherm
 
-      .. math::
+..       .. math::
 
-         q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}
+..          q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}
 
-blalba
-'''''''
+Adosption at different temperature (using heat of adsorption)
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 .. math::
-   a(P, T) = \exp { \frac { \vartriangle H_{ads,i}}{R}\left( \frac{1}{T}-\frac{T}{T_{ref}}\right)},
+   a(P, T) = \exp { \frac { \vartriangle H_{ads,i}}{R}\left( \frac{1}{T}-\frac{1}{T_{ref}}\right)},
 
 where :math:`H_{ads,i}` is heat of adsorption and :math:`T_{ref}` is reference temperature.
 
-blalba
-''''''''''
+Real adsorbed solution theory (RAST)
+''''''''''''''''''''''''''''''''''''''''
 
-    **Modified Raoult' law**
+**Modified Raoult' law**
 
-    .. math::
-      y_i \phi  P = x_i \gamma_i P^{\circ}_i,
+.. math::
+   y_i \phi  P = x_i \gamma_i P^{\circ}_i,
 
-   where  :math:`\phi` is fugacity coefficient and :math:`\gamma_i` is activity coefficient.
+where  :math:`\phi` is fugacity coefficient and :math:`\gamma_i` is activity coefficient.
 
-blablaaa
-''''''''''
+**Spreading pressure**
+   
+
+Ideal adsorbed solution theory (IAST)
+''''''''''''''''''''''''''''''''''''''''
+
+IAST 는 component 간의 경쟁적인 흡착을 고려하여 pure isothrm function 으로부터 mixture isotherm function 을 도출한다.
+IAST 는 아래 사항을 가정한다.
+
+   * The temperature is fixed and the pure isotherm are measured at the same temperature.
+   * The thermodynamic property of the adsorbent during the adsorption is negligible.
+   * Each adsorbate has access to the same area of adsorbent surface.
+   * A Gibbs dividing surface defines an adsorbed phase.
+
+From Raoults' law, we need to find solid mole fraction :math:`x_i`, which is the uptake.
 
 **Raoult' law**
 
-   .. math::
+.. math::
 
-      P^{\circ}_i = y_i \frac{P}{x_i}
+   P^{\circ}_i = y_i \frac{P}{x_i}
+
+Find the spreading pressure for all components with :math:`x_{guess}`, until that spreading pressure of mixture is the same with that of each components.
+check the spreading pressure from :math:`x_i` until the 
+
+
+**Spreading pressure**
+
+.. math::
+
+   \pi_i^{\circ} = \frac{\pi_i}{R T} = \int_{0}^{P^{\circ}} \frac{f_i(P)}{P}, dP
+
+where, :math:`\pi_i^{\circ}` is the reduced spreading pressure, :math:`f_i(P)` is the pure isotherm model.
+
+For components :math:`i = 1, 2, ..., N`, the pure component spreading pressure :math:`\pi_i` at pressure :math:`P^{\circ}_i` are all equal to the spreading pressure of the mixture :math:`\pi`.
+
+.. math::
+   \pi = \pi_1(P^0_1) = \pi_2(P^0_2) = \cdots = \pi_N(P^0_N)
+
+.. math::
+
+   \min_{x_1, x_2, ... x _N} \sum_{i=1}^N \sum_{j \ne i}^{N-1} (\pi^{\circ}_i - \pi^{\circ}_j)^2
+
 ----------------------------------------

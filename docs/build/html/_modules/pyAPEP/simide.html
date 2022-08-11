@@ -103,50 +103,12 @@
 
 <div class="viewcode-block" id="IdealColumn"><a class="viewcode-back" href="../../simide.html#pyAPEP.simide.IdealColumn">[docs]</a><span class="k">class</span> <span class="nc">IdealColumn</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Class to characterize pure-component isotherm data with an analytical model.</span>
-<span class="sd">    Data fitting is done during instantiation.</span>
+<span class="sd">    A `IdealColumn` class is instantiated by passing it the pure-component adsorption isotherm in the form of a Pandas DataFrame. The least squares data fitting is done here.</span>
 <span class="sd">    </span>
-<span class="sd">    Models supported are as follows. Here, :math:`L` is the gas uptake,</span>
-<span class="sd">    :math:`P` is pressure (fugacity technically).</span>
-<span class="sd">    </span>
-<span class="sd">    * Langmuir isotherm model</span>
-<span class="sd">    </span>
-<span class="sd">    .. math::</span>
-<span class="sd">    </span>
-<span class="sd">        L(P) = M \\frac{KP}{1+KP},</span>
-<span class="sd">        </span>
-<span class="sd">    * Quadratic isotherm model</span>
-<span class="sd">    </span>
-<span class="sd">    .. math::</span>
-<span class="sd">    </span>
-<span class="sd">        L(P) = M \\frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}</span>
-<span class="sd">        </span>
-<span class="sd">    * Brunauer-Emmett-Teller (BET) adsorption isotherm</span>
-<span class="sd">    </span>
-<span class="sd">    .. math::</span>
-<span class="sd">    </span>
-<span class="sd">        L(P) = M\\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}</span>
-<span class="sd">        </span>
-<span class="sd">    * Dual-site Langmuir (DSLangmuir) adsorption isotherm</span>
-<span class="sd">    </span>
-<span class="sd">    .. math::</span>
-<span class="sd">    </span>
-<span class="sd">        L(P) = M_1\\frac{K_1 P}{1+K_1 P} +  M_2\\frac{K_2 P}{1+K_2 P}</span>
-<span class="sd">        </span>
-<span class="sd">    * Asymptotic approximation to the Temkin Isotherm</span>
-<span class="sd">    (see DOI: 10.1039/C3CP55039G)</span>
-<span class="sd">    </span>
-<span class="sd">    .. math::</span>
-<span class="sd">    </span>
-<span class="sd">        L(P) = M\\frac{KP}{1+KP} + M \\theta (\\frac{KP}{1+KP})^2 (\\frac{KP}{1+KP} -1)</span>
-<span class="sd">        </span>
-<span class="sd">    * Henry&#39;s law. Only use if your data is linear, and do not necessarily trust</span>
-<span class="sd">      IAST results from Henry&#39;s law if the result required an extrapolation</span>
-<span class="sd">      of your data; Henry&#39;s law is unrealistic because the adsorption sites</span>
-<span class="sd">      will saturate at higher pressures.</span>
-<span class="sd">      </span>
-<span class="sd">    .. math:: L(P) = K_H P</span>
-<span class="sd">        </span>
+<span class="sd">    :param n_comp: The number of components in the PSA system.</span>
+<span class="sd">    :param isotherm_fun: Mixture isotherm function (could be optain from :py:mod:`pyAPEP.isofit`)</span>
+
+<span class="sd">    :rtype: IdealColumn</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
 <div class="viewcode-block" id="IdealColumn.__init__"><a class="viewcode-back" href="../../simide.html#pyAPEP.simide.IdealColumn.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_comp</span><span class="p">,</span> <span class="n">isotherm_fun</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,):</span>
@@ -170,18 +132,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_n_comp</span> <span class="o">=</span> <span class="n">n_comp</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_str</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;isotherm&#39;</span> <span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
                         <span class="s1">&#39;feedcond&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-                        <span class="s1">&#39;opercond&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,}</span>
-            
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Instantiation. A `IdealColumn` class is instantiated by passing it the</span>
-<span class="sd">        pure-component adsorption isotherm in the form of a Pandas DataFrame.</span>
-<span class="sd">        The least squares data fitting is done here.</span>
-<span class="sd">        </span>
-<span class="sd">        :param n_comp: DataFrame pure-component adsorption isotherm data</span>
-<span class="sd">        :param isotherm_fun: String key for loading column in df</span>
-<span class="sd">        </span>
-<span class="sd">        :rtype: IdealColumn</span>
-<span class="sd">        &quot;&quot;&quot;</span></div>
+                        <span class="s1">&#39;opercond&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,}</span></div>
+        
 
 <div class="viewcode-block" id="IdealColumn.isofunct"><a class="viewcode-back" href="../../simide.html#pyAPEP.simide.IdealColumn.isofunct">[docs]</a>    <span class="k">def</span> <span class="nf">isofunct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_comp</span><span class="p">,</span> <span class="n">isotherm_fun</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -191,7 +143,7 @@
 <span class="sd">            in instantiation)</span>
 <span class="sd">        :return: predicted loading at pressure P (in corresponding units as df</span>
 <span class="sd">            in instantiation) using fitted model params in `self.params`.</span>
-<span class="sd">        :rtype: Float or Array</span>
+<span class="sd">        :rtype: Float or Array.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">check_isotherm</span><span class="p">(</span><span class="n">n_comp</span><span class="p">,</span> <span class="n">isotherm_fun</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_isofun</span> <span class="o">=</span> <span class="n">isotherm_fun</span>
@@ -204,6 +156,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Input feed condtions</span>
 <span class="sd">        </span>
+<span class="sd">        :param P_feed: Feed pressure (bar).</span>
+<span class="sd">        :param T_feed: Feed temperature (K).</span>
+<span class="sd">        :param y_feed: Feed composition (mol/mol)</span>
+<span class="sd">        </span>
+<span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">y_feed</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_comp</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Dim. of y_feed (feed composition)&quot;</span> <span class="p">)</span>
@@ -231,6 +188,10 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Input operation condtions</span>
 <span class="sd">        </span>
+<span class="sd">        :param P_high: Operating pressure during the adsorption step (bar).</span>
+<span class="sd">        :param P_low: Operating pressure during the desorption step (bar).</span>
+<span class="sd">        </span>
+<span class="sd">        :return:</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_P_high</span> <span class="o">=</span> <span class="n">P_high</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_P_low</span> <span class="o">=</span> <span class="n">P_low</span>
@@ -240,6 +201,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run the ideal PSA simulation.</span>
 <span class="sd">        </span>
+<span class="sd">        :param tol: Tolerance for mismatch between uptake :math:`x_{guess}` and calculated :math:`x_i`.</span>
+<span class="sd">        </span>
+<span class="sd">        :return: Tail gas mole fraction of each component</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">isomix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_isofun</span>
         <span class="n">y_feed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_y_feed</span>

@@ -85,6 +85,47 @@ Class documentation
 
 Theory
 -------
-Here's theories.
+
+(공정 그림 있으면 설명하기 쉬울듯 with notation)
+
+Ideal PSA 의 주요 assumption 은 아래와 같다.
+
+    *	Extremely fast mass & heat transfer between gas and solid phases
+    *	The operation of the ideal PSA process is isothermal by perfectly controlling temperature.
+    *	The operation cycle consists of two steps: adsorption and desorption steps.
+    *	During the adsorption step, 100% of raffinate gas is produced and the capacity of the adsorbent bed is fully used with perfectly controlled step time.
+    *	During the desorption step, the detrimental influence of the void fraction on the tail gas purity is ignored.
+    *	Uniform pressure distribution is assumed all along the adsorbent bed of the PSA process.
+
+Ideal PSA simulation 을 통해 tail gas 에서의 조성을 도출할 수 있으며, :math:`x_{guess}` 와 계산된 :math:`x` 와의 mismatch 를 최소화 하는 방향으로 solution 이 도출된다.
+
+.. math::
+
+    \min_{x_{guess}} ||x-x_{guess}||^2_2
+
+such that
+
+    .. math::
+
+        x = \frac{\vartriangle q_1}{\vartriangle q_1 + \vartriangle q_2}
+
+    .. math::
+
+        \vartriangle q_1 = q_{1,high} - q_{1,low}
+
+    .. math::
+
+        \vartriangle q_2 = q_{2,high} - q_{2,low}
+
+    .. math::
+
+        q_{1,high}, q_{2,high} = f_{IAST} \left(P_{high}, T, y \right )
+
+    .. math::
+
+        q_{1,low}, q_{2,low} = f_{IAST} \left(P_{low}, T, x_{guess} \right )
+
+where :math:`y` is the mole fraction in gas phase during the adsorption step.
+
 
 --------------------------------
