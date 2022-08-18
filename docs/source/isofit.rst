@@ -53,29 +53,7 @@ Using heat of adsorption, isotherm parameter fitting at different temperature.
    # Find best isotherm function
    best_isotherm, parameters, fn_type, val_err = isofit.best_isomodel(P, q)
 
-3. Developing mixuture isotherm with RAST
-'''''''''''''''''''''''''''''''''''''''''''
-RAST : Real adsorbed solution Theory
-
-.. code-block:: python
-
-   # Pure isotherm definition
-   def iso1(P, T):
-    nume =1*0.05*P
-    deno = 1+0.05*P
-    q = nume/deno
-    return q
-
-   def iso2(P,T):
-      nume = 2*0.1*P
-      deno = 1+0.1*P
-      q = nume/deno
-      return q
-
-   # Develop mixture isotherm
-   iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
-
-4. Developing mixuture isotherm with IAST
+3. Developing mixuture isotherm with IAST
 '''''''''''''''''''''''''''''''''''''''''''
 
 IAST : Ideal adsorbed solution Theory
@@ -115,6 +93,28 @@ IAST : Ideal adsorbed solution Theory
    # Develop mixture isotherm
    iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
 
+
+4. Developing mixuture isotherm with RAST
+'''''''''''''''''''''''''''''''''''''''''''
+RAST : Real adsorbed solution Theory
+
+.. code-block:: python
+
+   # Pure isotherm definition
+   def iso1(P, T):
+    nume =1*0.05*P
+    deno = 1+0.05*P
+    q = nume/deno
+    return q
+
+   def iso2(P,T):
+      nume = 2*0.1*P
+      deno = 1+0.1*P
+      q = nume/deno
+      return q
+
+   # Develop mixture isotherm
+   iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
 
 ----------------------------------------
 
@@ -178,54 +178,6 @@ Finding best isotherm function algorithm
    사용자는 candidates 로 사용하고자 하는 모델의 parameter 개수를 고려하여 data sample 을 제공해야한다. 예를 들어 Dual site Langmuir 함수를 candidates 에 포함하고자 한다면 사용자는 3 개 이상의 data sample 이 필요하다.
 
 
-
-.. Pure isotherm function condidates
-.. ''''''''''''''''''''''''''''''''''
-
-..    **1-parameter model**
-
-..       * Arrh
-   
-..       .. math::
-
-..          q(P) = 
-            
-..    **2-parameters models**
-
-..       * Langmuir isotherm model
-
-..       .. math::
-
-..          q(P) = M\frac{KP}{1+KP},
-
-..       * Freundlich isotherm model
-
-..       .. math::
-
-..          q(P) = kP^n,
-         
-..    **3-parameters models**
-
-..       * Quadratic isotherm model
-
-..       .. math::
-         
-..          q(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
-
-..       * Sips adsorption isotherm
-
-..       .. math::
-
-..          q(P) =\frac{q_m K P^n}{1+K P^n}
-         
-..    **4-parameters models**
-
-..       * Dual-site Langmuir (DSLangmuir) adsorption isotherm
-
-..       .. math::
-
-..          q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}
-
 Adosption at different temperature (using heat of adsorption)
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
@@ -233,18 +185,6 @@ Adosption at different temperature (using heat of adsorption)
    a(P, T) = \exp { \frac { \vartriangle H_{ads,i}}{R}\left( \frac{1}{T}-\frac{1}{T_{ref}}\right)},
 
 where :math:`H_{ads,i}` is heat of adsorption and :math:`T_{ref}` is reference temperature.
-
-Real adsorbed solution theory (RAST)
-''''''''''''''''''''''''''''''''''''''''
-
-**Modified Raoult' law**
-
-.. math::
-   y_i \phi  P = x_i \gamma_i P^{\circ}_i,
-
-where  :math:`\phi` is fugacity coefficient and :math:`\gamma_i` is activity coefficient.
-
-**Spreading pressure**
    
 
 Ideal adsorbed solution theory (IAST)
@@ -266,10 +206,6 @@ From Raoults' law, we need to find solid mole fraction :math:`x_i`, which is the
 
    P^{\circ}_i = y_i \frac{P}{x_i}
 
-Find the spreading pressure for all components with :math:`x_{guess}`, until that spreading pressure of mixture is the same with that of each components.
-check the spreading pressure from :math:`x_i` until the 
-
-
 **Spreading pressure**
 
 .. math::
@@ -286,5 +222,21 @@ For components :math:`i = 1, 2, ..., N`, the pure component spreading pressure :
 .. math::
 
    \min_{x_1, x_2, ... x _N} \sum_{i=1}^N \sum_{j \ne i}^{N-1} (\pi^{\circ}_i - \pi^{\circ}_j)^2
+
+Find the spreading pressure for all components with :math:`x_{guess}`, until that spreading pressure of mixture is the same with that of each components.
+check the spreading pressure from :math:`x_i` until the difference between :math:`\pi_i` and :math:`\pi_j` becomes smaller than the tolerance.
+
+
+Real adsorbed solution theory (RAST)
+''''''''''''''''''''''''''''''''''''''''
+
+In the real adsorbed solution theory, the pressure is calculated with modified Raoults' law to consider the actual behavior with activity coefficient. Other equations and algorithm is the same with IAST.
+
+**Modified Raoult' law**
+
+.. math::
+   y_i \phi  P = x_i \gamma_i P^{\circ}_i,
+
+where  :math:`\phi` is fugacity coefficient and :math:`\gamma_i` is activity coefficient.
 
 ----------------------------------------

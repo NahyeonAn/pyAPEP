@@ -48,16 +48,16 @@
 <li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#finding-best-isotherm-function">1. Finding best isotherm function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#fitting-isotherm-for-different-temperature">2. Fitting isotherm for different temperature</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#developing-mixuture-isotherm-with-rast">3. Developing mixuture isotherm with RAST</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#developing-mixuture-isotherm-with-iast">4. Developing mixuture isotherm with IAST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#developing-mixuture-isotherm-with-iast">3. Developing mixuture isotherm with IAST</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#developing-mixuture-isotherm-with-rast">4. Developing mixuture isotherm with RAST</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#function-structures">Function structures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#finding-best-isotherm-function-algorithm">Finding best isotherm function algorithm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adosption-at-different-temperature-using-heat-of-adsorption">Adosption at different temperature (using heat of adsorption)</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#real-adsorbed-solution-theory-rast">Real adsorbed solution theory (RAST)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#ideal-adsorbed-solution-theory-iast">Ideal adsorbed solution theory (IAST)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#real-adsorbed-solution-theory-rast">Real adsorbed solution theory (RAST)</a></li>
 </ul>
 </li>
 </ul>
@@ -141,29 +141,8 @@ The explanation include function usage, algorithm (or related theroy), and funct
 </pre></div>
 </div>
 </section>
-<section id="developing-mixuture-isotherm-with-rast">
-<h3>3. Developing mixuture isotherm with RAST<a class="headerlink" href="#developing-mixuture-isotherm-with-rast" title="Permalink to this heading"></a></h3>
-<p>RAST : Real adsorbed solution Theory</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pure isotherm definition</span>
-<span class="k">def</span> <span class="nf">iso1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
- <span class="n">nume</span> <span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="mf">0.05</span><span class="o">*</span><span class="n">P</span>
- <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.05</span><span class="o">*</span><span class="n">P</span>
- <span class="n">q</span> <span class="o">=</span> <span class="n">nume</span><span class="o">/</span><span class="n">deno</span>
- <span class="k">return</span> <span class="n">q</span>
-
-<span class="k">def</span> <span class="nf">iso2</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
-   <span class="n">nume</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.1</span><span class="o">*</span><span class="n">P</span>
-   <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.1</span><span class="o">*</span><span class="n">P</span>
-   <span class="n">q</span> <span class="o">=</span> <span class="n">nume</span><span class="o">/</span><span class="n">deno</span>
-   <span class="k">return</span> <span class="n">q</span>
-
-<span class="c1"># Develop mixture isotherm</span>
-<span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span> <span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
-</pre></div>
-</div>
-</section>
 <section id="developing-mixuture-isotherm-with-iast">
-<h3>4. Developing mixuture isotherm with IAST<a class="headerlink" href="#developing-mixuture-isotherm-with-iast" title="Permalink to this heading"></a></h3>
+<h3>3. Developing mixuture isotherm with IAST<a class="headerlink" href="#developing-mixuture-isotherm-with-iast" title="Permalink to this heading"></a></h3>
 <p>IAST : Ideal adsorbed solution Theory</p>
 <p><strong>Option 1)</strong> Users can define their own isotherm function for each components,</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pure isotherm definition</span>
@@ -191,6 +170,27 @@ The explanation include function usage, algorithm (or related theroy), and funct
 <span class="c1"># Define pure isotherm of each component</span>
 <span class="n">iso1</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">fn_type1</span><span class="p">,</span> <span class="n">val_err1</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_comp1</span><span class="p">)</span>
 <span class="n">iso2</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span> <span class="n">fn_type2</span><span class="p">,</span> <span class="n">val_err2</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_comp2</span><span class="p">)</span>
+
+<span class="c1"># Develop mixture isotherm</span>
+<span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span> <span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="developing-mixuture-isotherm-with-rast">
+<h3>4. Developing mixuture isotherm with RAST<a class="headerlink" href="#developing-mixuture-isotherm-with-rast" title="Permalink to this heading"></a></h3>
+<p>RAST : Real adsorbed solution Theory</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pure isotherm definition</span>
+<span class="k">def</span> <span class="nf">iso1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+ <span class="n">nume</span> <span class="o">=</span><span class="mi">1</span><span class="o">*</span><span class="mf">0.05</span><span class="o">*</span><span class="n">P</span>
+ <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.05</span><span class="o">*</span><span class="n">P</span>
+ <span class="n">q</span> <span class="o">=</span> <span class="n">nume</span><span class="o">/</span><span class="n">deno</span>
+ <span class="k">return</span> <span class="n">q</span>
+
+<span class="k">def</span> <span class="nf">iso2</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
+   <span class="n">nume</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="mf">0.1</span><span class="o">*</span><span class="n">P</span>
+   <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.1</span><span class="o">*</span><span class="n">P</span>
+   <span class="n">q</span> <span class="o">=</span> <span class="n">nume</span><span class="o">/</span><span class="n">deno</span>
+   <span class="k">return</span> <span class="n">q</span>
 
 <span class="c1"># Develop mixture isotherm</span>
 <span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span> <span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
@@ -344,14 +344,6 @@ The explanation include function usage, algorithm (or related theroy), and funct
 \[a(P, T) = \exp { \frac { \vartriangle H_{ads,i}}{R}\left( \frac{1}{T}-\frac{1}{T_{ref}}\right)},\]</div>
 <p>where <span class="math notranslate nohighlight">\(H_{ads,i}\)</span> is heat of adsorption and <span class="math notranslate nohighlight">\(T_{ref}\)</span> is reference temperature.</p>
 </section>
-<section id="real-adsorbed-solution-theory-rast">
-<h3>Real adsorbed solution theory (RAST)<a class="headerlink" href="#real-adsorbed-solution-theory-rast" title="Permalink to this heading"></a></h3>
-<p><strong>Modified Raoult’ law</strong></p>
-<div class="math notranslate nohighlight">
-\[y_i \phi  P = x_i \gamma_i P^{\circ}_i,\]</div>
-<p>where  <span class="math notranslate nohighlight">\(\phi\)</span> is fugacity coefficient and <span class="math notranslate nohighlight">\(\gamma_i\)</span> is activity coefficient.</p>
-<p><strong>Spreading pressure</strong></p>
-</section>
 <section id="ideal-adsorbed-solution-theory-iast">
 <h3>Ideal adsorbed solution theory (IAST)<a class="headerlink" href="#ideal-adsorbed-solution-theory-iast" title="Permalink to this heading"></a></h3>
 <p>IAST 는 component 간의 경쟁적인 흡착을 고려하여 pure isothrm function 으로부터 mixture isotherm function 을 도출한다.
@@ -368,8 +360,6 @@ IAST 는 아래 사항을 가정한다.</p>
 <p><strong>Raoult’ law</strong></p>
 <div class="math notranslate nohighlight">
 \[P^{\circ}_i = y_i \frac{P}{x_i}\]</div>
-<p>Find the spreading pressure for all components with <span class="math notranslate nohighlight">\(x_{guess}\)</span>, until that spreading pressure of mixture is the same with that of each components.
-check the spreading pressure from <span class="math notranslate nohighlight">\(x_i\)</span> until the</p>
 <p><strong>Spreading pressure</strong></p>
 <div class="math notranslate nohighlight">
 \[\pi_i^{\circ} = \frac{\pi_i}{R T} = \int_{0}^{P^{\circ}} \frac{f_i(P)}{P}, dP\]</div>
@@ -379,6 +369,16 @@ check the spreading pressure from <span class="math notranslate nohighlight">\(x
 \[\pi = \pi_1(P^0_1) = \pi_2(P^0_2) = \cdots = \pi_N(P^0_N)\]</div>
 <div class="math notranslate nohighlight">
 \[\min_{x_1, x_2, ... x _N} \sum_{i=1}^N \sum_{j \ne i}^{N-1} (\pi^{\circ}_i - \pi^{\circ}_j)^2\]</div>
+<p>Find the spreading pressure for all components with <span class="math notranslate nohighlight">\(x_{guess}\)</span>, until that spreading pressure of mixture is the same with that of each components.
+check the spreading pressure from <span class="math notranslate nohighlight">\(x_i\)</span> until the difference between <span class="math notranslate nohighlight">\(\pi_i\)</span> and <span class="math notranslate nohighlight">\(\pi_j\)</span> becomes smaller than the tolerance.</p>
+</section>
+<section id="real-adsorbed-solution-theory-rast">
+<h3>Real adsorbed solution theory (RAST)<a class="headerlink" href="#real-adsorbed-solution-theory-rast" title="Permalink to this heading"></a></h3>
+<p>In the real adsorbed solution theory, the pressure is calculated with modified Raoults’ law to consider the actual behavior with activity coefficient. Other equations and algorithm is the same with IAST.</p>
+<p><strong>Modified Raoult’ law</strong></p>
+<div class="math notranslate nohighlight">
+\[y_i \phi  P = x_i \gamma_i P^{\circ}_i,\]</div>
+<p>where  <span class="math notranslate nohighlight">\(\phi\)</span> is fugacity coefficient and <span class="math notranslate nohighlight">\(\gamma_i\)</span> is activity coefficient.</p>
 <hr class="docutils" />
 </section>
 </section>
