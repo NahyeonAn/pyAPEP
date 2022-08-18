@@ -269,7 +269,7 @@ in instantiation) using fitted model params in <cite>self.params</cite>.</p>
 <hr class="docutils" />
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p>(공정 그림 있으면 설명하기 쉬울듯 with notation)</p>
+<a class="reference internal image-reference" href="_images/PSA_process.png"><img alt="PSA process" class="align-center" src="_images/PSA_process.png" style="width: 400px;" /></a>
 <p>Ideal PSA 의 주요 assumption 은 아래와 같다.</p>
 <blockquote>
 <div><ul class="simple">
@@ -283,7 +283,7 @@ in instantiation) using fitted model params in <cite>self.params</cite>.</p>
 </div></blockquote>
 <p>Ideal PSA simulation 을 통해 tail gas 에서의 조성을 도출할 수 있으며, <span class="math notranslate nohighlight">\(x_{guess}\)</span> 와 계산된 <span class="math notranslate nohighlight">\(x\)</span> 와의 mismatch 를 최소화 하는 방향으로 solution 이 도출된다.</p>
 <div class="math notranslate nohighlight">
-\[\min_{x_{guess}} ||x-x_{guess}||^2_2\]</div>
+\[\min_{x_{guess}} ||x_i-x_{guess}||^2_2\]</div>
 <p>such that</p>
 <blockquote>
 <div><div class="math notranslate nohighlight">

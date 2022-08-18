@@ -86,7 +86,11 @@ Class documentation
 Theory
 -------
 
-(공정 그림 있으면 설명하기 쉬울듯 with notation)
+.. image:: images/PSA_process.png
+  :width: 400
+  :alt: PSA process
+  :align: center
+
 
 Ideal PSA 의 주요 assumption 은 아래와 같다.
 

@@ -86,7 +86,11 @@ Class documentation
 Theory
 -------
 
-(공정 그림 있으면 설명하기 쉬울듯 with notation)
+.. image:: images/PSA_process.png
+  :width: 400
+  :alt: PSA process
+  :align: center
+
 
 Ideal PSA 의 주요 assumption 은 아래와 같다.
 
@@ -101,7 +105,7 @@ Ideal PSA simulation 을 통해 tail gas 에서의 조성을 도출할 수 있�
 
 .. math::
 
-    \min_{x_{guess}} ||x-x_{guess}||^2_2
+    \min_{x_{guess}} ||x_i-x_{guess}||^2_2
 
 such that
 
