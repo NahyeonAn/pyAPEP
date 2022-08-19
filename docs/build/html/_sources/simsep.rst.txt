@@ -1,22 +1,111 @@
 Real PSA simulation module (:py:mod:`pyAPEP.simsep`)
-====================================================
+=======================================================
+This module enables ideal PSA simulation using isotherm function and operating conditions.
 
-detailed discriptions are here.
+First, import simide into Python after installation.
 
-Theory
+.. code-block:: python
+
+   import pyAPEP.simsep as simsep
+
+Then users need to 5-steps to simulate.
+    1. Mixture isotherm function definition
+    2. Real column definition
+    3. Feed condition setting
+    4. Operating condition setting
+    5. Simulation run
+
+In next section, detailed steps are explained.
+
+------------------------------------------------------
+
+Usage?
 -------
-Here's theories.
 
+1. Mixture isotherm function definition
+''''''''''''''''''''''''''''''''''''''''''''''
 
-Tutorials
----------
-Here's tutorials.
+Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
 
+.. code-block:: python
 
-Class documentation 
--------------------
+    iso_mix = lambda P,T: isof.IAST([iso1, iso2], P, T)
+    # iso1 and iso2 == Pure isotherm function of each componet.
 
+2. Ideal column definition
+''''''''''''''''''''''''''''''''''''''''''''''
+
+.. code-block:: python
+
+    num_comp = 2                                       # The number of components
+    Column1 = simi.IdealColumn(num_comp, iso_mix, )    # Ideal column definition
+    print(Column1)                                     # Chek input condition
+
+3. Feed condition setting
+''''''''''''''''''''''''''''''''''''''''''''''
+
+.. code-block:: python
+
+    P_feed = 8                              # Feed presure (bar)
+    T_feed = 300                            # Feed temperature (K)
+    y_feed = [1/4, 3/4]                     # Feed mole fraction (mol/mol)
+    
+    Column1.feedcond(P_feed, T_feed, y_feed)
+    print(Column1) 
+
+4. Operating condition setting
+''''''''''''''''''''''''''''''''''''''''''''''
+
+.. code-block:: python
+
+    P_high = 8                          # High pressure (bar)
+    P_low  = 1                          # Low pressure (bar)
+    
+    Column1.opercond(P_high, P_low)
+    print(Column1)
+
+5. Simulation run
+''''''''''''''''''''''''''''''''''''''''''''''
+
+.. code-block:: python
+
+    x_ext = Column1.runideal()
+    print(x_ext)                        #return tail gas composition of each gas
+
+----------------------------------------
+
+Class documentation
+----------------------------------
 .. automodule:: pyAPEP.simsep
     :special-members:
     :members:
-    
+
+
+---------------------------------
+
+Theory
+-------
+
+`Ergun <http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf>`_ equation
+
+The Ergun equation, shown below, is used to describe the flow.
+
+.. math::
+
+    \frac{\vartriangle P}{L} = \frac{180 \mu }{d_{p}^2 } \frac{(1 - \epsilon)^2}{\epsilon^3} u + \frac{7}{4} \frac{\rho_{f}}{d_{P}} \frac{1 - \epsilon}{\epsilon^3} u^2
+
+where
+
+    * :math:`\vartriangle P =` Pressure drop
+    * :math:`L =` Height of the bed
+    * :math:`\mu =` Fluid viscosity
+    * :math:`\epsilon =` Void space of the bed
+    * :math:`u =` Fluid superficial velocity
+    * :math:`d_{P} =` Particle diameter
+    * :math:`\rho_{f} =` Density of Fluid
+
+The Ergun equation represents the relationship between pressure drop and resultant fluid flow in packed beds.
+The equation was developed by Sabri Ergun and he derived it from experimental measurments and theoretical postulates.
+
+
+--------------------------------
