@@ -19,7 +19,7 @@ In next section, detailed steps are explained.
 
 ------------------------------------------------------
 
-Usage?
+Usage
 -------
 
 1. Mixture isotherm function definition

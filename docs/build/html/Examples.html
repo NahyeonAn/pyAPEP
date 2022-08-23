@@ -29,8 +29,9 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> pyAPEP
+        <div class="wy-side-nav-search"  style="background: #BED2E0" >
+            <a href="index.html">
+            <img src="_static/pyAPEP.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,7 +58,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #BED2E0" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">pyAPEP</a>
       </nav>
@@ -163,57 +164,92 @@
 <h2>2. Real PSA simulation for biogas upgrading<a class="headerlink" href="#real-psa-simulation-for-biogas-upgrading" title="Permalink to this heading"></a></h2>
 <p>기본설명 (주의 환기)</p>
 <a class="reference internal image-reference" href="_images/GreenNH3_process.png"><img alt="GreenNH3 process" class="align-center" src="_images/GreenNH3_process.png" style="width: 800px;" /></a>
-<p>공정설명</p>
+<p>공정설명 / 3성분계</p>
 <p><strong>First, import pyAPEP packages.</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyAPEP.isofit</span> <span class="k">as</span> <span class="nn">isofit</span>
-<span class="kn">import</span> <span class="nn">pyAPEP.simide</span> <span class="k">as</span> <span class="nn">simide</span>
+<span class="kn">import</span> <span class="nn">pyAPEP.simsep</span> <span class="k">as</span> <span class="nn">simsep</span>
 </pre></div>
 </div>
-<p><strong>Then, define pure isotherm function for hydrogen and nitrogen using pressure-uptake data samples (Opt. 1) or isotherm parameters (Opt. 2).</strong></p>
-<p>여기로 가서 isotherm function 을 동일하게 정의하세요. <a class="reference internal" href="#isothrm-definition"><span class="std std-ref">here</span></a></p>
-<p><strong>We need mixture isotherm function to simulate PSA process. Here we define the hydrogen/nitrogen mixture isotherm with :py:mod:`isofit.IAST`</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">H2_isotherm</span><span class="p">,</span> <span class="n">N2_isotherm</span><span class="p">]</span>
-<span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span> <span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">(</span><span class="n">iso_list</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<p><strong>Here, define pure isotherm function for carbon dioxide, nitrogen and methane using pressure-uptake data samples (Opt. 1).</strong></p>
+<p>If you want to define isotherm function with isotherm parameters already have, then refer to <a class="reference internal" href="#isothrm-definition"><span class="std std-ref">here</span></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Data import</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">q_CO2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">q_N2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]</span>
+<span class="n">q_CH4</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+
+<span class="n">q_mixture</span> <span class="o">=</span>  <span class="p">[</span><span class="n">q_CO2</span><span class="p">,</span> <span class="n">q_N2</span><span class="p">,</span> <span class="n">q_CH4</span><span class="p">]</span>
+<span class="c1"># Find best isotherm function</span>
+<span class="n">n_comp</span> <span class="o">=</span> <span class="mi">3</span>     <span class="c1"># The number of components</span>
+<span class="n">iso_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_comp</span><span class="p">):</span>
+   <span class="n">_isotherm</span><span class="p">,</span> <span class="n">_par</span><span class="p">,</span> <span class="n">_fn_type</span><span class="p">,</span> <span class="n">_val_err</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_mixture</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+   <span class="n">iso_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_isotherm</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>In this example, we need mixture isotherm function to simulate PSA process for three components. Here we define the carbon dioxide, nitrogen and methane mixture isotherm with</strong> <code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit.IAST</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span> <span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">(</span><span class="n">iso_list</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Then we need to define and run ideal PSA process.</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">CI1</span> <span class="o">=</span> <span class="n">simi</span><span class="o">.</span><span class="n">IdealColumn</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">iso_mix</span><span class="p">,</span> <span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Column design</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="n">simsep</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.0314</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+
+<span class="c1"># Adsorbent parameters setting</span>
+<span class="n">voidfrac</span> <span class="o">=</span> <span class="mf">0.4</span>
+<span class="n">rho</span> <span class="o">=</span> <span class="mi">1100</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">adsorbent_info</span><span class="p">(</span><span class="n">iso_mix</span><span class="p">,</span> <span class="n">voidfrac</span><span class="p">,</span> <span class="n">rho_s</span> <span class="o">=</span> <span class="n">rho</span><span class="p">)</span>
 
 <span class="c1"># Feed condition setting</span>
-<span class="n">P_feed</span> <span class="o">=</span> <span class="mi">8</span>      <span class="c1"># Feed presure (bar)</span>
-<span class="n">T_feed</span> <span class="o">=</span> <span class="mf">313.15</span>    <span class="c1"># Feed temperature (K)</span>
-<span class="n">y_feed</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">]</span> <span class="c1"># Feed mole fraction (mol/mol)</span>
-<span class="n">CI1</span><span class="o">.</span><span class="n">feedcond</span><span class="p">(</span><span class="n">P_feed</span><span class="p">,</span> <span class="n">T_feed</span><span class="p">,</span> <span class="n">y_feed</span><span class="p">)</span>
+<span class="n">Mmol</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">]</span> <span class="c1"># kg/mol</span>
+<span class="n">visc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>  <span class="c1">#Pa sec</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">gas_prop_info</span><span class="p">(</span><span class="n">Mmol</span><span class="p">,</span> <span class="n">visc</span><span class="p">)</span>
 
-<span class="c1"># Operating condition setting</span>
-<span class="n">P_high</span> <span class="o">=</span> <span class="mi">8</span> <span class="c1"># High pressure (bar)</span>
-<span class="n">P_low</span>  <span class="o">=</span> <span class="mi">1</span> <span class="c1"># Low pressure (bar)</span>
-<span class="n">CI1</span><span class="o">.</span><span class="n">opercond</span><span class="p">(</span><span class="n">P_high</span><span class="p">,</span> <span class="n">P_low</span><span class="p">)</span>
+<span class="c1"># Mass transfer information setting</span>
+<span class="n">MTC</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>   <span class="c1">#mass transfer coeff.</span>
+<span class="n">a_surf</span> <span class="o">=</span> <span class="mi">400</span> <span class="c1">#Volumatric specific surface area (m2/m3)</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">mass_trans_info</span><span class="p">(</span><span class="n">MTC</span><span class="p">,</span> <span class="n">a_surf</span><span class="p">)</span>
+
+<span class="c1"># Thermal information setting</span>
+<span class="n">dH_ads</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">]</span>
+<span class="n">Cp_s</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">Cp_g</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+<span class="n">h_heat</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">thermal_info</span><span class="p">(</span><span class="n">dH_ads</span><span class="p">,</span> <span class="n">Cp_s</span><span class="p">,</span> <span class="n">Cp_g</span><span class="p">,</span> <span class="n">h_heat</span><span class="p">)</span>
+
+<span class="c1"># Boundary condition setting</span>
+<span class="n">P_inlet</span> <span class="o">=</span> <span class="mi">8</span>      <span class="c1"># Feed presure (bar)</span>
+<span class="n">P_outlet</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">T_feed</span> <span class="o">=</span> <span class="mf">313.15</span>    <span class="c1"># Feed temperature (K)</span>
+<span class="n">y_feed</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.74</span><span class="p">]</span> <span class="c1"># Feed mole fraction (mol/mol)</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">boundaryC_info</span><span class="p">(</span><span class="n">P_outlet</span><span class="p">,</span> <span class="n">P_inlet</span><span class="p">,</span> <span class="n">T_feed</span><span class="p">,</span> <span class="n">y_feed</span><span class="p">)</span>
+
+<span class="c1"># Initial condition setting</span>
+<span class="n">P_init</span> <span class="o">=</span> <span class="n">P_inlet</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">y_init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="mf">0.7</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="mf">0.1</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>
+<span class="n">Tg_init</span> <span class="o">=</span> <span class="n">T_feed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">Ts_init</span> <span class="o">=</span> <span class="n">T_feed</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>
+
+<span class="n">P_partial</span> <span class="o">=</span> <span class="p">[</span><span class="n">P_init</span><span class="o">*</span><span class="n">y_init</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_comp</span><span class="p">)]</span>
+<span class="n">q_init</span> <span class="o">=</span> <span class="n">iso_mix</span><span class="p">(</span><span class="n">P_partial</span><span class="p">,</span> <span class="n">Ts_init</span><span class="p">)</span>
 
 <span class="c1"># Simulation run</span>
-<span class="n">x_tail</span> <span class="o">=</span> <span class="n">CI1</span><span class="o">.</span><span class="n">runideal</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x_tail</span><span class="p">)</span>       <span class="c1"># Output: [x_H2, x_N2]</span>
+<span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">c1</span><span class="o">.</span><span class="n">run_mamoen</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">n_sec</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">CPUtime_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Now, we can calculate hydrogen recovery for this system. The definition of recovery is the ratio of target material between product and feed flow. The recovery is derived below.</strong></p>
-<div class="math notranslate nohighlight">
-\[R_{H_2} = \frac{(H_2 \textrm{ in feed})-(H_2 \textrm{ in tail gas})}{H_2 \textrm{ in feed}} = \frac{y_{H_2}\,F_{feed}-x_{H_2}\,F_{tail}}{y_{H_2}\,F_{feed}}\]</div>
-<p><strong>By the assumptions of ideal PSA columns, hydrogen mole fraction in raffinate is 1 (100 mol%). Mass balance eqaution for nitrogen becomes,</strong></p>
-<div class="math notranslate nohighlight">
-\[y_{N_2}\cdot F_{feed} = x_{N_2}\cdot F_{tail},\]</div>
-<div class="math notranslate nohighlight">
-\[F_{tail} = \frac{y_{N_2}}{x_{N_2}} \cdot F_{feed}\]</div>
-<p><strong>Substituting above mass balance to recovery equation then,</strong></p>
-<div class="math notranslate nohighlight">
-\[R_{H_2} = \frac{(1-y_{N_2})F_{feed} - (1-x_{N_2})F_{tail}}{(1-y_{N_2})F_{feed}} = 1 - \frac{y_{N_2}(1-x_{N_2})}{x_{N_2}(1-y_{N_2})}\]</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate H2 recovery</span>
-<span class="n">y_N2</span> <span class="o">=</span> <span class="n">y_feed</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">x_N2</span> <span class="o">=</span> <span class="n">x_tail</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="n">R_H2</span> <span class="o">=</span> <span class="mi">1</span><span class="o">-</span> <span class="p">(</span><span class="n">y_N2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">x_N2</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="n">x_N2</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">y_N2</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">R_H2</span><span class="p">)</span>
+<p><a class="reference internal" href="simsep.html#module-pyAPEP.simsep" title="pyAPEP.simsep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code></a> <strong>module gives various results plotting functions. Here, we using those functions.</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Internal pressure in z direction</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">Graph_P</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
 </pre></div>
 </div>
+<a class="reference internal image-reference" href="_images/simsep_example_pressure.png"><img alt="simsep_example_pressure" class="align-center" src="_images/simsep_example_pressure.png" style="width: 400px;" /></a>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Concentration of gas and solid phase in z direction</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span><span class="s1">&#39;Gas Concentration (mol/m$^3$)&#39;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
+<span class="n">c1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span><span class="s1">&#39;Soild concentration (uptake) (mol/kg)&#39;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="_images/simsep_example_gasphase.png"><img alt="simsep_example_gasphase" class="align-center" src="_images/simsep_example_gasphase.png" style="width: 400px;" /></a>
+<a class="reference internal image-reference" href="_images/simsep_example_soildphase.png"><img alt="simsep_example_soildphase" class="align-center" src="_images/simsep_example_soildphase.png" style="width: 400px;" /></a>
 </section>
 </section>
 
