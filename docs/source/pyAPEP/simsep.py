@@ -1,8 +1,21 @@
 """
-simsep - Python module for real PSA simulation.
+====================================================
+Real PSA simulation module (:py:mod:`pyAPEP.simsep`)
+====================================================
+
+Tutorials
+=========
+Tutorials Tutorials Tutorials Tutorials
+Tutorials Tutorials Tutorials Tutorials
+
+Functions
+=========
+Functions Functions Functions Functions 
+Functions Functions Functions Functions 
+
+ * [2022/08/16] - test
 """
 
-# %% Import packages
 import numpy as np
 #from numpy.lib.function_base import _parse_input_dimensions
 from scipy.integrate import odeint
@@ -87,56 +100,18 @@ def change_node_fn(z_raw, y_raw, N_new):
 # %% Column class
 class column:
     """
-    Class to characterize pure-component isotherm data with an analytical model.
-    Data fitting is done during instantiation.
-    
-    Models supported are as follows. Here, :math:`L` is the gas uptake,
-    :math:`P` is pressure (fugacity technically).
-    
-    * Langmuir isotherm model
-    
-    .. math::
-    
-        L(P) = M\\frac{KP}{1+KP},
-        
-    * Quadratic isotherm model
-    
-    .. math::
-    
-        L(P) = M \\frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}
-        
-    * Brunauer-Emmett-Teller (BET) adsorption isotherm
-    
-    .. math::
-    
-        L(P) = M\\frac{K_A P}{(1-K_B P)(1-K_B P+ K_A P)}
-        
-    * Dual-site Langmuir (DSLangmuir) adsorption isotherm
-    
-    .. math::
-    
-        L(P) = M_1\\frac{K_1 P}{1+K_1 P} +  M_2\\frac{K_2 P}{1+K_2 P}
-        
-    * Asymptotic approximation to the Temkin Isotherm
-    (see DOI: 10.1039/C3CP55039G)
-    
-    .. math::
-    
-        L(P) = M\\frac{KP}{1+KP} + M \\theta (\\frac{KP}{1+KP})^2 (\\frac{KP}{1+KP} -1)
-        
-    * Henry's law. Only use if your data is linear, and do not necessarily trust
-      IAST results from Henry's law if the result required an extrapolation
-      of your data; Henry's law is unrealistic because the adsorption sites
-      will saturate at higher pressures.
-      
-    .. math::
-    
-        L(P) = K_H P
-        
-    """
-    
+    Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.
+
+    :param L: Length of column
+    :param A_cross: Cross-sectional area of column
+    :param n_component: Number of components 
+    :param N_node: Number of nodes
+    :param E_balance: Energy balance inclusion (default = True)  
+    """    
     def __init__(self, L, A_cross, n_component, 
                  N_node = 11, E_balance = True):
+
+                       
         self._L = L
         self._A = A_cross
         self._n_comp = n_component
@@ -191,6 +166,17 @@ class column:
  ### Before running the simulations ###
 
     def adsorbent_info(self, iso_fn, epsi = 0.3, D_particle = 0.01, rho_s = 1000,P_test_range=[0,10], T_test_range = [273,373]):
+        """
+        Adsorbent information
+        
+        :param iso_fn: Isothem function (Type: n_comp.N array, N array [pressure, temperature])
+        :param epsi: Void fraction
+        :param D_particle: Particle diameter
+        :param rho_s: Solid density
+        :param P_test_range: Range of pressure for test
+        :param T_test_range: Range of temperature for test
+        
+        """
         T_test = np.linspace(T_test_range[0], T_test_range[1],self._N)
         p_test = []
         for ii in range(self._n_comp):
@@ -213,6 +199,13 @@ class column:
         
         
     def gas_prop_info(self, Mass_molar, mu_viscosity):
+        """
+        Gas property information
+        
+        :param Mass_molar: Molar mass
+        :param mu_viscosity: Viscosity
+
+        """
         stack_true = 0
         if len(Mass_molar) == self._n_comp:
             stack_true = stack_true + 1
@@ -227,6 +220,14 @@ class column:
             self._mu = mu_viscosity
             self._required['gas_prop_info'] = True
     def mass_trans_info(self, k_mass_transfer, a_specific_surf, D_dispersion = 1E-8):
+        """
+        Mass transfer
+        
+        :param k_mass_transfer: mass transfer coefficient s^-1
+        :param a_specific_surf: specific surface area m^2/m^3
+        :param D_dispersion: dispersion coefficient m^2/s
+
+        """
         stack_true = 0
         if np.isscalar(D_dispersion):
             D_dispersion = D_dispersion*np.ones(self._n_comp)
@@ -254,6 +255,18 @@ class column:
     def thermal_info(self, dH_adsorption,
                      Cp_solid, Cp_gas, h_heat_transfer,
                      k_conduct = 0.0001, h_heat_ambient = 0.0, T_ambient = 298.15):
+        """
+        Thermal information
+        
+        :param dH_adsorption: Heat of adsorption (J/mol)
+        :param Cp_solid: Solid heat capacity (J/kg K)
+        :param Cp_gas: Gas heat capacity (J/mol K)
+        :param h_heat_transfer: Heat transfer coefficient between solid and gas (J/m^2 K s)
+        :param k_conduct: Conductivity of solid phase in axial direction (W/m K)  
+        :param h_heat_ambient: Heat transfer coefficient between ambient air and outer surface of the column (J/m^2 K s)
+        :param T_ambient: Abient temperature (K)
+
+        """
         stack_true = 0
         n_comp = self._n_comp
         if len(dH_adsorption) != n_comp:
@@ -282,6 +295,19 @@ class column:
     P_inlet,T_inlet,y_inlet, Cv_in=1E-1,Cv_out=1E-3,
       Q_inlet=None, assigned_v_option = True, 
       foward_flow_direction =  True):
+        """
+        Boundary condition information
+        
+        :param P_outlet: Outlet pressure (bar) [scalar]
+        :param P_inlet: Inlet pressure (bar) [scalar]
+        :param T_inlet: Inlet temperature (K) [scalar] 
+        :param y_inlet: Inlet composition (mol/mol) [n_comp array]
+        :param Cv_in: Valve constant of inlet side (m^3/bar s) [scalar]  
+        :param Cv_out: Valve constant of outlet side (mol/bar s) [scalar]
+        :param Q_inlet: Volumetric flow rate (m^3/s)
+        :param assigned_v_option: Assign velocity or not [Boolean]
+        :param foward_flow_direction: Flow direction, if this is 'True' then the flow direction is foward.
+        """
         self._Q_varying = False
         self._required['Flow direction'] = 'Foward'
         if foward_flow_direction == False:
@@ -320,6 +346,16 @@ class column:
             print('The inlet composition should be a list/narray with shape (2, ).')    
  
     def initialC_info(self,P_initial, Tg_initial,Ts_initial, y_initial,q_initial):
+        """
+        Initial condition
+        
+        :param P_initial: Initial pressure (bar) [N array]
+        :param Tg_initial: Initial gas temperature (K) [N array]
+        :param Ts_initial: Initial solid temperature (K) [N array]
+        :param y_initial: Gas phase mol fraction (mol/mol) [n_comp N array]
+        :param q_initial: Solid phase uptake (mol/kg) [n_comp N array]
+
+        """
         stack_true = 0
         if len(P_initial) != self._N:
             print('P_initial should be of shape ({},)'.format(self._N))
@@ -347,6 +383,14 @@ class column:
 
 ## Run mass & momentum balance equations
     def run_mamo(self, t_max, n_sec = 5, CPUtime_print = False):
+        """
+        Run mass & momentum balance equations
+        
+        :param t_max: Maximum time domain value 
+        :param n_sec: Number of time node per second
+        :param CPUtime_print: Print CPU time
+     
+        """
         tic = time.time()/60
         t_max_int = np.int32(np.floor(t_max), )
         self._n_sec = n_sec
@@ -469,6 +513,14 @@ class column:
 ## Run mass & momentum & energy balance equations
 
     def run_mamoen_alt(self, t_max, n_sec = 5, CPUtime_print = False):
+        """
+        Run mass & momentum balance alternative
+        
+        :param t_max: Maximum time domain value 
+        :param n_sec: Number of time node per second
+        :param CPUtime_print: Print CPU time
+     
+        """
         t_max_int = np.int32(np.floor(t_max))
         self._n_sec = n_sec
         n_t = t_max_int*n_sec+ 1
@@ -638,6 +690,15 @@ class column:
 
 
     def run_mamoen(self, t_max, n_sec = 5, CPUtime_print = False):
+        """
+        Run mass & momentum & energy balance 
+        
+        :param t_max: Maximum time domain value 
+        :param n_sec: Number of time node per second
+        :param CPUtime_print: Print CPU time
+     
+        """
+      
         t_max_int = np.int32(np.floor(t_max))
         self._n_sec = n_sec
         n_t = t_max_int*n_sec+ 1
@@ -819,6 +880,13 @@ class column:
 
 ## Functions for after-run processing
     def next_init(self, change_init = True):
+        """
+        Next initalization
+        
+        :param change_init: Replace inital condition with previous result at final time [boolean]
+        :return: Previous result at final time (if this is 'True', initial conditions are repalced automatically)
+        
+        """
         N = self._N
         y_end = self._y[-1,:]
         C = []
@@ -862,6 +930,12 @@ class column:
         return P_init, Tg_init, Ts_init , y_init, q_init
     
     def change_init_node(self, N_new):
+        """
+        Initial node change
+        
+        :param N_new: New number of nodes
+        
+        """
         if self._N == N_new:
             print('No change in # of node.')
             return
@@ -910,6 +984,14 @@ class column:
         self._dd = dd
 
     def Q_valve(self, draw_graph = False, y = None):
+        """
+        Q valve
+        
+        :param draw_graph: Show graph [boolean] 
+        :param y: Simulation result of run_mamo and run_mamoen (if it is 'None', this value is from the simulation result automatically)
+        
+        :returen: Volumetric flow rates at Z = 0 and L [time_node aaaa array]
+        """
         N = self._N
         if self._required['Flow direction'] == 'Backward':
             Cv_0 = self._Cv_out
@@ -957,6 +1039,11 @@ class column:
         return Q_0, Q_L
     
     def breakthrough(self, draw_graph = False):
+        """
+        Breakthrough
+       
+     
+        """
         N = self._N
         n_comp = self._n_comp
         C_end =[]
@@ -994,6 +1081,19 @@ class column:
               loc = [1,1], yaxis_label = None, 
               file_name = None, 
               figsize = [7,5], dpi = 85, y = None,):
+        """
+        Making graph
+        
+        :param every_n_sec: Number of points in graph 
+        :param index: Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration (mol/m^3) / n_comp - 2 n_comp - 1 solid phase uptake (mol/kg) / 2 n_comp gas phase temperature (K) / 2 n_comp + 1 solid phase temeprature 
+        :param loc: Location of legend
+        :param yaxis_label: ylabel of graph
+        :param file_name: File name
+        :param figsize: Figure size (default [7,5])
+        :param dpi: Dot per inch (default 85)       
+        :param y: Gas phase mol fraction (mol/mol) [n_comp N array]
+     
+        """
         N = self._N
         one_sec = self._n_sec
         n_show = one_sec*every_n_sec
@@ -1033,6 +1133,17 @@ class column:
                 yaxis_label = 'Pressure (bar)',
                 file_name = None, 
                 figsize = [7,5], dpi = 85, y = None,):
+        """
+        Making graph of partial pressure
+        
+        :param every_n_sec: Number of points in graph 
+        :param loc: Location of legend
+        :param yaxis_label: ylabel of graph
+        :param file_name: File name
+        :param figsize: Figure size (default [7,5])
+        :param dpi: Dot per inch (default 85)       
+        :param y: Gas phase mol fraction (mol/mol) [n_comp N array]
+        """
         N = self._N
         one_sec = self._n_sec
         n_show = one_sec*every_n_sec
@@ -1066,6 +1177,9 @@ class column:
         return fig, ax    
     ## Copy the         
     def copy(self):
+        """
+        Copy
+        """
         import copy
         self_new = copy.deepcopy(self)
         return self_new
@@ -1075,6 +1189,9 @@ class column:
 
 def step_P_eq_alt1(column1, column2, t_max,
 n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
+    """
+ 
+    """
     tic = time.time() / 60 # in minute
     P_sum1 = np.mean(column1._P_init)
     P_sum2 = np.mean(column2._P_init)
@@ -1509,6 +1626,9 @@ n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
 
 def step_P_eq_alt2(column1, column2, t_max,
 n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
+    """
+
+    """
     tic = time.time() / 60 # in minute
     P_sum1 = np.mean(column1._P_init)
     P_sum2 = np.mean(column2._P_init)
@@ -1836,6 +1956,9 @@ n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
 
 def step_P_eq(column1, column2, t_max,
 n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
+    """
+        
+    """
     tic = time.time() / 60 # in minute
     P_sum1 = np.mean(column1._P_init)
     P_sum2 = np.mean(column2._P_init)
@@ -2190,17 +2313,8 @@ if __name__ == '__main__':
     A_cros = 0.031416
     L = 1
     c1 = column(L,A_cros, n_component = 2,N_node = N)
-    '''
-    dP = np.linspace(-100, 100)
-    M_m_test  = [0.044, 0.028]      ## molar mass    (kg/mol)
-    mu_test = [1.47E-5, 1.74E-5]    ## gas viscosity (Pa sec)
-    D_particle_dia = 0.01   # particle diameter (m)
-    epsi_test = 0.4         # macroscopic void fraction (m^3/m^3)
-    v_test = Ergun_test(dP,M_m_test[0],mu_test[0],D_particle_dia,epsi_test)
-    plt.plot(dP,v_test)
-    plt.grid()
-    plt.show()
-    '''
+    """
+    """
     ## Adsorbent
     isopar1 = [3.0, 1]
     isopar2 = [1.0, 0.5]
@@ -2289,6 +2403,5 @@ if __name__ == '__main__':
     c2.Graph(10,3, loc = Legend_loc)
     plt.show( )
     
-# %%
+####
 
-# %%
