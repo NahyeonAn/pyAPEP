@@ -9,14 +9,14 @@ First, import simsep into Python after installation.
    import pyAPEP.simsep as simsep
 
 Then users need to 10-steps to simulate.
-    1. Extended Langmuir isotherm
-    2. Ideal column definition
+    1. Isotherm selection
+    2. Column design
     3. Adsorbent information
     4. Gas property information 
     5. Mass transfer information
     6. Thermal information 
     7. Boundary condition setting
-    8. Initial condition setting
+    8. Initial condition setting 
     9. Simulation run
     10. Graph
 
@@ -24,12 +24,13 @@ In next section, detailed steps are explained.
 
 ------------------------------------------------------
 
-
 Usage
----------
+-------
 
-1. Extended Langmuir isotherm
+1. Isotherm selection
 ''''''''''''''''''''''''''''''''''''''''''''''
+
+Here, we use extended Langmuir isotherm as an example.
 
 .. math::
 
@@ -51,7 +52,7 @@ Then, define some parameters of the extended Langmuir isotherm.
     b1 = 0.5
     b2 = 0.05
 
-The extended Langmuir isotherm is defined as follows.
+The isotherm is defined as follows.
     
 .. code-block:: python
 
@@ -63,12 +64,12 @@ The extended Langmuir isotherm is defined as follows.
         q2 = qm2*b2*P2 / deno
         return q1, q2
 
-2. Ideal column definition
+2. Column design
 ''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
-    col_len         = 1                                          # Length of the column (m)
+    col_len         = 1                                          # Length of the bed (m)
     cross_sect_area = 0.0314                                     # Cross sectional area (m^2)
     num_comp        = 2                                          # The number of components
     Column1 = simsep.column(col_len, cross_sect_area, num_comp)  # Ideal column definition                               
@@ -117,7 +118,7 @@ The extended Langmuir isotherm is defined as follows.
     h_heat = 10             # Heat transfer coefficient between solid and gas (J/m^2 K s)
     
     Column1.thermal_info(dH_ads, Cp_s, Cp_g, h_heat) # Mass transfer information
-    print(Column1)                       # Check
+    print(Column1)                                   # Check
 
 7. Boundary condition setting 
 ''''''''''''''''''''''''''''''''''''''''''''''
@@ -148,13 +149,12 @@ The extended Langmuir isotherm is defined as follows.
     Column1.initialC_info(P_init, Tg_init, Ts_init, y_init, q_init) # Initial condition
     print(Column1)                                                  # Check
 
-
 9. Simulation run
 ''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
-    y,z, t = Column1.run_mamoen(2000, n_sec=10, CPUtime_print=True)
+    y, z, t = Column1.run_mamoen(2000, n_sec=10, CPUtime_print=True)
     
 10. Graph
 ''''''''''''''''''''''''''''''''''''''''''''''
@@ -167,24 +167,24 @@ The extended Langmuir isotherm is defined as follows.
 
 The results are shown in Fig. 1,2, and 3.
 
-.. image:: images/simsep_graph_1.png
-  :width: 400
-  :alt: simsep graph 1
-  :align: center
+.. figure:: images/simsep_graph_1.png
+   :alt: simsep graph 1
+   :figwidth: 60%
+   :align: center
 
    Fig. 1. Simsep graph 1
    
-.. image:: images/simsep_graph_1.png
-  :width: 400
-  :alt: simsep graph 2
-  :align: center
+.. figure:: images/simsep_graph_1.png
+   :alt: simsep graph 2
+   :figwidth: 60%
+   :align: center
 
    Fig. 2. Simsep graph 2
 
-.. image:: images/simsep_graph_3.png
-  :width: 400
-  :alt: simsep graph 3
-  :align: center
+.. figure:: images/simsep_graph_3.png
+   :alt: simsep graph 3
+   :figwidth: 60%
+   :align: center
 
    Fig. 3. Simsep graph 3
    
@@ -201,6 +201,8 @@ Class documentation
 
 Theory
 -------
+
+Mass balance
 
 `Ergun equation <http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf>`_ 
 

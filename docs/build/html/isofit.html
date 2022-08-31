@@ -214,14 +214,13 @@ The explanation include function usage, algorithm (or related theroy), and funct
 <li><p><strong>P</strong> – Partial pressure list</p></li>
 <li><p><strong>q</strong> – Acutal or simulated uptake list of given P</p></li>
 <li><p><strong>iso_par_nums</strong> – The number of parameters to isotherm fitting (dtype : list)</p></li>
-<li><p><strong>iso_fun_lists</strong> – Isotherm candidates</p></li>
-<li><p><strong>iso_fun_index</strong> – <p>?</p>
-</p></li>
+<li><p><strong>iso_fun_lists</strong> – Isotherm function candidates</p></li>
+<li><p><strong>iso_fun_index</strong> – Each name for iso_fun_lists</p></li>
 <li><p><strong>tol</strong> – Tolerance</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>best_isotherm, parameters, fn_type, val_err</p>
+<dd class="field-even"><p>best_isotherm, parameters, best_function_name, val_err</p>
 </dd>
 </dl>
 </dd></dl>
@@ -238,9 +237,8 @@ The explanation include function usage, algorithm (or related theroy), and funct
 <li><p><strong>T_list</strong> – Temperature list</p></li>
 <li><p><strong>i_ref</strong> – Reference temperature index in T_list</p></li>
 <li><p><strong>iso_par_nums</strong> – The number of parameters to isotherm fitting</p></li>
-<li><p><strong>iso_fun_lists</strong> – Isotherm candidates list</p></li>
-<li><p><strong>iso_fun_index</strong> – <p>?</p>
-</p></li>
+<li><p><strong>iso_fun_lists</strong> – Isotherm function candidates</p></li>
+<li><p><strong>iso_fun_index</strong> – Each name for iso_fun_lists</p></li>
 <li><p><strong>tol</strong> – Tolerance</p></li>
 </ul>
 </dd>
@@ -260,9 +258,8 @@ The explanation include function usage, algorithm (or related theroy), and funct
 <li><p><strong>isotherm_list</strong> – Pure isotherm function list of each components</p></li>
 <li><p><strong>P_i</strong> – Partial pressure list of each components</p></li>
 <li><p><strong>T</strong> – Temperature</p></li>
-<li><p><strong>Lamb</strong> – Lambda matrix?</p></li>
-<li><p><strong>C</strong> – <p>?</p>
-</p></li>
+<li><p><strong>Lamb</strong> – Lambda matrix</p></li>
+<li><p><strong>C</strong> – constant C for equation ?</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

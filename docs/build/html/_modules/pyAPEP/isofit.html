@@ -25,8 +25,9 @@
   <div class="wy-grid-for-nav">
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> pyAPEP
+        <div class="wy-side-nav-search"  style="background: #BED2E0" >
+            <a href="../../index.html">
+            <img src="../../_static/pyAPEP.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -49,7 +50,7 @@
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #BED2E0" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../../index.html">pyAPEP</a>
       </nav>
@@ -204,11 +205,11 @@
 <span class="sd">    :param P: Partial pressure list</span>
 <span class="sd">    :param q: Acutal or simulated uptake list of given P</span>
 <span class="sd">    :param iso_par_nums: The number of parameters to isotherm fitting (dtype : list)</span>
-<span class="sd">    :param iso_fun_lists: Isotherm candidates</span>
-<span class="sd">    :param iso_fun_index: ?</span>
+<span class="sd">    :param iso_fun_lists: Isotherm function candidates</span>
+<span class="sd">    :param iso_fun_index: Each name for iso_fun_lists</span>
 <span class="sd">    :param tol: Tolerance</span>
 <span class="sd">    </span>
-<span class="sd">    :return: best_isotherm, parameters, fn_type, val_err</span>
+<span class="sd">    :return: best_isotherm, parameters, best_function_name, val_err</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="n">iso_fun_lists</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -279,8 +280,8 @@
 <span class="sd">    :param T_list: Temperature list</span>
 <span class="sd">    :param i_ref: Reference temperature index in T_list</span>
 <span class="sd">    :param iso_par_nums: The number of parameters to isotherm fitting</span>
-<span class="sd">    :param iso_fun_lists: Isotherm candidates list</span>
-<span class="sd">    :param iso_fun_index: ?</span>
+<span class="sd">    :param iso_fun_lists: Isotherm function candidates</span>
+<span class="sd">    :param iso_fun_index: Each name for iso_fun_lists</span>
 <span class="sd">    :param tol: Tolerance</span>
 <span class="sd">    </span>
 <span class="sd">    :return: var_return (iso_all, iso_params, str_best, err_fit_all, dH, T_ref, theta_list)</span>
@@ -392,8 +393,8 @@
 <span class="sd">    :param isotherm_list: Pure isotherm function list of each components</span>
 <span class="sd">    :param P_i: Partial pressure list of each components</span>
 <span class="sd">    :param T: Temperature</span>
-<span class="sd">    :param Lamb: Lambda matrix?</span>
-<span class="sd">    :param C: ?</span>
+<span class="sd">    :param Lamb: Lambda matrix</span>
+<span class="sd">    :param C: constant C for equation ?</span>
 <span class="sd">    </span>
 <span class="sd">    :return: q_return</span>
 <span class="sd">    &quot;&quot;&quot;</span>
