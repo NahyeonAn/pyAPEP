@@ -48,16 +48,20 @@
 <li class="toctree-l2"><a class="reference internal" href="isofit.html">Isotherm fitting module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simide.html">Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Real PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code>)</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#mixture-isotherm-function-definition">1. Mixture isotherm function definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#ideal-column-definition">2. Ideal column definition</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#feed-condition-setting">3. Feed condition setting</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#operating-condition-setting">4. Operating condition setting</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#simulation-run">5. Simulation run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extended-langmuir-isotherm">1. Extended Langmuir isotherm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ideal-column-definition">2. Ideal column definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adsorbent-information">3. Adsorbent information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#gas-property-information">4. Gas property information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mass-transfer-information">5. Mass transfer information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#thermal-information">6. Thermal information</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#boundary-condition-setting">7. Boundary condition setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initial-condition-setting">8. Initial condition setting</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#simulation-run">9. Simulation run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graph">10. Graph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-pyAPEP.simsep">Class documentation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#theory">Theory</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simsep">Class documentation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
 </ul>
 </li>
 </ul>
@@ -95,72 +99,148 @@
   <section id="real-psa-simulation-module-pyapep-simsep">
 <h1>Real PSA simulation module (<a class="reference internal" href="#module-pyAPEP.simsep" title="pyAPEP.simsep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code></a>)<a class="headerlink" href="#real-psa-simulation-module-pyapep-simsep" title="Permalink to this heading"></a></h1>
 <p>This module enables ideal PSA simulation using isotherm function and operating conditions.</p>
-<p>First, import simide into Python after installation.</p>
+<p>First, import simsep into Python after installation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyAPEP.simsep</span> <span class="k">as</span> <span class="nn">simsep</span>
 </pre></div>
 </div>
 <dl class="simple">
-<dt>Then users need to 5-steps to simulate.</dt><dd><ol class="arabic simple">
-<li><p>Mixture isotherm function definition</p></li>
-<li><p>Real column definition</p></li>
-<li><p>Feed condition setting</p></li>
-<li><p>Operating condition setting</p></li>
+<dt>Then users need to 10-steps to simulate.</dt><dd><ol class="arabic simple">
+<li><p>Extended Langmuir isotherm</p></li>
+<li><p>Ideal column definition</p></li>
+<li><p>Adsorbent information</p></li>
+<li><p>Gas property information</p></li>
+<li><p>Mass transfer information</p></li>
+<li><p>Thermal information</p></li>
+<li><p>Boundary condition setting</p></li>
+<li><p>Initial condition setting</p></li>
 <li><p>Simulation run</p></li>
+<li><p>Graph</p></li>
 </ol>
 </dd>
 </dl>
 <p>In next section, detailed steps are explained.</p>
-<hr class="docutils" />
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
-<section id="mixture-isotherm-function-definition">
-<h3>1. Mixture isotherm function definition<a class="headerlink" href="#mixture-isotherm-function-definition" title="Permalink to this heading"></a></h3>
-<p>Here, we define the mixture isotherm function with <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
-<span class="c1"># iso1 and iso2 == Pure isotherm function of each componet.</span>
+<section id="extended-langmuir-isotherm">
+<h2>1. Extended Langmuir isotherm<a class="headerlink" href="#extended-langmuir-isotherm" title="Permalink to this heading"></a></h2>
+<div class="math notranslate nohighlight">
+\[q_{i} = \frac{q_{m,i}b_{i}P_{i}}{1+\sum^{n}_{j=1}b_{j}P_{j}}\]</div>
+<p>First, we need to import some libraries.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+<p>Then, define some parameters of the extended Langmuir isotherm.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">qm1</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">qm2</span> <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">b1</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">b2</span> <span class="o">=</span> <span class="mf">0.05</span>
+</pre></div>
+</div>
+<p>The extended Langmuir isotherm is defined as follows.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extLang</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="n">P1</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">P2</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">P1</span> <span class="o">+</span> <span class="n">b2</span><span class="o">*</span><span class="n">P2</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">qm1</span><span class="o">*</span><span class="n">b1</span><span class="o">*</span><span class="n">P1</span> <span class="o">/</span> <span class="n">deno</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="n">qm2</span><span class="o">*</span><span class="n">b2</span><span class="o">*</span><span class="n">P2</span> <span class="o">/</span> <span class="n">deno</span>
+    <span class="k">return</span> <span class="n">q1</span><span class="p">,</span> <span class="n">q2</span>
 </pre></div>
 </div>
 </section>
 <section id="ideal-column-definition">
-<h3>2. Ideal column definition<a class="headerlink" href="#ideal-column-definition" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_comp</span> <span class="o">=</span> <span class="mi">2</span>                                       <span class="c1"># The number of components</span>
-<span class="n">Column1</span> <span class="o">=</span> <span class="n">simi</span><span class="o">.</span><span class="n">IdealColumn</span><span class="p">(</span><span class="n">num_comp</span><span class="p">,</span> <span class="n">iso_mix</span><span class="p">,</span> <span class="p">)</span>    <span class="c1"># Ideal column definition</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                     <span class="c1"># Chek input condition</span>
+<h2>2. Ideal column definition<a class="headerlink" href="#ideal-column-definition" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">col_len</span>         <span class="o">=</span> <span class="mi">1</span>                                          <span class="c1"># Length of the column (m)</span>
+<span class="n">cross_sect_area</span> <span class="o">=</span> <span class="mf">0.0314</span>                                     <span class="c1"># Cross sectional area (m^2)</span>
+<span class="n">num_comp</span>        <span class="o">=</span> <span class="mi">2</span>                                          <span class="c1"># The number of components</span>
+<span class="n">Column1</span> <span class="o">=</span> <span class="n">simsep</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col_len</span><span class="p">,</span> <span class="n">cross_sect_area</span><span class="p">,</span> <span class="n">num_comp</span><span class="p">)</span>  <span class="c1"># Ideal column definition</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                               <span class="c1"># Check</span>
 </pre></div>
 </div>
 </section>
-<section id="feed-condition-setting">
-<h3>3. Feed condition setting<a class="headerlink" href="#feed-condition-setting" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_feed</span> <span class="o">=</span> <span class="mi">8</span>                              <span class="c1"># Feed presure (bar)</span>
-<span class="n">T_feed</span> <span class="o">=</span> <span class="mi">300</span>                            <span class="c1"># Feed temperature (K)</span>
-<span class="n">y_feed</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="o">/</span><span class="mi">4</span><span class="p">]</span>                     <span class="c1"># Feed mole fraction (mol/mol)</span>
-
-<span class="n">Column1</span><span class="o">.</span><span class="n">feedcond</span><span class="p">(</span><span class="n">P_feed</span><span class="p">,</span> <span class="n">T_feed</span><span class="p">,</span> <span class="n">y_feed</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>
+<section id="adsorbent-information">
+<h2>3. Adsorbent information<a class="headerlink" href="#adsorbent-information" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">voidfrac</span> <span class="o">=</span> <span class="mf">0.4</span>                                          <span class="c1"># Void fraction</span>
+<span class="n">rho</span>      <span class="o">=</span> <span class="mi">1100</span>                                         <span class="c1"># Solid density (kg/m^2)</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">adsorbent_info</span><span class="p">(</span><span class="n">extLang</span><span class="p">,</span> <span class="n">voidfrac</span><span class="p">,</span> <span class="n">rho_s</span> <span class="o">=</span> <span class="n">rho</span><span class="p">)</span>  <span class="c1"># Adsorbent information</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                          <span class="c1"># Check</span>
 </pre></div>
 </div>
 </section>
-<section id="operating-condition-setting">
-<h3>4. Operating condition setting<a class="headerlink" href="#operating-condition-setting" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_high</span> <span class="o">=</span> <span class="mi">8</span>                          <span class="c1"># High pressure (bar)</span>
-<span class="n">P_low</span>  <span class="o">=</span> <span class="mi">1</span>                          <span class="c1"># Low pressure (bar)</span>
+<section id="gas-property-information">
+<h2>4. Gas property information<a class="headerlink" href="#gas-property-information" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Mmol</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.032</span><span class="p">,</span> <span class="mf">0.044</span><span class="p">]</span>   <span class="c1"># Molecular weights of gases (kg/mol)</span>
+<span class="n">visc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">]</span>     <span class="c1"># Viscosities of gases (Pa sec)</span>
 
-<span class="n">Column1</span><span class="o">.</span><span class="n">opercond</span><span class="p">(</span><span class="n">P_high</span><span class="p">,</span> <span class="n">P_low</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">gas_prop_info</span><span class="p">(</span><span class="n">Mmol</span><span class="p">,</span> <span class="n">visc</span><span class="p">)</span> <span class="c1"># Gas property information</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                    <span class="c1"># Check</span>
+</pre></div>
+</div>
+</section>
+<section id="mass-transfer-information">
+<h2>5. Mass transfer information<a class="headerlink" href="#mass-transfer-information" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">MTC</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">]</span>      <span class="c1"># Mass transfer coefficients</span>
+<span class="n">a_surf</span> <span class="o">=</span> <span class="mi">400</span>            <span class="c1"># Volumatric specific surface area (m2/m3)</span>
+
+<span class="n">Column1</span><span class="o">.</span><span class="n">mass_trans_info</span><span class="p">(</span><span class="n">MTC</span><span class="p">,</span> <span class="n">a_surf</span><span class="p">)</span> <span class="c1"># Mass transfer information</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                       <span class="c1"># Check</span>
+</pre></div>
+</div>
+</section>
+<section id="thermal-information">
+<h2>6. Thermal information<a class="headerlink" href="#thermal-information" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dH_ads</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1000</span><span class="p">]</span>    <span class="c1"># Heat of adsorption (J/mol)</span>
+<span class="n">Cp_s</span> <span class="o">=</span> <span class="mi">5</span>                <span class="c1"># Solid heat capacity (J/kg K)</span>
+<span class="n">Cp_g</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>          <span class="c1"># Gas heat capacity (J/mol K)</span>
+<span class="n">h_heat</span> <span class="o">=</span> <span class="mi">10</span>             <span class="c1"># Heat transfer coefficient between solid and gas (J/m^2 K s)</span>
+
+<span class="n">Column1</span><span class="o">.</span><span class="n">thermal_info</span><span class="p">(</span><span class="n">dH_ads</span><span class="p">,</span> <span class="n">Cp_s</span><span class="p">,</span> <span class="n">Cp_g</span><span class="p">,</span> <span class="n">h_heat</span><span class="p">)</span> <span class="c1"># Mass transfer information</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                       <span class="c1"># Check</span>
+</pre></div>
+</div>
+</section>
+<section id="boundary-condition-setting">
+<h2>7. Boundary condition setting<a class="headerlink" href="#boundary-condition-setting" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_inlet</span>  <span class="o">=</span> <span class="mi">9</span>              <span class="c1"># Inlet pressure  (bar)</span>
+<span class="n">P_outlet</span> <span class="o">=</span> <span class="mf">8.0</span>            <span class="c1"># Outlet pressure (bar)</span>
+<span class="n">T_feed</span>   <span class="o">=</span> <span class="mi">300</span>            <span class="c1"># Feed in temperature (K)</span>
+<span class="n">y_feed</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span><span class="p">,</span><span class="mf">0.5</span><span class="p">]</span>        <span class="c1"># Feed composition (mol/mol)</span>
+
+<span class="n">Column1</span><span class="o">.</span><span class="n">boundaryC_info</span><span class="p">(</span><span class="n">P_outlet</span><span class="p">,</span> <span class="n">P_inlet</span><span class="p">,</span> <span class="n">T_feed</span><span class="p">,</span> <span class="n">y_feed</span><span class="p">)</span> <span class="c1"># Boundary condition</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                            <span class="c1"># Check</span>
+</pre></div>
+</div>
+</section>
+<section id="initial-condition-setting">
+<h2>8. Initial condition setting<a class="headerlink" href="#initial-condition-setting" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_init</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>                       <span class="c1"># Initial pressure (bar)</span>
+<span class="n">y_init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>  <span class="c1"># Gas phase mol fraction (mol/mol)</span>
+<span class="n">Tg_init</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>                    <span class="c1"># Initial gas temperature (K)</span>
+<span class="n">Ts_init</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>                    <span class="c1"># Initial solid temperature (K)</span>
+
+<span class="n">P_partial</span> <span class="o">=</span> <span class="p">[</span><span class="n">P_init</span><span class="o">*</span><span class="n">y_init</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">P_init</span><span class="o">*</span><span class="n">y_init</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="c1"># Partial pressure (bar)</span>
+<span class="n">q_init</span> <span class="o">=</span> <span class="n">extLang</span><span class="p">(</span><span class="n">P_partial</span><span class="p">,</span> <span class="n">Ts_init</span><span class="p">)</span>             <span class="c1"># Solid phase uptake (mol/kg)</span>
+
+<span class="n">Column1</span><span class="o">.</span><span class="n">initialC_info</span><span class="p">(</span><span class="n">P_init</span><span class="p">,</span> <span class="n">Tg_init</span><span class="p">,</span> <span class="n">Ts_init</span><span class="p">,</span> <span class="n">y_init</span><span class="p">,</span> <span class="n">q_init</span><span class="p">)</span> <span class="c1"># Initial condition</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                                  <span class="c1"># Check</span>
 </pre></div>
 </div>
 </section>
 <section id="simulation-run">
-<h3>5. Simulation run<a class="headerlink" href="#simulation-run" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_ext</span> <span class="o">=</span> <span class="n">Column1</span><span class="o">.</span><span class="n">runideal</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x_ext</span><span class="p">)</span>                        <span class="c1">#return tail gas composition of each gas</span>
+<h2>9. Simulation run<a class="headerlink" href="#simulation-run" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Column1</span><span class="o">.</span><span class="n">run_mamoen</span><span class="p">(</span><span class="mi">2000</span><span class="p">,</span> <span class="n">n_sec</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">CPUtime_print</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
-</section>
+<section id="graph">
+<h2>10. Graph<a class="headerlink" href="#graph" title="Permalink to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Column1</span><span class="o">.</span><span class="n">Graph_P</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>                                                                            <span class="c1"># Graph 1</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span><span class="s1">&#39;Gas Concentration (mol/m$^3$)&#39;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>           <span class="c1"># Graph 2</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span><span class="s1">&#39;Soild concentration (uptake) (mol/kg)&#39;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>   <span class="c1"># Graph 3</span>
+</pre></div>
+</div>
+<p>The results are shown in Fig. 1,2, and 3.</p>
 <hr class="docutils" />
 <section id="module-pyAPEP.simsep">
-<span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-pyAPEP.simsep" title="Permalink to this heading"></a></h2>
+<span id="class-documentation"></span><h3>Class documentation<a class="headerlink" href="#module-pyAPEP.simsep" title="Permalink to this heading"></a></h3>
 <p>simsep - Python module for real PSA simulation.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column">
@@ -225,8 +305,8 @@ will saturate at higher pressures.</p></li>
 </section>
 <hr class="docutils" />
 <section id="theory">
-<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p><a class="reference external" href="http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf">Ergun</a> equation</p>
+<h3>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h3>
+<p><a class="reference external" href="http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf">Ergun equation</a></p>
 <p>The Ergun equation, shown below, is used to describe the flow.</p>
 <div class="math notranslate nohighlight">
 \[\frac{\vartriangle P}{L} = \frac{180 \mu }{d_{p}^2 } \frac{(1 - \epsilon)^2}{\epsilon^3} u + \frac{7}{4} \frac{\rho_{f}}{d_{P}} \frac{1 - \epsilon}{\epsilon^3} u^2\]</div>
@@ -245,6 +325,7 @@ will saturate at higher pressures.</p></li>
 <p>The Ergun equation represents the relationship between pressure drop and resultant fluid flow in packed beds.
 The equation was developed by Sabri Ergun and he derived it from experimental measurments and theoretical postulates.</p>
 <hr class="docutils" />
+</section>
 </section>
 </section>
 
