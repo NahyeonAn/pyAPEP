@@ -24,8 +24,9 @@ In next section, detailed steps are explained.
 
 ------------------------------------------------------
 
+
 Usage
--------
+---------
 
 1. Extended Langmuir isotherm
 ''''''''''''''''''''''''''''''''''''''''''''''
