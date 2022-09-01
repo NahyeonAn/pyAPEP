@@ -174,7 +174,7 @@ The results are shown in Fig. 1,2, and 3.
 
    Fig. 1. Simsep graph 1
    
-.. figure:: images/simsep_graph_1.png
+.. figure:: images/simsep_graph_2.png
    :alt: simsep graph 2
    :figwidth: 60%
    :align: center
@@ -202,7 +202,26 @@ Class documentation
 Theory
 -------
 
-Mass balance
+`Mass balance <https://doi.org/10.1016/j.compchemeng.2016.11.021>`_ 
+
+The mass balance relationship, shown below, is used to describe the pressure swing adsorption process.
+
+.. math::
+
+    \int_0^{t_{sat}}y_{flue} \dot n_{inject}\, dt = (\bar q_{sat,1} - \bar q_{des,1})\rho_{s}(1 - \epsilon)V
+
+where
+
+    * :math:`t_{sat} =` Time
+    * :math:`y_{flue} =` Mole fraction
+    * :math:`\dot n_{inject} =` ???
+    * :math:`\bar q_{sat,1} =` Average loading during saturation period
+    * :math:`\bar q_{des,1} =` Average loading during desaturation period
+    * :math:`\rho_{s} =` Adsorbent density 
+    * :math:`\epsilon =` Porosity of adsorbent
+    * :math:`V =` Volume of the column
+    
+Note that the properties of the flue gas stream such as its composition and temperature are assumed to be constant.
 
 `Ergun equation <http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf>`_ 
 
