@@ -195,6 +195,7 @@ Class documentation
 .. automodule:: pyAPEP.simsep
     :special-members:
     :members:
+    :member-order: bysource
 
 
 ---------------------------------
