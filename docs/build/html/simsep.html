@@ -292,70 +292,14 @@ Functions Functions Functions Functions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>L</strong> – Length of column</p></li>
-<li><p><strong>A_cross</strong> – Cross-sectional area of column</p></li>
+<li><p><strong>L</strong> – Length of column <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><strong>A_cross</strong> – Cross-sectional area of column <span class="math notranslate nohighlight">\((m^2)\)</span></p></li>
 <li><p><strong>n_component</strong> – Number of components</p></li>
 <li><p><strong>N_node</strong> – Number of nodes</p></li>
 <li><p><strong>E_balance</strong> – Energy balance inclusion (default = True)</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.Graph">
-<span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">every_n_sec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[7,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.Graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.Graph" title="Permalink to this definition"></a></dt>
-<dd><p>Making graph</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>every_n_sec</strong> – Number of points in graph</p></li>
-<li><p><strong>index</strong> – Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration (mol/m^3) / n_comp - 2 n_comp - 1 solid phase uptake (mol/kg) / 2 n_comp gas phase temperature (K) / 2 n_comp + 1 solid phase temeprature</p></li>
-<li><p><strong>loc</strong> – Location of legend</p></li>
-<li><p><strong>yaxis_label</strong> – ylabel of graph</p></li>
-<li><p><strong>file_name</strong> – File name</p></li>
-<li><p><strong>figsize</strong> – Figure size (default [7,5])</p></li>
-<li><p><strong>dpi</strong> – Dot per inch (default 85)</p></li>
-<li><p><strong>y</strong> – Gas phase mol fraction (mol/mol) [n_comp N array]</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.Graph_P">
-<span class="sig-name descname"><span class="pre">Graph_P</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">every_n_sec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pressure</span> <span class="pre">(bar)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[7,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.Graph_P"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.Graph_P" title="Permalink to this definition"></a></dt>
-<dd><p>Making graph of partial pressure</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>every_n_sec</strong> – Number of points in graph</p></li>
-<li><p><strong>loc</strong> – Location of legend</p></li>
-<li><p><strong>yaxis_label</strong> – ylabel of graph</p></li>
-<li><p><strong>file_name</strong> – File name</p></li>
-<li><p><strong>figsize</strong> – Figure size (default [7,5])</p></li>
-<li><p><strong>dpi</strong> – Dot per inch (default 85)</p></li>
-<li><p><strong>y</strong> – Gas phase mol fraction (mol/mol) [n_comp N array]</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.Q_valve">
-<span class="sig-name descname"><span class="pre">Q_valve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.Q_valve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.Q_valve" title="Permalink to this definition"></a></dt>
-<dd><p>Q valve</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>draw_graph</strong> – Show graph [boolean]</p></li>
-<li><p><strong>y</strong> – Simulation result of run_mamo and run_mamoen (if it is ‘None’, this value is from the simulation result automatically)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returen<span class="colon">:</span></dt>
-<dd class="field-even"><p>Volumetric flow rates at Z = 0 and L [time_node aaaa array]</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.__init__" title="Permalink to this definition"></a></dt>
@@ -367,12 +311,6 @@ Functions Functions Functions Functions</p>
 <dd><p>Return str(self).</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.__weakref__">
-<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pyAPEP.simsep.column.__weakref__" title="Permalink to this definition"></a></dt>
-<dd><p>list of weak references to the object (if defined)</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column.adsorbent_info">
 <span class="sig-name descname"><span class="pre">adsorbent_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">D_particle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rho_s</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_test_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[0,</span> <span class="pre">10]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_test_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[273,</span> <span class="pre">373]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.adsorbent_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.adsorbent_info" title="Permalink to this definition"></a></dt>
@@ -382,57 +320,13 @@ Functions Functions Functions Functions</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>iso_fn</strong> – Isothem function (Type: n_comp.N array, N array [pressure, temperature])</p></li>
 <li><p><strong>epsi</strong> – Void fraction</p></li>
-<li><p><strong>D_particle</strong> – Particle diameter</p></li>
-<li><p><strong>rho_s</strong> – Solid density</p></li>
-<li><p><strong>P_test_range</strong> – Range of pressure for test</p></li>
-<li><p><strong>T_test_range</strong> – Range of temperature for test</p></li>
+<li><p><strong>D_particle</strong> – Particle diameter <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><strong>rho_s</strong> – Solid density <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
+<li><p><strong>P_test_range</strong> – Range of pressure for test <span class="math notranslate nohighlight">\((bar)\)</span></p></li>
+<li><p><strong>T_test_range</strong> – Range of temperature for test <span class="math notranslate nohighlight">\((K)\)</span></p></li>
 </ul>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.boundaryC_info">
-<span class="sig-name descname"><span class="pre">boundaryC_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_outlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_inlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_inlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_inlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_inlet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assigned_v_option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">foward_flow_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.boundaryC_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.boundaryC_info" title="Permalink to this definition"></a></dt>
-<dd><p>Boundary condition information</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>P_outlet</strong> – Outlet pressure (bar) [scalar]</p></li>
-<li><p><strong>P_inlet</strong> – Inlet pressure (bar) [scalar]</p></li>
-<li><p><strong>T_inlet</strong> – Inlet temperature (K) [scalar]</p></li>
-<li><p><strong>y_inlet</strong> – Inlet composition (mol/mol) [n_comp array]</p></li>
-<li><p><strong>Cv_in</strong> – Valve constant of inlet side (m^3/bar s) [scalar]</p></li>
-<li><p><strong>Cv_out</strong> – Valve constant of outlet side (mol/bar s) [scalar]</p></li>
-<li><p><strong>Q_inlet</strong> – Volumetric flow rate (m^3/s)</p></li>
-<li><p><strong>assigned_v_option</strong> – Assign velocity or not [Boolean]</p></li>
-<li><p><strong>foward_flow_direction</strong> – Flow direction, if this is ‘True’ then the flow direction is foward.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.breakthrough">
-<span class="sig-name descname"><span class="pre">breakthrough</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.breakthrough"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.breakthrough" title="Permalink to this definition"></a></dt>
-<dd><p>Breakthrough</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.change_init_node">
-<span class="sig-name descname"><span class="pre">change_init_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N_new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.change_init_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.change_init_node" title="Permalink to this definition"></a></dt>
-<dd><p>Initial node change</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>N_new</strong> – New number of nodes</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.copy" title="Permalink to this definition"></a></dt>
-<dd><p>Copy</p>
 </dd></dl>
 
 <dl class="py method">
@@ -442,25 +336,8 @@ Functions Functions Functions Functions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>Mass_molar</strong> – Molar mass</p></li>
-<li><p><strong>mu_viscosity</strong> – Viscosity</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.initialC_info">
-<span class="sig-name descname"><span class="pre">initialC_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tg_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ts_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_initial</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.initialC_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.initialC_info" title="Permalink to this definition"></a></dt>
-<dd><p>Initial condition</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>P_initial</strong> – Initial pressure (bar) [N array]</p></li>
-<li><p><strong>Tg_initial</strong> – Initial gas temperature (K) [N array]</p></li>
-<li><p><strong>Ts_initial</strong> – Initial solid temperature (K) [N array]</p></li>
-<li><p><strong>y_initial</strong> – Gas phase mol fraction (mol/mol) [n_comp N array]</p></li>
-<li><p><strong>q_initial</strong> – Solid phase uptake (mol/kg) [n_comp N array]</p></li>
+<li><p><strong>Mass_molar</strong> – Molar mass <span class="math notranslate nohighlight">\((mol/kg)\)</span></p></li>
+<li><p><strong>mu_viscosity</strong> – Viscosity <span class="math notranslate nohighlight">\((Pa \cdot s)\)</span></p></li>
 </ul>
 </dd>
 </dl>
@@ -473,24 +350,67 @@ Functions Functions Functions Functions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>k_mass_transfer</strong> – mass transfer coefficient s^-1</p></li>
-<li><p><strong>a_specific_surf</strong> – specific surface area m^2/m^3</p></li>
-<li><p><strong>D_dispersion</strong> – dispersion coefficient m^2/s</p></li>
+<li><p><strong>k_mass_transfer</strong> – mass transfer coefficient <span class="math notranslate nohighlight">\((s^-1)\)</span></p></li>
+<li><p><strong>a_specific_surf</strong> – specific surface area <span class="math notranslate nohighlight">\((m^2/m^3)\)</span></p></li>
+<li><p><strong>D_dispersion</strong> – dispersion coefficient <span class="math notranslate nohighlight">\((m^2/s)\)</span></p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.next_init">
-<span class="sig-name descname"><span class="pre">next_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.next_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.next_init" title="Permalink to this definition"></a></dt>
-<dd><p>Next initalization</p>
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.thermal_info">
+<span class="sig-name descname"><span class="pre">thermal_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dH_adsorption</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cp_solid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cp_gas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_heat_transfer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_conduct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_heat_ambient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_ambient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">298.15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.thermal_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.thermal_info" title="Permalink to this definition"></a></dt>
+<dd><p>Thermal information</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>change_init</strong> – Replace inital condition with previous result at final time [boolean]</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dH_adsorption</strong> – Heat of adsorption <span class="math notranslate nohighlight">\((J/mol)\)</span></p></li>
+<li><p><strong>Cp_solid</strong> – Solid heat capacity <span class="math notranslate nohighlight">\((J/kg \cdot K)\)</span></p></li>
+<li><p><strong>Cp_gas</strong> – Gas heat capacity <span class="math notranslate nohighlight">\((J/mol \cdot K)\)</span></p></li>
+<li><p><strong>h_heat_transfer</strong> – Heat transfer coefficient between solid and gas <span class="math notranslate nohighlight">\((J/m^2 \cdot K \cdot s)\)</span></p></li>
+<li><p><strong>k_conduct</strong> – Conductivity of solid phase in axial direction <span class="math notranslate nohighlight">\((W/m \cdot K)\)</span></p></li>
+<li><p><strong>h_heat_ambient</strong> – Heat transfer coefficient between ambient air and outer surface of the column <span class="math notranslate nohighlight">\((J/m^2 \cdot K \cdot s)\)</span></p></li>
+<li><p><strong>T_ambient</strong> – Abient temperature <span class="math notranslate nohighlight">\((K)\)</span></p></li>
+</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Previous result at final time (if this is ‘True’, initial conditions are repalced automatically)</p>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.boundaryC_info">
+<span class="sig-name descname"><span class="pre">boundaryC_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_outlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">P_inlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_inlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_inlet</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_in</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_inlet</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">assigned_v_option</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">foward_flow_direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.boundaryC_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.boundaryC_info" title="Permalink to this definition"></a></dt>
+<dd><p>Boundary condition information</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P_outlet</strong> – Outlet pressure <span class="math notranslate nohighlight">\((bar)\)</span> [scalar]</p></li>
+<li><p><strong>P_inlet</strong> – Inlet pressure <span class="math notranslate nohighlight">\((bar)\)</span> [scalar]</p></li>
+<li><p><strong>T_inlet</strong> – Inlet temperature <span class="math notranslate nohighlight">\((K)\)</span> [scalar]</p></li>
+<li><p><strong>y_inlet</strong> – Inlet composition <span class="math notranslate nohighlight">\((mol/mol)\)</span> [n_comp array]</p></li>
+<li><p><strong>Cv_in</strong> – Valve constant of inlet side <span class="math notranslate nohighlight">\((m^3/bar \cdot s)\)</span> [scalar]</p></li>
+<li><p><strong>Cv_out</strong> – Valve constant of outlet side <span class="math notranslate nohighlight">\((mol/bar \cdot s)\)</span> [scalar]</p></li>
+<li><p><strong>Q_inlet</strong> – Volumetric flow rate <span class="math notranslate nohighlight">\((m^3/s)\)</span></p></li>
+<li><p><strong>assigned_v_option</strong> – Assign velocity or not [Boolean]</p></li>
+<li><p><strong>foward_flow_direction</strong> – Flow direction, if this is ‘True’ then the flow direction is foward.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.initialC_info">
+<span class="sig-name descname"><span class="pre">initialC_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Tg_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ts_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_initial</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_initial</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.initialC_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.initialC_info" title="Permalink to this definition"></a></dt>
+<dd><p>Initial condition</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>P_initial</strong> – Initial pressure <span class="math notranslate nohighlight">\((bar)\)</span> [N array]</p></li>
+<li><p><strong>Tg_initial</strong> – Initial gas temperature <span class="math notranslate nohighlight">\((K)\)</span> [N array]</p></li>
+<li><p><strong>Ts_initial</strong> – Initial solid temperature <span class="math notranslate nohighlight">\((K)\)</span> [N array]</p></li>
+<li><p><strong>y_initial</strong> – Gas phase mol fraction <span class="math notranslate nohighlight">\((mol/mol)\)</span> [n_comp N array]</p></li>
+<li><p><strong>q_initial</strong> – Solid phase uptake <span class="math notranslate nohighlight">\((mol/kg)\)</span> [n_comp N array]</p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -499,21 +419,6 @@ Functions Functions Functions Functions</p>
 <dt class="sig sig-object py" id="pyAPEP.simsep.column.run_mamo">
 <span class="sig-name descname"><span class="pre">run_mamo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPUtime_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.run_mamo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.run_mamo" title="Permalink to this definition"></a></dt>
 <dd><p>Run mass &amp; momentum balance equations</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>t_max</strong> – Maximum time domain value</p></li>
-<li><p><strong>n_sec</strong> – Number of time node per second</p></li>
-<li><p><strong>CPUtime_print</strong> – Print CPU time</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.run_mamoen">
-<span class="sig-name descname"><span class="pre">run_mamoen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPUtime_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.run_mamoen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.run_mamoen" title="Permalink to this definition"></a></dt>
-<dd><p>Run mass &amp; momentum &amp; energy balance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -541,30 +446,120 @@ Functions Functions Functions Functions</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pyAPEP.simsep.column.thermal_info">
-<span class="sig-name descname"><span class="pre">thermal_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dH_adsorption</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cp_solid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cp_gas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_heat_transfer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_conduct</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">h_heat_ambient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">T_ambient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">298.15</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.thermal_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.thermal_info" title="Permalink to this definition"></a></dt>
-<dd><p>Thermal information</p>
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.run_mamoen">
+<span class="sig-name descname"><span class="pre">run_mamoen</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">t_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPUtime_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.run_mamoen"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.run_mamoen" title="Permalink to this definition"></a></dt>
+<dd><p>Run mass &amp; momentum &amp; energy balance</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dH_adsorption</strong> – Heat of adsorption (J/mol)</p></li>
-<li><p><strong>Cp_solid</strong> – Solid heat capacity (J/kg K)</p></li>
-<li><p><strong>Cp_gas</strong> – Gas heat capacity (J/mol K)</p></li>
-<li><p><strong>h_heat_transfer</strong> – Heat transfer coefficient between solid and gas (J/m^2 K s)</p></li>
-<li><p><strong>k_conduct</strong> – Conductivity of solid phase in axial direction (W/m K)</p></li>
-<li><p><strong>h_heat_ambient</strong> – Heat transfer coefficient between ambient air and outer surface of the column (J/m^2 K s)</p></li>
-<li><p><strong>T_ambient</strong> – Abient temperature (K)</p></li>
+<li><p><strong>t_max</strong> – Maximum time domain value</p></li>
+<li><p><strong>n_sec</strong> – Number of time node per second</p></li>
+<li><p><strong>CPUtime_print</strong> – Print CPU time</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.next_init">
+<span class="sig-name descname"><span class="pre">next_init</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">change_init</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.next_init"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.next_init" title="Permalink to this definition"></a></dt>
+<dd><p>Next initalization</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>change_init</strong> – Replace inital condition with previous result at final time [boolean]</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Previous result at final time (if this is ‘True’, initial conditions are repalced automatically)</p>
+</dd>
+</dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pyAPEP.simsep.step_P_eq">
-<span class="sig-prename descclassname"><span class="pre">pyAPEP.simsep.</span></span><span class="sig-name descname"><span class="pre">step_P_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_btw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valve_select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPUtime_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#step_P_eq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.step_P_eq" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.change_init_node">
+<span class="sig-name descname"><span class="pre">change_init_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N_new</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.change_init_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.change_init_node" title="Permalink to this definition"></a></dt>
+<dd><p>Initial node change</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N_new</strong> – New number of nodes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.Q_valve">
+<span class="sig-name descname"><span class="pre">Q_valve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.Q_valve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.Q_valve" title="Permalink to this definition"></a></dt>
+<dd><p>Q valve</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>draw_graph</strong> – Show graph [boolean]</p></li>
+<li><p><strong>y</strong> – Simulation result of run_mamo and run_mamoen (if it is ‘None’, this value is from the simulation result automatically)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returen<span class="colon">:</span></dt>
+<dd class="field-even"><p>Volumetric flow rates at Z = 0 and L [time_node aaaa array]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.breakthrough">
+<span class="sig-name descname"><span class="pre">breakthrough</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">draw_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.breakthrough"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.breakthrough" title="Permalink to this definition"></a></dt>
+<dd><p>Breakthrough</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.Graph">
+<span class="sig-name descname"><span class="pre">Graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">every_n_sec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[7,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.Graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.Graph" title="Permalink to this definition"></a></dt>
+<dd><p>Making graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>every_n_sec</strong> – Number of points in graph</p></li>
+<li><p><strong>index</strong> – Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration <span class="math notranslate nohighlight">\((mol/m^3)\)</span> / n_comp - 2 n_comp - 1 solid phase uptake <span class="math notranslate nohighlight">\((mol/kg)\)</span> / 2 n_comp gas phase temperature <span class="math notranslate nohighlight">\((K)\)</span> / 2 n_comp + 1 solid phase temeprature</p></li>
+<li><p><strong>loc</strong> – Location of legend</p></li>
+<li><p><strong>yaxis_label</strong> – ylabel of graph</p></li>
+<li><p><strong>file_name</strong> – File name</p></li>
+<li><p><strong>figsize</strong> – Figure size (default [7,5])</p></li>
+<li><p><strong>dpi</strong> – Dot per inch (default 85)</p></li>
+<li><p><strong>y</strong> – Gas phase mol fraction <span class="math notranslate nohighlight">\((mol/mol)\)</span> [n_comp N array]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.Graph_P">
+<span class="sig-name descname"><span class="pre">Graph_P</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">every_n_sec</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaxis_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Pressure</span> <span class="pre">(bar)'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[7,</span> <span class="pre">5]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">85</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.Graph_P"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.Graph_P" title="Permalink to this definition"></a></dt>
+<dd><p>Making graph of partial pressure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>every_n_sec</strong> – Number of points in graph</p></li>
+<li><p><strong>loc</strong> – Location of legend</p></li>
+<li><p><strong>yaxis_label</strong> – ylabel of graph</p></li>
+<li><p><strong>file_name</strong> – File name</p></li>
+<li><p><strong>figsize</strong> – Figure size (default [7,5])</p></li>
+<li><p><strong>dpi</strong> – Dot per inch (default 85)</p></li>
+<li><p><strong>y</strong> – Gas phase mol fraction <span class="math notranslate nohighlight">\((mol/mol)\)</span> [n_comp N array]</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.copy" title="Permalink to this definition"></a></dt>
+<dd><p>Copy</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyAPEP.simsep.column.__weakref__">
+<span class="sig-name descname"><span class="pre">__weakref__</span></span><a class="headerlink" href="#pyAPEP.simsep.column.__weakref__" title="Permalink to this definition"></a></dt>
+<dd><p>list of weak references to the object (if defined)</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pyAPEP.simsep.step_P_eq_alt1">
@@ -576,30 +571,55 @@ Functions Functions Functions Functions</p>
 <span class="sig-prename descclassname"><span class="pre">pyAPEP.simsep.</span></span><span class="sig-name descname"><span class="pre">step_P_eq_alt2</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_btw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valve_select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPUtime_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#step_P_eq_alt2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.step_P_eq_alt2" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="pyAPEP.simsep.step_P_eq">
+<span class="sig-prename descclassname"><span class="pre">pyAPEP.simsep.</span></span><span class="sig-name descname"><span class="pre">step_P_eq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t_max</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_sec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Cv_btw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">valve_select</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[1,</span> <span class="pre">1]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">CPUtime_print</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#step_P_eq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.step_P_eq" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </section>
 </section>
 </section>
 <hr class="docutils" />
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p><a class="reference external" href="https://doi.org/10.1016/j.compchemeng.2016.11.021">Mass balance</a></p>
+<p>Mass balance</p>
 <p>The mass balance relationship, shown below, is used to describe the pressure swing adsorption process.</p>
 <div class="math notranslate nohighlight">
-\[\int_0^{t_{sat}}y_{flue} \dot n_{inject}\, dt = (\bar q_{sat,1} - \bar q_{des,1})\rho_{s}(1 - \epsilon)V\]</div>
+\[\frac{\partial C_{i}}{\partial t} = -\frac{\partial (uC_{i})}{\partial z} + D_{dis} \frac{\partial^2 C_{i}}{\partial z^2} - \rho_{s}\frac{(1-\epsilon)}{\epsilon}\frac{\partial q_{i}}{\partial z_{i}}\]</div>
 <p>where</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(t_{sat} =\)</span> Time</p></li>
-<li><p><span class="math notranslate nohighlight">\(y_{flue} =\)</span> Mole fraction</p></li>
-<li><p><span class="math notranslate nohighlight">\(\dot n_{inject} =\)</span> ???</p></li>
-<li><p><span class="math notranslate nohighlight">\(\bar q_{sat,1} =\)</span> Average loading during saturation period</p></li>
-<li><p><span class="math notranslate nohighlight">\(\bar q_{des,1} =\)</span> Average loading during desaturation period</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho_{s} =\)</span> Adsorbent density</p></li>
-<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Porosity of adsorbent</p></li>
-<li><p><span class="math notranslate nohighlight">\(V =\)</span> Volume of the column</p></li>
+<li><p><span class="math notranslate nohighlight">\(C_{i} =\)</span> Concentration of component i <span class="math notranslate nohighlight">\((mol/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(t =\)</span> Time <span class="math notranslate nohighlight">\((s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(D_{dis} =\)</span> Dispersion coefficient math:<cite>(m^2/s)</cite></p></li>
+<li><p><span class="math notranslate nohighlight">\(z =\)</span> Length in axial direction  <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void fraction  <span class="math notranslate nohighlight">\((m^3/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{s} =\)</span> Density of solid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(q_{i} =\)</span> Uptake of component i <span class="math notranslate nohighlight">\((mol/kg)\)</span></p></li>
 </ul>
 </div></blockquote>
-<p>Note that the properties of the flue gas stream such as its composition and temperature are assumed to be constant.</p>
+<p><a class="reference external" href="https://doi.org/10.1016/j.compchemeng.2016.11.021">Energy balance</a></p>
+<p>The energy balance, shown below, is also used to describe the pressure swing adsorption process.</p>
+<div class="math notranslate nohighlight">
+\[CC_{p, g}\frac{\partial T_{g}}{\partial t}=-CC_{p,g}u\frac{\partial T_{g}}{\partial z} + \frac{h}{\epsilon}a_{surf}(T_{s}-T_{g})+\sum_{i=1}^{n}(-C_{p,i}T_{g}D_{dis,i}\frac{\partial^2 C_{i}}{\partial z^2}+C_{p,i}T_{g}\rho_{s}\frac{(1-\epsilon)}{\epsilon}\frac{\partial q_{i}}{\partial z}\]</div>
+<p>where</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(C =\)</span> Concentration <span class="math notranslate nohighlight">\((mol/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(C_{p, g} =\)</span> Gas heat capacity <span class="math notranslate nohighlight">\((J/mol \cdot K)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{g} =\)</span> Gas temperature <span class="math notranslate nohighlight">\((K)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(t =\)</span> Time <span class="math notranslate nohighlight">\((s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(u =\)</span> Velocity <span class="math notranslate nohighlight">\((m/s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(z =\)</span> Length in axial direction <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(h =\)</span> Enthalpy <span class="math notranslate nohighlight">\((J/m^2 \cdot K \cdot s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void fraction <span class="math notranslate nohighlight">\((m^3/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(a_{surf} =\)</span> Interfacial area concentration <span class="math notranslate nohighlight">\((m^2/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(D_{dis,i} =\)</span> Dispersion coefficient <span class="math notranslate nohighlight">\((m^2/s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{s} =\)</span> Solid temperature <span class="math notranslate nohighlight">\((K)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{s} =\)</span> Density of solid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(q_{i} =\)</span> Uptake of component i <span class="math notranslate nohighlight">\((mol/kg)\)</span></p></li>
+</ul>
+</div></blockquote>
 <p><a class="reference external" href="http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf">Ergun equation</a></p>
 <p>The Ergun equation, shown below, is used to describe the flow.</p>
 <div class="math notranslate nohighlight">
@@ -607,13 +627,13 @@ Functions Functions Functions Functions</p>
 <p>where</p>
 <blockquote>
 <div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\vartriangle P =\)</span> Pressure drop</p></li>
-<li><p><span class="math notranslate nohighlight">\(L =\)</span> Height of the bed</p></li>
-<li><p><span class="math notranslate nohighlight">\(\mu =\)</span> Fluid viscosity</p></li>
+<li><p><span class="math notranslate nohighlight">\(\vartriangle P =\)</span> Pressure drop <span class="math notranslate nohighlight">\((bar)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(L =\)</span> Height of the bed <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu =\)</span> Fluid viscosity <span class="math notranslate nohighlight">\((Pa \cdot s)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void space of the bed</p></li>
-<li><p><span class="math notranslate nohighlight">\(u =\)</span> Fluid superficial velocity</p></li>
-<li><p><span class="math notranslate nohighlight">\(d_{P} =\)</span> Particle diameter</p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho_{f} =\)</span> Density of Fluid</p></li>
+<li><p><span class="math notranslate nohighlight">\(u =\)</span> Fluid superficial velocity <span class="math notranslate nohighlight">\((m/s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{P} =\)</span> Particle diameter <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{f} =\)</span> Density of Fluid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
 </ul>
 </div></blockquote>
 <p>The Ergun equation represents the relationship between pressure drop and resultant fluid flow in packed beds.

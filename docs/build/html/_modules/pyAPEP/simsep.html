@@ -175,8 +175,8 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.</span>
 
-<span class="sd">    :param L: Length of column</span>
-<span class="sd">    :param A_cross: Cross-sectional area of column</span>
+<span class="sd">    :param L: Length of column :math:`(m)`</span>
+<span class="sd">    :param A_cross: Cross-sectional area of column :math:`(m^2)`</span>
 <span class="sd">    :param n_component: Number of components </span>
 <span class="sd">    :param N_node: Number of nodes</span>
 <span class="sd">    :param E_balance: Energy balance inclusion (default = True)  </span>
@@ -244,10 +244,10 @@
 <span class="sd">        </span>
 <span class="sd">        :param iso_fn: Isothem function (Type: n_comp.N array, N array [pressure, temperature])</span>
 <span class="sd">        :param epsi: Void fraction</span>
-<span class="sd">        :param D_particle: Particle diameter</span>
-<span class="sd">        :param rho_s: Solid density</span>
-<span class="sd">        :param P_test_range: Range of pressure for test</span>
-<span class="sd">        :param T_test_range: Range of temperature for test</span>
+<span class="sd">        :param D_particle: Particle diameter :math:`(m)`</span>
+<span class="sd">        :param rho_s: Solid density :math:`(kg/m^3)`</span>
+<span class="sd">        :param P_test_range: Range of pressure for test :math:`(bar)`</span>
+<span class="sd">        :param T_test_range: Range of temperature for test :math:`(K)`</span>
 <span class="sd">        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">T_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">T_test_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">T_test_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="bp">self</span><span class="o">.</span><span class="n">_N</span><span class="p">)</span>
@@ -275,8 +275,8 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gas property information</span>
 <span class="sd">        </span>
-<span class="sd">        :param Mass_molar: Molar mass</span>
-<span class="sd">        :param mu_viscosity: Viscosity</span>
+<span class="sd">        :param Mass_molar: Molar mass :math:`(mol/kg)`</span>
+<span class="sd">        :param mu_viscosity: Viscosity :math:`(Pa \cdot s)`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stack_true</span> <span class="o">=</span> <span class="mi">0</span>
@@ -296,9 +296,9 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Mass transfer</span>
 <span class="sd">        </span>
-<span class="sd">        :param k_mass_transfer: mass transfer coefficient s^-1</span>
-<span class="sd">        :param a_specific_surf: specific surface area m^2/m^3</span>
-<span class="sd">        :param D_dispersion: dispersion coefficient m^2/s</span>
+<span class="sd">        :param k_mass_transfer: mass transfer coefficient :math:`(s^-1)`</span>
+<span class="sd">        :param a_specific_surf: specific surface area :math:`(m^2/m^3)`</span>
+<span class="sd">        :param D_dispersion: dispersion coefficient :math:`(m^2/s)`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stack_true</span> <span class="o">=</span> <span class="mi">0</span>
@@ -331,13 +331,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Thermal information</span>
 <span class="sd">        </span>
-<span class="sd">        :param dH_adsorption: Heat of adsorption (J/mol)</span>
-<span class="sd">        :param Cp_solid: Solid heat capacity (J/kg K)</span>
-<span class="sd">        :param Cp_gas: Gas heat capacity (J/mol K)</span>
-<span class="sd">        :param h_heat_transfer: Heat transfer coefficient between solid and gas (J/m^2 K s)</span>
-<span class="sd">        :param k_conduct: Conductivity of solid phase in axial direction (W/m K)  </span>
-<span class="sd">        :param h_heat_ambient: Heat transfer coefficient between ambient air and outer surface of the column (J/m^2 K s)</span>
-<span class="sd">        :param T_ambient: Abient temperature (K)</span>
+<span class="sd">        :param dH_adsorption: Heat of adsorption :math:`(J/mol)`</span>
+<span class="sd">        :param Cp_solid: Solid heat capacity :math:`(J/kg \cdot K)`</span>
+<span class="sd">        :param Cp_gas: Gas heat capacity :math:`(J/mol \cdot K)` </span>
+<span class="sd">        :param h_heat_transfer: Heat transfer coefficient between solid and gas :math:`(J/m^2 \cdot K \cdot s)`  </span>
+<span class="sd">        :param k_conduct: Conductivity of solid phase in axial direction :math:`(W/m \cdot K)`    </span>
+<span class="sd">        :param h_heat_ambient: Heat transfer coefficient between ambient air and outer surface of the column :math:`(J/m^2 \cdot K \cdot s)`    </span>
+<span class="sd">        :param T_ambient: Abient temperature :math:`(K)`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stack_true</span> <span class="o">=</span> <span class="mi">0</span>
@@ -371,13 +371,13 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Boundary condition information</span>
 <span class="sd">        </span>
-<span class="sd">        :param P_outlet: Outlet pressure (bar) [scalar]</span>
-<span class="sd">        :param P_inlet: Inlet pressure (bar) [scalar]</span>
-<span class="sd">        :param T_inlet: Inlet temperature (K) [scalar] </span>
-<span class="sd">        :param y_inlet: Inlet composition (mol/mol) [n_comp array]</span>
-<span class="sd">        :param Cv_in: Valve constant of inlet side (m^3/bar s) [scalar]  </span>
-<span class="sd">        :param Cv_out: Valve constant of outlet side (mol/bar s) [scalar]</span>
-<span class="sd">        :param Q_inlet: Volumetric flow rate (m^3/s)</span>
+<span class="sd">        :param P_outlet: Outlet pressure :math:`(bar)` [scalar]</span>
+<span class="sd">        :param P_inlet: Inlet pressure :math:`(bar)` [scalar]</span>
+<span class="sd">        :param T_inlet: Inlet temperature :math:`(K)` [scalar] </span>
+<span class="sd">        :param y_inlet: Inlet composition :math:`(mol/mol)` [n_comp array]</span>
+<span class="sd">        :param Cv_in: Valve constant of inlet side :math:`(m^3/bar \cdot s)` [scalar]  </span>
+<span class="sd">        :param Cv_out: Valve constant of outlet side :math:`(mol/bar \cdot s)` [scalar]</span>
+<span class="sd">        :param Q_inlet: Volumetric flow rate :math:`(m^3/s)`</span>
 <span class="sd">        :param assigned_v_option: Assign velocity or not [Boolean]</span>
 <span class="sd">        :param foward_flow_direction: Flow direction, if this is &#39;True&#39; then the flow direction is foward.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -422,11 +422,11 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initial condition</span>
 <span class="sd">        </span>
-<span class="sd">        :param P_initial: Initial pressure (bar) [N array]</span>
-<span class="sd">        :param Tg_initial: Initial gas temperature (K) [N array]</span>
-<span class="sd">        :param Ts_initial: Initial solid temperature (K) [N array]</span>
-<span class="sd">        :param y_initial: Gas phase mol fraction (mol/mol) [n_comp N array]</span>
-<span class="sd">        :param q_initial: Solid phase uptake (mol/kg) [n_comp N array]</span>
+<span class="sd">        :param P_initial: Initial pressure :math:`(bar)` [N array]</span>
+<span class="sd">        :param Tg_initial: Initial gas temperature :math:`(K)` [N array]</span>
+<span class="sd">        :param Ts_initial: Initial solid temperature :math:`(K)` [N array]</span>
+<span class="sd">        :param y_initial: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]</span>
+<span class="sd">        :param q_initial: Solid phase uptake :math:`(mol/kg)` [n_comp N array]</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">stack_true</span> <span class="o">=</span> <span class="mi">0</span>
@@ -1158,13 +1158,13 @@
 <span class="sd">        Making graph</span>
 <span class="sd">        </span>
 <span class="sd">        :param every_n_sec: Number of points in graph </span>
-<span class="sd">        :param index: Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration (mol/m^3) / n_comp - 2 n_comp - 1 solid phase uptake (mol/kg) / 2 n_comp gas phase temperature (K) / 2 n_comp + 1 solid phase temeprature </span>
+<span class="sd">        :param index: Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration :math:`(mol/m^3)` / n_comp - 2 n_comp - 1 solid phase uptake :math:`(mol/kg)` / 2 n_comp gas phase temperature :math:`(K)` / 2 n_comp + 1 solid phase temeprature </span>
 <span class="sd">        :param loc: Location of legend</span>
 <span class="sd">        :param yaxis_label: ylabel of graph</span>
 <span class="sd">        :param file_name: File name</span>
 <span class="sd">        :param figsize: Figure size (default [7,5])</span>
 <span class="sd">        :param dpi: Dot per inch (default 85)       </span>
-<span class="sd">        :param y: Gas phase mol fraction (mol/mol) [n_comp N array]</span>
+<span class="sd">        :param y: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]</span>
 <span class="sd">     </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_N</span>
@@ -1215,7 +1215,7 @@
 <span class="sd">        :param file_name: File name</span>
 <span class="sd">        :param figsize: Figure size (default [7,5])</span>
 <span class="sd">        :param dpi: Dot per inch (default 85)       </span>
-<span class="sd">        :param y: Gas phase mol fraction (mol/mol) [n_comp N array]</span>
+<span class="sd">        :param y: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_N</span>
         <span class="n">one_sec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_sec</span>
