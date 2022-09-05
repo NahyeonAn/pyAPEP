@@ -102,8 +102,8 @@ class column:
     """
     Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.
 
-    :param L: Length of column
-    :param A_cross: Cross-sectional area of column
+    :param L: Length of column :math:`(m)`
+    :param A_cross: Cross-sectional area of column :math:`(m^2)`
     :param n_component: Number of components 
     :param N_node: Number of nodes
     :param E_balance: Energy balance inclusion (default = True)  
@@ -171,10 +171,10 @@ class column:
         
         :param iso_fn: Isothem function (Type: n_comp.N array, N array [pressure, temperature])
         :param epsi: Void fraction
-        :param D_particle: Particle diameter
-        :param rho_s: Solid density
-        :param P_test_range: Range of pressure for test
-        :param T_test_range: Range of temperature for test
+        :param D_particle: Particle diameter :math:`(m)`
+        :param rho_s: Solid density :math:`(kg/m^3)`
+        :param P_test_range: Range of pressure for test :math:`(bar)`
+        :param T_test_range: Range of temperature for test :math:`(K)`
         
         """
         T_test = np.linspace(T_test_range[0], T_test_range[1],self._N)
@@ -202,8 +202,8 @@ class column:
         """
         Gas property information
         
-        :param Mass_molar: Molar mass
-        :param mu_viscosity: Viscosity
+        :param Mass_molar: Molar mass :math:`(mol/kg)`
+        :param mu_viscosity: Viscosity :math:`(Pa \cdot s)`
 
         """
         stack_true = 0
@@ -223,9 +223,9 @@ class column:
         """
         Mass transfer
         
-        :param k_mass_transfer: mass transfer coefficient s^-1
-        :param a_specific_surf: specific surface area m^2/m^3
-        :param D_dispersion: dispersion coefficient m^2/s
+        :param k_mass_transfer: mass transfer coefficient :math:`(s^-1)`
+        :param a_specific_surf: specific surface area :math:`(m^2/m^3)`
+        :param D_dispersion: dispersion coefficient :math:`(m^2/s)`
 
         """
         stack_true = 0
@@ -258,13 +258,13 @@ class column:
         """
         Thermal information
         
-        :param dH_adsorption: Heat of adsorption (J/mol)
-        :param Cp_solid: Solid heat capacity (J/kg K)
-        :param Cp_gas: Gas heat capacity (J/mol K)
-        :param h_heat_transfer: Heat transfer coefficient between solid and gas (J/m^2 K s)
-        :param k_conduct: Conductivity of solid phase in axial direction (W/m K)  
-        :param h_heat_ambient: Heat transfer coefficient between ambient air and outer surface of the column (J/m^2 K s)
-        :param T_ambient: Abient temperature (K)
+        :param dH_adsorption: Heat of adsorption :math:`(J/mol)`
+        :param Cp_solid: Solid heat capacity :math:`(J/kg \cdot K)`
+        :param Cp_gas: Gas heat capacity :math:`(J/mol \cdot K)` 
+        :param h_heat_transfer: Heat transfer coefficient between solid and gas :math:`(J/m^2 \cdot K \cdot s)`  
+        :param k_conduct: Conductivity of solid phase in axial direction :math:`(W/m \cdot K)`    
+        :param h_heat_ambient: Heat transfer coefficient between ambient air and outer surface of the column :math:`(J/m^2 \cdot K \cdot s)`    
+        :param T_ambient: Abient temperature :math:`(K)`
 
         """
         stack_true = 0
@@ -298,13 +298,13 @@ class column:
         """
         Boundary condition information
         
-        :param P_outlet: Outlet pressure (bar) [scalar]
-        :param P_inlet: Inlet pressure (bar) [scalar]
-        :param T_inlet: Inlet temperature (K) [scalar] 
-        :param y_inlet: Inlet composition (mol/mol) [n_comp array]
-        :param Cv_in: Valve constant of inlet side (m^3/bar s) [scalar]  
-        :param Cv_out: Valve constant of outlet side (mol/bar s) [scalar]
-        :param Q_inlet: Volumetric flow rate (m^3/s)
+        :param P_outlet: Outlet pressure :math:`(bar)` [scalar]
+        :param P_inlet: Inlet pressure :math:`(bar)` [scalar]
+        :param T_inlet: Inlet temperature :math:`(K)` [scalar] 
+        :param y_inlet: Inlet composition :math:`(mol/mol)` [n_comp array]
+        :param Cv_in: Valve constant of inlet side :math:`(m^3/bar \cdot s)` [scalar]  
+        :param Cv_out: Valve constant of outlet side :math:`(mol/bar \cdot s)` [scalar]
+        :param Q_inlet: Volumetric flow rate :math:`(m^3/s)`
         :param assigned_v_option: Assign velocity or not [Boolean]
         :param foward_flow_direction: Flow direction, if this is 'True' then the flow direction is foward.
         """
@@ -349,11 +349,11 @@ class column:
         """
         Initial condition
         
-        :param P_initial: Initial pressure (bar) [N array]
-        :param Tg_initial: Initial gas temperature (K) [N array]
-        :param Ts_initial: Initial solid temperature (K) [N array]
-        :param y_initial: Gas phase mol fraction (mol/mol) [n_comp N array]
-        :param q_initial: Solid phase uptake (mol/kg) [n_comp N array]
+        :param P_initial: Initial pressure :math:`(bar)` [N array]
+        :param Tg_initial: Initial gas temperature :math:`(K)` [N array]
+        :param Ts_initial: Initial solid temperature :math:`(K)` [N array]
+        :param y_initial: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]
+        :param q_initial: Solid phase uptake :math:`(mol/kg)` [n_comp N array]
 
         """
         stack_true = 0
@@ -1085,13 +1085,13 @@ class column:
         Making graph
         
         :param every_n_sec: Number of points in graph 
-        :param index: Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration (mol/m^3) / n_comp - 2 n_comp - 1 solid phase uptake (mol/kg) / 2 n_comp gas phase temperature (K) / 2 n_comp + 1 solid phase temeprature 
+        :param index: Index determining which graph is to be displayed = 0 - n_comp-1 gas concentration :math:`(mol/m^3)` / n_comp - 2 n_comp - 1 solid phase uptake :math:`(mol/kg)` / 2 n_comp gas phase temperature :math:`(K)` / 2 n_comp + 1 solid phase temeprature 
         :param loc: Location of legend
         :param yaxis_label: ylabel of graph
         :param file_name: File name
         :param figsize: Figure size (default [7,5])
         :param dpi: Dot per inch (default 85)       
-        :param y: Gas phase mol fraction (mol/mol) [n_comp N array]
+        :param y: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]
      
         """
         N = self._N
@@ -1142,7 +1142,7 @@ class column:
         :param file_name: File name
         :param figsize: Figure size (default [7,5])
         :param dpi: Dot per inch (default 85)       
-        :param y: Gas phase mol fraction (mol/mol) [n_comp N array]
+        :param y: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]
         """
         N = self._N
         one_sec = self._n_sec
