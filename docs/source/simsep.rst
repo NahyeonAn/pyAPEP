@@ -195,6 +195,7 @@ Class documentation
 .. automodule:: pyAPEP.simsep
     :special-members:
     :members:
+    :member-order: bysource
 
 
 ---------------------------------
@@ -202,26 +203,48 @@ Class documentation
 Theory
 -------
 
-`Mass balance <https://doi.org/10.1016/j.compchemeng.2016.11.021>`_ 
+
+Mass balance
 
 The mass balance relationship, shown below, is used to describe the pressure swing adsorption process.
 
 .. math::
 
-    \int_0^{t_{sat}}y_{flue} \dot n_{inject}\, dt = (\bar q_{sat,1} - \bar q_{des,1})\rho_{s}(1 - \epsilon)V
+    \frac{\partial C_{i}}{\partial t} = -\frac{\partial (uC_{i})}{\partial z} + D_{dis} \frac{\partial^2 C_{i}}{\partial z^2} - \rho_{s}\frac{(1-\epsilon)}{\epsilon}\frac{\partial q_{i}}{\partial z_{i}}
 
 where
 
-    * :math:`t_{sat} =` Time
-    * :math:`y_{flue} =` Mole fraction
-    * :math:`\dot n_{inject} =` ???
-    * :math:`\bar q_{sat,1} =` Average loading during saturation period
-    * :math:`\bar q_{des,1} =` Average loading during desaturation period
-    * :math:`\rho_{s} =` Adsorbent density 
-    * :math:`\epsilon =` Porosity of adsorbent
-    * :math:`V =` Volume of the column
+    * :math:`C_{i} =` Concentration of component i :math:`(mol/m^3)`
+    * :math:`t =` Time :math:`(s)`
+    * :math:`D_{dis} =` Dispersion coefficient math:`(m^2/s)`
+    * :math:`z =` Length in axial direction  :math:`(m)`
+    * :math:`\epsilon =` Void fraction  :math:`(m^3/m^3)`
+    * :math:`\rho_{s} =` Density of solid :math:`(kg/m^3)`
+    * :math:`q_{i} =` Uptake of component i :math:`(mol/kg)`
     
-Note that the properties of the flue gas stream such as its composition and temperature are assumed to be constant.
+`Energy balance <https://doi.org/10.1016/j.compchemeng.2016.11.021>`_ 
+
+The energy balance, shown below, is also used to describe the pressure swing adsorption process.
+
+.. math::
+
+    CC_{p, g}\frac{\partial T_{g}}{\partial t}=-CC_{p,g}u\frac{\partial T_{g}}{\partial z} + \frac{h}{\epsilon}a_{surf}(T_{s}-T_{g})+\sum_{i=1}^{n}(-C_{p,i}T_{g}D_{dis,i}\frac{\partial^2 C_{i}}{\partial z^2}+C_{p,i}T_{g}\rho_{s}\frac{(1-\epsilon)}{\epsilon}\frac{\partial q_{i}}{\partial z}
+
+where
+
+    * :math:`C =` Concentration :math:`(mol/m^3)`
+    * :math:`C_{p, g} =` Gas heat capacity :math:`(J/mol \cdot K)`
+    * :math:`T_{g} =` Gas temperature :math:`(K)`
+    * :math:`t =` Time :math:`(s)`
+    * :math:`u =` Velocity :math:`(m/s)`
+    * :math:`z =` Length in axial direction :math:`(m)`
+    * :math:`h =` Enthalpy :math:`(J/m^2 \cdot K \cdot s)`
+    * :math:`\epsilon =` Void fraction :math:`(m^3/m^3)`
+    * :math:`a_{surf} =` Interfacial area concentration :math:`(m^2/m^3)`
+    * :math:`D_{dis,i} =` Dispersion coefficient :math:`(m^2/s)`
+    * :math:`T_{s} =` Solid temperature :math:`(K)`
+    * :math:`\rho_{s} =` Density of solid :math:`(kg/m^3)`
+    * :math:`q_{i} =` Uptake of component i :math:`(mol/kg)`
 
 `Ergun equation <http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf>`_ 
 
@@ -233,13 +256,13 @@ The Ergun equation, shown below, is used to describe the flow.
 
 where
 
-    * :math:`\vartriangle P =` Pressure drop
-    * :math:`L =` Height of the bed
-    * :math:`\mu =` Fluid viscosity
+    * :math:`\vartriangle P =` Pressure drop :math:`(bar)`
+    * :math:`L =` Height of the bed :math:`(m)`
+    * :math:`\mu =` Fluid viscosity :math:`(Pa \cdot s)`
     * :math:`\epsilon =` Void space of the bed
-    * :math:`u =` Fluid superficial velocity
-    * :math:`d_{P} =` Particle diameter
-    * :math:`\rho_{f} =` Density of Fluid
+    * :math:`u =` Fluid superficial velocity :math:`(m/s)`
+    * :math:`d_{P} =` Particle diameter :math:`(m)`
+    * :math:`\rho_{f} =` Density of Fluid :math:`(kg/m^3)`
 
 The Ergun equation represents the relationship between pressure drop and resultant fluid flow in packed beds.
 The equation was developed by Sabri Ergun and he derived it from experimental measurments and theoretical postulates.
