@@ -216,9 +216,9 @@ where
 
     * :math:`C_{i} =` Concentration of component i :math:`(mol/m^3)`
     * :math:`t =` Time :math:`(s)`
-    * :math:`D_{dis} =` Dispersion coefficient math:`(m^2/s)`
-    * :math:`z =` Length in axial direction  :math:`(m)`
-    * :math:`\epsilon =` Void fraction  :math:`(m^3/m^3)`
+    * :math:`D_{dis} =` Dispersion coefficient :math:`(m^2/s)`
+    * :math:`z =` Length in axial direction :math:`(m)`
+    * :math:`\epsilon =` Void fraction :math:`(m^3/m^3)`
     * :math:`\rho_{s} =` Density of solid :math:`(kg/m^3)`
     * :math:`q_{i} =` Uptake of component i :math:`(mol/kg)`
     
