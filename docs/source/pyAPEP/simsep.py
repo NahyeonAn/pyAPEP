@@ -3,17 +3,6 @@
 Real PSA simulation module (:py:mod:`pyAPEP.simsep`)
 ====================================================
 
-Tutorials
-=========
-Tutorials Tutorials Tutorials Tutorials
-Tutorials Tutorials Tutorials Tutorials
-
-Functions
-=========
-Functions Functions Functions Functions 
-Functions Functions Functions Functions 
-
- * [2022/08/16] - test
 """
 
 import numpy as np
@@ -101,7 +90,6 @@ def change_node_fn(z_raw, y_raw, N_new):
 class column:
     """
     Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.
-
     :param L: Length of column :math:`(m)`
     :param A_cross: Cross-sectional area of column :math:`(m^2)`
     :param n_component: Number of components 
@@ -204,7 +192,6 @@ class column:
         
         :param Mass_molar: Molar mass :math:`(mol/kg)`
         :param mu_viscosity: Viscosity :math:`(Pa \cdot s)`
-
         """
         stack_true = 0
         if len(Mass_molar) == self._n_comp:
@@ -223,10 +210,9 @@ class column:
         """
         Mass transfer
         
-        :param k_mass_transfer: mass transfer coefficient :math:`(s^-1)`
+        :param k_mass_transfer: mass transfer coefficient :math:`(s^(-1))`
         :param a_specific_surf: specific surface area :math:`(m^2/m^3)`
         :param D_dispersion: dispersion coefficient :math:`(m^2/s)`
-
         """
         stack_true = 0
         if np.isscalar(D_dispersion):
@@ -265,7 +251,6 @@ class column:
         :param k_conduct: Conductivity of solid phase in axial direction :math:`(W/m \cdot K)`    
         :param h_heat_ambient: Heat transfer coefficient between ambient air and outer surface of the column :math:`(J/m^2 \cdot K \cdot s)`    
         :param T_ambient: Abient temperature :math:`(K)`
-
         """
         stack_true = 0
         n_comp = self._n_comp
@@ -354,7 +339,6 @@ class column:
         :param Ts_initial: Initial solid temperature :math:`(K)` [N array]
         :param y_initial: Gas phase mol fraction :math:`(mol/mol)` [n_comp N array]
         :param q_initial: Solid phase uptake :math:`(mol/kg)` [n_comp N array]
-
         """
         stack_true = 0
         if len(P_initial) != self._N:
@@ -990,7 +974,7 @@ class column:
         :param draw_graph: Show graph [boolean] 
         :param y: Simulation result of run_mamo and run_mamoen (if it is 'None', this value is from the simulation result automatically)
         
-        :returen: Volumetric flow rates at Z = 0 and L [time_node aaaa array]
+        :return: Volumetric flow rates at Z = 0 and L [time_node array]
         """
         N = self._N
         if self._required['Flow direction'] == 'Backward':
@@ -1627,7 +1611,6 @@ n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
 def step_P_eq_alt2(column1, column2, t_max,
 n_sec=5, Cv_btw=0.1, valve_select = [1,1], CPUtime_print = False):
     """
-
     """
     tic = time.time() / 60 # in minute
     P_sum1 = np.mean(column1._P_init)
@@ -2402,6 +2385,3 @@ if __name__ == '__main__':
     c2.Graph(10,2, loc =Legend_loc)
     c2.Graph(10,3, loc = Legend_loc)
     plt.show( )
-    
-####
-
