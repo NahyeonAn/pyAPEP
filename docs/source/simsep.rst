@@ -192,11 +192,11 @@ The results are shown in Fig. 1,2, and 3.
 
 Class documentation
 ----------------------------------
+
 .. automodule:: pyAPEP.simsep
     :special-members:
     :members:
     :member-order: bysource
-
 
 ---------------------------------
 
