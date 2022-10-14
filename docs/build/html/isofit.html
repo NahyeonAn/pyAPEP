@@ -295,42 +295,6 @@ The explanation include function usage, algorithm (or related theroy), and funct
 <p>이 알고리즘은 일반적으로 사용되는 5개의 isotherm function candidates 와 python optimizer candidate 로부터 주어진 data 에 가장 적절한 isothem function 과 그 parameter 를 도출한다. 알고리즘의 전반적인 내용은 아래 그림과 같다.</p>
 <a class="reference internal image-reference" href="_images/Best_isotherm.png"><img alt="Isotherm fitting algorithm" class="align-center" src="_images/Best_isotherm.png" style="width: 800px;" /></a>
 <p>5개의 isotherm function 은 Arrh, Langmuir (Lang), Freundlich (Freu), Quadratic (Quad), Sips, Dual-site Langmuir (DSLang) 이며 각 수식은 아래와 같다.</p>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><blockquote>
-<div><p># of</p>
-</div></blockquote>
-<p>parameters</p>
-</th>
-<th class="head"><p>Name</p></th>
-<th class="head"><p>Equation</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1</p></td>
-<td><p>Arrh</p></td>
-<td><p><span class="math notranslate nohighlight">\(q(P) =\)</span></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><p>2</p></td>
-<td><p>Lang</p></td>
-<td><p><span class="math notranslate nohighlight">\(q(P) = M\frac{KP}{1+KP}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p>Freu</p></td>
-<td><p><span class="math notranslate nohighlight">\(q(P) = kP^n\)</span></p></td>
-</tr>
-<tr class="row-odd"><td rowspan="2"><p>3</p></td>
-<td><p>Quad</p></td>
-<td><p><span class="math notranslate nohighlight">\(q(P) = M \frac{(K_a + 2 K_b P)P}{1+K_aP+K_bP^2}\)</span></p></td>
-</tr>
-<tr class="row-even"><td><p>Sips</p></td>
-<td><p><span class="math notranslate nohighlight">\(q(P) =\frac{q_m K P^n}{1+K P^n}\)</span></p></td>
-</tr>
-<tr class="row-odd"><td><p>4</p></td>
-<td><p>DSLang</p></td>
-<td><p><span class="math notranslate nohighlight">\(q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}\)</span></p></td>
-</tr>
-</tbody>
-</table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>사용자는 candidates 로 사용하고자 하는 모델의 parameter 개수를 고려하여 data sample 을 제공해야한다. 예를 들어 Dual site Langmuir 함수를 candidates 에 포함하고자 한다면 사용자는 3 개 이상의 data sample 이 필요하다.</p>

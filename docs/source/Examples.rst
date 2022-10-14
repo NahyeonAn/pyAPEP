@@ -6,6 +6,7 @@ Here are some examples.
 1. Ideal PSA simulation for green hydrogen production
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+**Background**
 Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification technologies have gained increasing attention. Among the various options for H\ :sub:`2` separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H\ :sub:`2` decomposed from green NH\ :sub:`3` and determine the hydrogen recovery of the columns given adsobents properties.
 
 .. image:: images/GreenNH3_process.png
@@ -13,85 +14,134 @@ Because green ammonia is currently the favored transportation medium for carbon-
   :alt: GreenNH3 process
   :align: center
 
+**Process description**
 H\ :sub:`2` produced in regions rich in renewable energy is transported to other locations in the form of NH\ :sub:`3`, and H\ :sub:`2` is produced by decomposing NH\ :sub:`3` into a mixture of N\ :sub:`2` and H\ :sub:`2`. The NH\ :sub:`3` reactor and residual NH\ :sub:`3` removal system are located before the PSA system. Thereafter, the 0.25% of unreacted NH\ :sub:`3` exiting the reactor is cooled and removed with a batch type uni-bed adsorption tower. Therefore, the gas entering the target PSA process was assumed to be 25 mol% N\ :sub:`2` and 75 mol% H\ :sub:`2`.
 
+**Goal**
+The goal of this example is the find best adsorbent among three adsorbents by comparing PSA perfomances. Adsorbent candidates are Zeolite 13X, 5A and activated carbon. All adsorbents and its pressure-uptake data could be found in literatures. This example contains isotherm fitting with given data(.csv), isotherm validation, development of mixture isotherm for each adsorbent, and ideal PSA simulation.
 
-**First, import pyAPEP packages.**
+**First, import pyAPEP package and other python packages for data treatment and visualization**
 
 .. code-block:: python
 
+   # pyAPEP package import
    import pyAPEP.isofit as isofit
    import pyAPEP.simide as simide
 
-.. _isothrm_definition:
+   # Data treatment package import
+   import numpy as np
+   import pandas as pd
 
-**Then, define pure isotherm function for hydrogen and nitrogen using pressure-uptake data samples (Opt. 1) or isotherm parameters (Opt. 2).**
+   # Data visualization package import
+   import matplotlib.pyplot as plt
 
-.. code-block:: python
+.. _isotherm_definition:
 
-   # Find hydrogen isotherm (Opt. 1)
-   # Data import
-   P = [2, 3, 4, 5]
-   q = [1, 2, 3, 4]
-
-   # Find best isotherm function
-   H2_isotherm, par_H2, fn_type_H2, val_err_H2 = isofit.best_isomodel(P, q)
-
-   # Define nitrogen isotherm (Opt. 2)
-   # Data import
-   par_N2 = [2, 0.2, 0.0002]
-
-   def Quad(par, P, T):
-    nume = par[0]*(par[1]*P + 2*par[2]*P**2)
-    deno = 1 + par[1]*P + par[2]*P**2
-    q = nume/deno
-    return q
-
-   N2_isotherm = lambda P,T: Quad(par_N2, P, T)
-
-**Check developed pure isotherm functions.**
-
-.. image:: images/GreenNH3_pure_isotherm.png
-  :width: 400
-  :alt: GreenNH3 isotherm
-  :align: center
-
-
-**We need mixture isotherm function to simulate PSA process. Here we define the hydrogen/nitrogen mixture isotherm with :py:mod:`isofit.IAST`**
+**Then, define pure isotherm function for hydrogen and nitrogen using pressure-uptake data samples.** Before developoing isotherm, users need to define or import datasets. If the isotherm parameters already exist, users can use those parameters by defining isotherm function manually.
 
 .. code-block:: python
 
-   iso_list = [H2_isotherm, N2_isotherm]
-   iso_mix = lambda P,T : isofit.IAST(iso_list, P, T)
+   #### Data import ####
+   # adsorbent 1: Zeolite 13X
+   Data_zeo13 = pd.read_csv('Example1_Zeolite13X.csv')
+   # adsorbent 2: activated carbon
+   Data_ac = pd.read_csv('Example1_ActivatedC.csv')
+   # adsorbent 3: Zeolite 5A
+   Data_zeo5 = pd.read_csv('Example1_Zeolite5A.csv')
+
+   Data = [Data_zeo13, Data_ac, Data_zeo5]
+
+.. code-block:: python
+
+   # Find best isotherm function and visualization
+   Adsorbent = ['Zeolite13X','ActivatedC', 'Zeolite5A']
+   pure_isotherm = []
+
+   for i in range(3):
+      ads = Data[i]
+      
+      P_N2 = ads['Pressure_N2 (bar)'].dropna().values
+      q_N2 = ads['Uptake_N2 (mol/kg)'].dropna().values
+      P_H2 = ads['Pressure_H2 (bar)'].dropna().values
+      q_H2 = ads['Uptake_H2 (mol/kg)'].dropna().values
+      
+      N2_isotherm, par_N2, fn_type_N2, val_err_N2 = isofit.best_isomodel(P_N2, q_N2)
+      H2_isotherm, par_H2, fn_type_H2, val_err_H2 = isofit.best_isomodel(P_H2, q_H2)
+      pure_isotherm.append([N2_isotherm,H2_isotherm])
+
+      # visualization
+      plt.figure(dpi=70)
+      plt.scatter(P_N2, q_N2, color = 'r')
+      plt.scatter(P_H2, q_H2, color = 'b')
+      
+      P_max= max(max(P_N2), max(P_H2))
+      P_dom = np.linspace(0, P_max, 100)
+      plt.plot(P_dom, pure_isotherm[i][0](P_dom), color='r' )
+      plt.plot(P_dom, pure_isotherm[i][1](P_dom), color='b' )
+      
+      plt.xlabel('Pressure (bar)')
+      plt.ylabel('Uptake (mol/kg)')
+      plt.title(f'{Adsorbent[i]}')
+      plt.legend(['$N_2$ data', '$H_2$ data',
+                  '$N_2$ isotherm','$H_2$ isotherm'], loc='best')
+      
+      plt.show()
+
+Check developed pure isotherm functions by comparing with raw data.
+
+.. |pic1| image:: images/Zeolite13X.png
+    :width: 49%
+
+.. |pic2| image:: images/ActivatedC.png
+    :width: 49%
+
+|pic1| |pic2|
+
+.. image:: images/Zeolite5A.png
+   :width: 49%
+   :alt: Zeolite5A
+   :align: center
+
+**We need mixture isotherm function to simulate PSA process. Here we define the hydrogen/nitrogen mixture isotherm with** :py:mod:`isofit.IAST`
+
+.. code-block:: python
+
+   mix_isothrm = []
+   for i in range(3):
+      iso_mix = lambda P,T : isof.IAST([N2_isotherm,H2_isotherm], P, T)
+      mix_isothrm.append(iso_mix)
 
 **Then we need to define and run ideal PSA process.**
 
 .. code-block:: python
 
-   CI1 = simide.IdealColumn(2, iso_mix, )
+   results = []
+   for i in range(3):
+      CI1 = simide.IdealColumn(2, mix_isothrm[i] )
 
-   # Feed condition setting
-   P_feed = 8      # Feed presure (bar)
-   T_feed = 313.15    # Feed temperature (K)
-   y_feed = [3/4, 1/4] # Feed mole fraction (mol/mol)
-   CI1.feedcond(P_feed, T_feed, y_feed)
+      # Feed condition setting
+      P_feed = 8      # Feed presure (bar)
+      T_feed = 293.15    # Feed temperature (K)
+      y_feed = [1/4, 3/4] # Feed mole fraction (mol/mol)
+      CI1.feedcond(P_feed, T_feed, y_feed)
 
-   # Operating condition setting
-   P_high = 8 # High pressure (bar)
-   P_low  = 1 # Low pressure (bar)
-   CI1.opercond(P_high, P_low)
+      # Operating condition setting
+      P_high = 8 # High pressure (bar)
+      P_low  = 1 # Low pressure (bar)
+      CI1.opercond(P_high, P_low)
 
-   # Simulation run
-   x_tail = CI1.runideal()
-   print(x_tail)       # Output: [x_H2, x_N2]
+      # Simulation run
+      x_tail = CI1.runideal()
+      print(x_tail)       # Output: [x_H2, x_N2]
+      results.append(x_tail)
 
-**Now, we can calculate hydrogen recovery for this system. The definition of recovery is the ratio of target material between product and feed flow. The recovery is derived below.**
+**Now, we can calculate hydrogen recovery for this system.** The definition of recovery is the ratio of target material between product and feed flow. The recovery is derived below.
 
 .. math::
 
     R_{H_2} = \frac{(H_2 \textrm{ in feed})-(H_2 \textrm{ in tail gas})}{H_2 \textrm{ in feed}} = \frac{y_{H_2}\,F_{feed}-x_{H_2}\,F_{tail}}{y_{H_2}\,F_{feed}}
 
-**By the assumptions of ideal PSA columns, hydrogen mole fraction in raffinate is 1 (100 mol%). Mass balance eqaution for nitrogen becomes,**
+By the assumptions of ideal PSA columns, hydrogen mole fraction in raffinate is 1 (100 mol%). Mass balance eqaution for nitrogen becomes,
 
 .. math::
 
@@ -101,7 +151,7 @@ H\ :sub:`2` produced in regions rich in renewable energy is transported to other
 
     F_{tail} = \frac{y_{N_2}}{x_{N_2}} \cdot F_{feed}
 
-**Substituting above mass balance to recovery equation then,**
+Substituting above mass balance to recovery equation then,
 
 .. math::
 
@@ -109,13 +159,19 @@ H\ :sub:`2` produced in regions rich in renewable energy is transported to other
 
 .. code-block:: python
    
-   # Calculate H2 recovery
-   y_N2 = y_feed[1]
-   x_N2 = x_tail[1]
-   R_H2 = 1- (y_N2*(1-x_N2))/(x_N2*(1-y_N2))
+   for i in range(3):
+      y_N2 = y_feed[0]
+      x_N2 = results[i][0]
+      R_H2 = 1- (y_N2*(1-x_N2))/(x_N2*(1-y_N2))*100
+      print(f'Recovery of {Adsorbent[i]}: ', R_H2, '(%)' )
 
-   print(R_H2)
+The results shows below. Finally, we found the best performance adsorbent.
 
+.. image:: images/Zeolite5A.png
+   :width: 49%
+   :alt: H2_results
+   :align: center
+   
 ------------------------------------------------------------------------
 
 
@@ -140,8 +196,6 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
    import pyAPEP.simsep as simsep
 
 **Here, define pure isotherm function for carbon dioxide, nitrogen and methane using pressure-uptake data samples (Opt. 1).**
-
-If you want to define isotherm function with isotherm parameters already have, then refer to :ref:`here <isothrm_definition>`
 
 .. code-block:: python
 

@@ -271,35 +271,15 @@
 <span id="class-documentation"></span><h2>Class documentation<a class="headerlink" href="#module-pyAPEP.simsep" title="Permalink to this heading"></a></h2>
 <section id="id1">
 <h3>Real PSA simulation module (<a class="reference internal" href="#module-pyAPEP.simsep" title="pyAPEP.simsep"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code></a>)<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
-<section id="tutorials">
-<h4>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this heading"></a></h4>
-<p>Tutorials Tutorials Tutorials Tutorials
-Tutorials Tutorials Tutorials Tutorials</p>
-</section>
-<section id="functions">
-<h4>Functions<a class="headerlink" href="#functions" title="Permalink to this heading"></a></h4>
-<p>Functions Functions Functions Functions
-Functions Functions Functions Functions</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>[2022/08/16] - test</p></li>
-</ul>
-</div></blockquote>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyAPEP.simsep.</span></span><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column" title="Permalink to this definition"></a></dt>
-<dd><p>Instantiation. A <cite>Column</cite> class is for simulating packed bed column or pressure swing adsroption process.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>L</strong> – Length of column <span class="math notranslate nohighlight">\((m)\)</span></p></li>
-<li><p><strong>A_cross</strong> – Cross-sectional area of column <span class="math notranslate nohighlight">\((m^2)\)</span></p></li>
-<li><p><strong>n_component</strong> – Number of components</p></li>
-<li><p><strong>N_node</strong> – Number of nodes</p></li>
-<li><p><strong>E_balance</strong> – Energy balance inclusion (default = True)</p></li>
-</ul>
-</dd>
-</dl>
+<dd><p>Instantiation. A <cite>Column</cite> class is for simulating packed bed column or pressure swing adsroption process.
+:param L: Length of column <span class="math notranslate nohighlight">\((m)\)</span>
+:param A_cross: Cross-sectional area of column <span class="math notranslate nohighlight">\((m^2)\)</span>
+:param n_component: Number of components
+:param N_node: Number of nodes
+:param E_balance: Energy balance inclusion (default = True)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.__init__" title="Permalink to this definition"></a></dt>
@@ -350,7 +330,7 @@ Functions Functions Functions Functions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>k_mass_transfer</strong> – mass transfer coefficient <span class="math notranslate nohighlight">\((s^-1)\)</span></p></li>
+<li><p><strong>k_mass_transfer</strong> – mass transfer coefficient <span class="math notranslate nohighlight">\((s^(-1))\)</span></p></li>
 <li><p><strong>a_specific_surf</strong> – specific surface area <span class="math notranslate nohighlight">\((m^2/m^3)\)</span></p></li>
 <li><p><strong>D_dispersion</strong> – dispersion coefficient <span class="math notranslate nohighlight">\((m^2/s)\)</span></p></li>
 </ul>
@@ -496,8 +476,8 @@ Functions Functions Functions Functions</p>
 <li><p><strong>y</strong> – Simulation result of run_mamo and run_mamoen (if it is ‘None’, this value is from the simulation result automatically)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returen<span class="colon">:</span></dt>
-<dd class="field-even"><p>Volumetric flow rates at Z = 0 and L [time_node aaaa array]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Volumetric flow rates at Z = 0 and L [time_node array]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -578,7 +558,6 @@ Functions Functions Functions Functions</p>
 
 </section>
 </section>
-</section>
 <hr class="docutils" />
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
@@ -591,9 +570,9 @@ Functions Functions Functions Functions</p>
 <div><ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(C_{i} =\)</span> Concentration of component i <span class="math notranslate nohighlight">\((mol/m^3)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(t =\)</span> Time <span class="math notranslate nohighlight">\((s)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(D_{dis} =\)</span> Dispersion coefficient math:<cite>(m^2/s)</cite></p></li>
-<li><p><span class="math notranslate nohighlight">\(z =\)</span> Length in axial direction  <span class="math notranslate nohighlight">\((m)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void fraction  <span class="math notranslate nohighlight">\((m^3/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(D_{dis} =\)</span> Dispersion coefficient <span class="math notranslate nohighlight">\((m^2/s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(z =\)</span> Length in axial direction <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void fraction <span class="math notranslate nohighlight">\((m^3/m^3)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\rho_{s} =\)</span> Density of solid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(q_{i} =\)</span> Uptake of component i <span class="math notranslate nohighlight">\((mol/kg)\)</span></p></li>
 </ul>
