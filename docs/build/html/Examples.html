@@ -83,13 +83,14 @@
 <p>Here are some examples.</p>
 <section id="ideal-psa-simulation-for-green-hydrogen-production">
 <h2>1. Ideal PSA simulation for green hydrogen production<a class="headerlink" href="#ideal-psa-simulation-for-green-hydrogen-production" title="Permalink to this heading"></a></h2>
-<p><strong>Background</strong>
-Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H<sub>2</sub> separation and purification technologies have gained increasing attention. Among the various options for H<sub>2</sub> separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H<sub>2</sub> decomposed from green NH<sub>3</sub> and determine the hydrogen recovery of the columns given adsobents properties.</p>
+<p><strong>Background</strong></p>
+<p>Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H<sub>2</sub> separation and purification technologies have gained increasing attention. Among the various options for H<sub>2</sub> separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H<sub>2</sub> decomposed from green NH<sub>3</sub> and determine the hydrogen recovery of the columns given adsobents properties.</p>
 <a class="reference internal image-reference" href="_images/GreenNH3_process.png"><img alt="GreenNH3 process" class="align-center" src="_images/GreenNH3_process.png" style="width: 800px;" /></a>
-<p><strong>Process description</strong>
-H<sub>2</sub> produced in regions rich in renewable energy is transported to other locations in the form of NH<sub>3</sub>, and H<sub>2</sub> is produced by decomposing NH<sub>3</sub> into a mixture of N<sub>2</sub> and H<sub>2</sub>. The NH<sub>3</sub> reactor and residual NH<sub>3</sub> removal system are located before the PSA system. Thereafter, the 0.25% of unreacted NH<sub>3</sub> exiting the reactor is cooled and removed with a batch type uni-bed adsorption tower. Therefore, the gas entering the target PSA process was assumed to be 25 mol% N<sub>2</sub> and 75 mol% H<sub>2</sub>.</p>
-<p><strong>Goal</strong>
-The goal of this example is the find best adsorbent among three adsorbents by comparing PSA perfomances. Adsorbent candidates are Zeolite 13X, 5A and activated carbon. All adsorbents and its pressure-uptake data could be found in literatures. This example contains isotherm fitting with given data(.csv), isotherm validation, development of mixture isotherm for each adsorbent, and ideal PSA simulation.</p>
+<p>#
+<strong>Process description</strong></p>
+<p>H<sub>2</sub> produced in regions rich in renewable energy is transported to other locations in the form of NH<sub>3</sub>, and H<sub>2</sub> is produced by decomposing NH<sub>3</sub> into a mixture of N<sub>2</sub> and H<sub>2</sub>. The NH<sub>3</sub> reactor and residual NH<sub>3</sub> removal system are located before the PSA system. Thereafter, the 0.25% of unreacted NH<sub>3</sub> exiting the reactor is cooled and removed with a batch type uni-bed adsorption tower. Therefore, the gas entering the target PSA process was assumed to be 25 mol% N<sub>2</sub> and 75 mol% H<sub>2</sub>.</p>
+<p><strong>Goal</strong></p>
+<p>The goal of this example is the find best adsorbent among three adsorbents by comparing PSA perfomances. Adsorbent candidates are Zeolite 13X, 5A and activated carbon. All adsorbents and its pressure-uptake data could be found in literatures. This example contains isotherm fitting with given data(.csv), isotherm validation, development of mixture isotherm for each adsorbent, and ideal PSA simulation.</p>
 <p><strong>First, import pyAPEP package and other python packages for data treatment and visualization</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># pyAPEP package import</span>
 <span class="kn">import</span> <span class="nn">pyAPEP.isofit</span> <span class="k">as</span> <span class="nn">isofit</span>
@@ -201,7 +202,7 @@ The goal of this example is the find best adsorbent among three adsorbents by co
 </pre></div>
 </div>
 <p>The results shows below. Finally, we found the best performance adsorbent.</p>
-<a class="reference internal image-reference" href="_images/Zeolite5A.png"><img alt="H2_results" class="align-center" src="_images/Zeolite5A.png" style="width: 49%;" /></a>
+<a class="reference internal image-reference" href="_images/H2_results.png"><img alt="H2_results" class="align-center" src="_images/H2_results.png" style="width: 49%;" /></a>
 </section>
 <hr class="docutils" />
 <section id="real-psa-simulation-for-biogas-upgrading">

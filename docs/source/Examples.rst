@@ -7,6 +7,7 @@ Here are some examples.
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
 **Background**
+
 Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification technologies have gained increasing attention. Among the various options for H\ :sub:`2` separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H\ :sub:`2` decomposed from green NH\ :sub:`3` and determine the hydrogen recovery of the columns given adsobents properties.
 
 .. image:: images/GreenNH3_process.png
@@ -15,9 +16,11 @@ Because green ammonia is currently the favored transportation medium for carbon-
   :align: center
 
 **Process description**
+
 H\ :sub:`2` produced in regions rich in renewable energy is transported to other locations in the form of NH\ :sub:`3`, and H\ :sub:`2` is produced by decomposing NH\ :sub:`3` into a mixture of N\ :sub:`2` and H\ :sub:`2`. The NH\ :sub:`3` reactor and residual NH\ :sub:`3` removal system are located before the PSA system. Thereafter, the 0.25% of unreacted NH\ :sub:`3` exiting the reactor is cooled and removed with a batch type uni-bed adsorption tower. Therefore, the gas entering the target PSA process was assumed to be 25 mol% N\ :sub:`2` and 75 mol% H\ :sub:`2`.
 
 **Goal**
+
 The goal of this example is the find best adsorbent among three adsorbents by comparing PSA perfomances. Adsorbent candidates are Zeolite 13X, 5A and activated carbon. All adsorbents and its pressure-uptake data could be found in literatures. This example contains isotherm fitting with given data(.csv), isotherm validation, development of mixture isotherm for each adsorbent, and ideal PSA simulation.
 
 **First, import pyAPEP package and other python packages for data treatment and visualization**
@@ -167,11 +170,11 @@ Substituting above mass balance to recovery equation then,
 
 The results shows below. Finally, we found the best performance adsorbent.
 
-.. image:: images/Zeolite5A.png
+.. image:: images/H2_results.png
    :width: 49%
    :alt: H2_results
    :align: center
-   
+
 ------------------------------------------------------------------------
 
 
