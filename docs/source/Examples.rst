@@ -12,10 +12,12 @@ In this example, :py:mod:`pyAPEP.simide` is used to simulate ideal PSA process f
 
 Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification technologies have gained increasing attention. Among the various options for H\ :sub:`2` separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H\ :sub:`2` decomposed from green NH\ :sub:`3` and determine the hydrogen recovery of the columns given adsobents properties.
 
-.. image:: images/GreenNH3_process.png
-  :width: 800
+.. figure:: images/GreenNH3_process.png
+  :figwidth: 100%
   :alt: GreenNH3 process
   :align: center
+
+  Figure. Schematic of pressure swing adsorption process used for H\ :sub:`2` purification. 
 
 **Process description**
 
@@ -186,15 +188,19 @@ Substituting above mass balance to recovery equation then,
 In this example, :py:mod:`pyAPEP.simsep` is used to simulate real PSA process for the separation of CO\ :sub:`2`/CH\ :sub:`4` in biogas upgrading process.
 
 **Background**
-Biogas is a gas mixture that is produced when biomass such as livestock manure, agricultural waste, and sewage sludge is anaerobic digested. The composition of the biogas is generally composed of 50-70% of methane and 30-45% of carbon dioxide, and the other compositions such as H\ :sub:`2`S, N\ :sub:`2`, O\ :sub:`2`, and NH\ :sub:`3` are present in a small amount of less than 4%. Methane has 21 times higher global warming potential thdan carbon dioxie, so energy recovery from biogas leads to environmental benefits as well as economic benefits, so it has recently received a lot of attention. Among the energy recovery methods, bio-mathane production through biogas upgrading is in the spotlight because the bio-mathane can be used for fuel, heating, and electricity production.
+
+Biogas is a gas mixture that is produced when biomass such as livestock manure, agricultural waste, and sewage sludge is anaerobic digested. The composition of the biogas is generally composed of 50-70% of methane and 30-45% of carbon dioxide, and the other compositions such as H\ :sub:`2` S, N\ :sub:`2` , O\ :sub:`2`, and NH\ :sub:`3` are present in a small amount of less than 4%. Methane has 21 times higher global warming potential thdan carbon dioxie, so energy recovery from biogas leads to environmental benefits as well as economic benefits, so it has recently received a lot of attention. Among the energy recovery methods, bio-mathane production through biogas upgrading is in the spotlight because the bio-mathane can be used for fuel, heating, and electricity production.
 **Therefore, in this example, the PSA process, which is a commonly used process for biogas upgrading, is simulated using the pyAPEP.simsep module.**
 
-.. image:: images/Biogas.png
-  :width: 700
+.. figure:: images/Biogas.png
+  :figwidth: 100%
   :alt: GreenNH3 process
   :align: center
 
+  Figure. Schematic of bio-mathane production process.
+
 **Process description**
+
 Biogas produced through anaerobic digester is a gas that has a composition ratio of 67 and 33 mol% of CH\ :sub:`4` and CO\ :sub:`2` through a desulfurization pretreatment process. A two-component system real PSA simulation is performed based on process conditions to purify the biogas. The PSA process for biogas upgrading is adsorbed at 9 bar and desorbed at 1 bar, and the temperature and pressure of feed flow into 323 K. Here, we evaluate the commercial adsorbent, zeolite 13X for the biogas upgading.
 
 **Goal**
@@ -235,7 +241,7 @@ The goal of this example is the simulation of biogas upgrading process with comm
    CO2_iso_ = lambda P,T: CO2_iso(P)
    CH4_iso_ = lambda P,T: CH4_iso(P)
 
-**Then, we need mixture isotherm function to simulate PSA process for three components. Here we define the carbon dioxide and methane mixture isotherm with** :py:mod:`isofit.IAST`. **The developed mixture isotherm is used to newly define the mixture isotherm that can be utilized in a real PSA simulation.**
+Then, we need mixture isotherm function to simulate PSA process for all components. Here we define the carbon dioxide and methane mixture isotherm with :py:mod:`isofit.IAST`. **The developed mixture isotherm is used to newly define the mixture isotherm that can be utilized in a real PSA simulation.**
 
 .. code-block:: python
 
