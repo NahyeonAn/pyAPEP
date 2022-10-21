@@ -17,7 +17,7 @@ Because green ammonia is currently the favored transportation medium for carbon-
   :alt: GreenNH3 process
   :align: center
 
-  Figure. Schematic of pressure swing adsorption process used for H2 purification. 
+  Figure. Schematic of pressure swing adsorption process used for H\ :sub:`2` purification. 
 
 **Process description**
 
@@ -104,8 +104,8 @@ Check developed pure isotherm functions by comparing with raw data.
 
 |pic1| |pic2|
 
-.. image:: images/Zeolite5A.png
-   :width: 49%
+.. figure:: images/Zeolite5A.png
+   :figwidth: 49%
    :alt: Zeolite5A
    :align: center
 
@@ -174,8 +174,8 @@ Substituting above mass balance to recovery equation then,
 
 **The results shows below. Finally, we found the best performance adsorbent.**
 
-.. image:: images/H2_results.png
-   :width: 49%
+.. figure:: images/H2_results.png
+   :figwidth: 49%
    :alt: H2_results
    :align: center
 
@@ -325,25 +325,15 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
 
 :py:mod:`pyAPEP.simsep` **module gives various results plotting functions. Here, we using those functions.**
 
-.. code-block:: python
-
-   # Internal pressure in z direction
-   fig, ax = CR1.Graph_P(2, loc=[1.15,0.9])
-
-.. image:: images/simsep_example_pressure.png
-  :width: 400
-  :alt: simsep_example_pressure
-  :align: center
-
 .. code-block:: python 
 
-   # Concentration of gas and solid phase in z direction
+   # Concentration of gas phase in z direction
    fig = CR1.Graph(2, 0, loc=[1.15,0.9], 
-                  yaxis_label = 'Gas concentration of CO$_2$ (mol/m$^3$)',
-                  file_name = 'C1.png')
+                  yaxis_label = 'Gas concentration of CO2 (mol/m$^3$)',
+                  file_name = 'CO2_gas_conc.png')
    fig = CR1.Graph(2, 1, loc=[1.15,0.9], 
-                  yaxis_label = 'Gas concentration of CH$_4$ (mol/m$^3$)',
-                  file_name = 'C2.png')
+                  yaxis_label = 'Gas concentration of CH4 (mol/m$^3$)',
+                  file_name = 'CH4_gas_conc.png')
 
 .. |pic3| image:: images/CH4_gas_conc.png
     :width: 49%
@@ -353,3 +343,45 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
 
 |pic3| |pic4|
 
+.. code-block:: python 
+
+   # Concentration of solid phase in z direction
+   fig = CR1.Graph(2, 2, loc=[1.15,0.9], 
+                  yaxis_label = 'Soild concentration (uptake) of CO2 (mol/kg)',
+                  file_name = 'CO2_uptake.png')
+   fig = CR1.Graph(2, 3, loc=[1.15,0.9], 
+                  yaxis_label = 'Soild concentration (uptake) of CH4 (mol/kg)',
+                  file_name = 'CH4_uptake.png')
+
+.. |pic5| image:: images/CO2_gas_conc.png
+    :width: 49%
+
+.. |pic6| image:: images/CH4_uptake.png
+    :width: 49%
+
+|pic5| |pic6|
+
+.. code-block:: python
+
+   # Breakthrough test results
+   bt = CR1.breakthrough(True)
+
+.. figure:: images/simsep_breakthrough.png
+  :figwidth: 70%
+  :alt: simsep_breakthrough
+  :align: center
+
+  Figure. The result of breakthrough test
+
+
+.. code-block:: python
+
+   # Internal pressure in z direction
+   fig, ax = CR1.Graph_P(2, loc=[1.15,0.9])
+
+.. figure:: images/simsep_pressure.png
+  :figwidth: 70%
+  :alt: simsep_example_pressure
+  :align: center
+
+  Figure. Pressure gradient with time and position
