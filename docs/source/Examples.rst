@@ -184,11 +184,11 @@ The results shows below. Finally, we found the best performance adsorbent.
 바이오가스는 축산 분뇨, 농업 폐기물, 하수 슬러지 등의 바이오 매스가 혐기성 소화처리 되면서 발생하는 일종의 가스 혼합물이다. 생성된 원료 바이오 가스의 조성은 일반적으로 메탄 50-70%, 이산화탄소 30-45% 로 이루어져 있으며 기타 조성인 H2S, N2, O2, NH3 등의 가스는 4% 미만으로 미량 존재한다. 메탄은 이산화탄소보다 지구 온난화 잠재력이 21배 더 높기 때문에 바이오가스로부터의 에너지 회수는 경제적 이익뿐만 아니라 환경적 이익으로도 이어지므로 최근 많은 관심을 받고있다. 따라서 본 예제에서는 biogas upgading 을 위해 일반적으로 사용되는 공정인 PSA 공정을 pyAPEP.simsep 모듈을 활용해 시뮬레이션 한다.
 
 .. image:: images/Biogas.png
-  :width: 500
+  :width: 700
   :alt: GreenNH3 process
   :align: center
 
-Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리 공정을 거쳐 메탄, CO2가 각각 67, 33 mol% 의 조성비를 갖는 기체가 된다. 메탄은 최근 fuel cell 과 electricity 등에 사용될 수 있어 각광을 받고있는 물질로, 이 메탄을 에너지원으로 사용하기 위해서는 혼합가스를 정제가 필요하다. 본 예제에서는 주어진 흡착제 및 공정 조건을 바탕으로 2성분계 real PSA 시뮬레이션을 수행한다. Biogas upgrading 을 위한 PSA 공정은 8 bar 에서 흡착, 0.3 bar 에서 탈착을 거치며, feed 의 온도와 압력은 323 K 과 9 bar 로 유입된다.
+Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리 공정을 거쳐 메탄, CO2가 각각 67, 33 mol% 의 조성비를 갖는 기체가 된다. 메탄은 최근 fuel cell 과 electricity 등에 사용될 수 있어 각광을 받고있는 물질로, 이 메탄을 에너지원으로 사용하기 위해서는 혼합가스를 정제가 필요하다. 본 예제에서는 주어진 흡착제 및 공정 조건을 바탕으로 2성분계 real PSA 시뮬레이션을 수행한다. Biogas upgrading 을 위한 PSA 공정은 8 bar 에서 흡착, 0.3 bar 에서 탈착을 거치며, feed 의 온도와 압력은 323 K 과 9 bar 로 유입된다. Here we simulate the commercial adsorbent, zeolite 13X for the biogas upgading.
 
 이 예제는 크게 3단계로 구성돼있다.
 1. Pure isotherm function definition
@@ -196,7 +196,7 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
 3. Real PSA simulation
 
 
-**First, import pyAPEP packages.**
+**First, import pyAPEP packages. Also, users need to download adsorption data file (Example2_Zeolite13X.csv)**
 
 .. code-block:: python
 
@@ -334,13 +334,11 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
                   yaxis_label = 'Gas concentration of CH$_4$ (mol/m$^3$)',
                   file_name = 'C2.png')
 
-.. image:: images/simsep_example_gasphase.png
-  :width: 400
-  :alt: simsep_example_gasphase
-  :align: center
+.. |pic3| image:: images/CH4_gas_conc.png
+    :width: 49%
 
-.. image:: images/simsep_example_soildphase.png
-  :width: 400
-  :alt: simsep_example_soildphase
-  :align: center
+.. |pic4| image:: images/CO2_gas_conc.png
+    :width: 49%
+
+|pic3| |pic4|
 

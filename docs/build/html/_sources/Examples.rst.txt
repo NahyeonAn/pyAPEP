@@ -15,8 +15,6 @@ Because green ammonia is currently the favored transportation medium for carbon-
   :alt: GreenNH3 process
   :align: center
 
-
-#  
 **Process description**
 
 H\ :sub:`2` produced in regions rich in renewable energy is transported to other locations in the form of NH\ :sub:`3`, and H\ :sub:`2` is produced by decomposing NH\ :sub:`3` into a mixture of N\ :sub:`2` and H\ :sub:`2`. The NH\ :sub:`3` reactor and residual NH\ :sub:`3` removal system are located before the PSA system. Thereafter, the 0.25% of unreacted NH\ :sub:`3` exiting the reactor is cooled and removed with a batch type uni-bed adsorption tower. Therefore, the gas entering the target PSA process was assumed to be 25 mol% N\ :sub:`2` and 75 mol% H\ :sub:`2`.
@@ -190,95 +188,136 @@ The results shows below. Finally, we found the best performance adsorbent.
   :alt: GreenNH3 process
   :align: center
 
-Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리 공정을 거쳐 메탄, CO2, N2 가 각각 60, 38, 2 mol% 의 조성비를 갖는 기체가 된다. 메탄은 최근 fuel cell 과 electricity 등에 사용될 수 있어 각광을 받고있는 물질로, 이 메탄을 에너지원으로 사용하기 위해서는 혼합가스를 정제가 필요하다. 본 예제에서는 주어진 흡착제 및 공정 조건을 바탕으로 3성분계 PSA 시뮬레이션을 수행하고 methane recovery 를 도출한다. Biogas upgrading 을 위한 PSA 공정은 8 bar 에서 흡착, 0.3 bar 에서 탈착을 거치며, feed 의 온도와 압력은 323 K 과 1 bar 로 유지된다.
+Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리 공정을 거쳐 메탄, CO2가 각각 67, 33 mol% 의 조성비를 갖는 기체가 된다. 메탄은 최근 fuel cell 과 electricity 등에 사용될 수 있어 각광을 받고있는 물질로, 이 메탄을 에너지원으로 사용하기 위해서는 혼합가스를 정제가 필요하다. 본 예제에서는 주어진 흡착제 및 공정 조건을 바탕으로 2성분계 real PSA 시뮬레이션을 수행한다. Biogas upgrading 을 위한 PSA 공정은 8 bar 에서 흡착, 0.3 bar 에서 탈착을 거치며, feed 의 온도와 압력은 323 K 과 9 bar 로 유입된다.
+
+이 예제는 크게 3단계로 구성돼있다.
+1. Pure isotherm function definition
+2. Mixture isotherm function definition
+3. Real PSA simulation
 
 
-**First, import pyAPEP packages.**
+**First, import pyAPEP packages. Also, users need to download adsorption data file (Example2_Zeolite13X.csv)**
 
 .. code-block:: python
 
-   import pyAPEP.isofit as isofit
-   import pyAPEP.simsep as simsep
+   # pyAPEP package import
+   import pyadserver.isofit as isofit
+   import pyadserver.simsep as simsep
 
-**Here, define pure isotherm function for carbon dioxide, nitrogen and methane using pressure-uptake data samples (Opt. 1).**
+   # Data treatment package import
+   import numpy as np
+   import pandas as pd
+
+   # Data visualization package import
+   import matplotlib.pyplot as plt
+
+**First, from the adsorption data samples, we need to find pure isotherm function for methane and carbon dioxide.**
 
 .. code-block:: python
 
    # Data import
-   P = [2, 3, 4, 5]
-   q_CO2 = [5, 6, 7, 8]
-   q_N2 = [3, 4, 5, 6]
-   q_CH4 = [1, 2, 3, 4]
+   Data = pd.read_csv('Example2_Zeolite13X.csv')
 
-   q_mixture =  [q_CO2, q_N2, q_CH4]
-   # Find best isotherm function
-   n_comp = 3     # The number of components
-   iso_list = []
-   for i in range(n_comp):
-      _isotherm, _par, _fn_type, _val_err = isofit.best_isomodel(P, q_mixture[i])
-      iso_list.append(_isotherm)
+   # Pure isotherm definition
+   P_CO2 = Data['Pressure_CO2 (bar)'].dropna().values
+   q_CO2 = Data['Uptake_CO2 (mol/kg)'].dropna().values
 
+   P_CH4 = Data['Pressure_CH4 (bar)'].dropna().values
+   q_CH4 = Data['Uptake_CH4 (mol/kg)'].dropna().values
 
-**In this example, we need mixture isotherm function to simulate PSA process for three components. Here we define the carbon dioxide, nitrogen and methane mixture isotherm with** :py:mod:`isofit.IAST`
+   CO2_iso, _, _, _ = isofit.best_isomodel(P_CO2, q_CO2)
+   CH4_iso, _, _, _ = isofit.best_isomodel(P_CH4, q_CH4)
+   CO2_iso_ = lambda P,T: CO2_iso(P)
+   CH4_iso_ = lambda P,T: CH4_iso(P)
+
+**Then, we need mixture isotherm function to simulate PSA process for three components. Here we define the carbon dioxide and methane mixture isotherm with** :py:mod:`isofit.IAST`. **The mixture isotherm defined from** :py:mod:`isofit.IAST` **is used to newly define the mixture isotherm that can be utilized in real PSA simulations.**
 
 .. code-block:: python
 
    iso_mix = lambda P,T : isof.IAST(iso_list, P, T)
 
-**Then we need to define and run ideal PSA process.**
+   def mix_iso_arr(P_list, T_list):       # Newly defined mixture isotherm
+      q1_re = []
+      q2_re = []
+      for i in range(len(P_list[0])):
+         P = [P_list[0][i]] + [P_list[1][i]]
+         q = iso_mix(P, T_list[i])
+         q1, q2 = q[0], q[1]
+         q1_re.append(q1)
+         q2_re.append(q2)
+
+      q1_arr = np.array(q1_re)
+      q2_arr = np.array(q2_re)    
+      return [q1_arr, q2_arr]
+
+**Then we need to define and run real PSA process.**
 
 .. code-block:: python
 
    # Column design
-   c1 = simsep.column(1, 0.0314, 2 )
+   N = 21
+   L = 1.35
+   A_cros = np.pi*0.15**2
+   CR1 = simsep.column(L, A_cros, n_component=2, N_node = N)
 
    # Adsorbent parameters setting
-   voidfrac = 0.4
-   rho = 1100
-   c1.adsorbent_info(iso_mix, voidfrac, rho_s = rho) 
+   voidfrac = 0.37      # (m^3/m^3)
+   D_particle = 12e-4   # (m)
+   rho = 1324           # (kg/m^3)
+   CR1.adsorbent_info(mix_iso_arr, voidfrac, D_particle, rho)
 
    # Feed condition setting
-   Mmol = [0.25,0.01, 0.74] # kg/mol
-   visc = [0.01, 0.01, 0.01]  #Pa sec
-   c1.gas_prop_info(Mmol, visc)
+   Mmol = [0.044, 0.016]            # kg/mol
+   mu_visco= [11.86E-6, 16.13E-6]   # (Pa sec) 
+   CR1.gas_prop_info(Mmol, mu_visco)
 
    # Mass transfer information setting
-   MTC = [0.05, 0.05, 0.05]   #mass transfer coeff.
-   a_surf = 400 #Volumatric specific surface area (m2/m3)
-   c1.mass_trans_info(MTC, a_surf)
+   k_MTC  = [1E-4, 1E-4]     # m/sec
+   a_surf = 1                # m2/m3
+   D_disp = [1E-6, 1E-6]     # m^2/sec 
+   CR1.mass_trans_info(k_MTC, a_surf, D_disp)
 
    # Thermal information setting
-   dH_ads = [1000,1000, 1000]
-   Cp_s = 5
-   Cp_g = [10,10, 10]
-   h_heat = 10
-   c1.thermal_info(dH_ads, Cp_s, Cp_g, h_heat)
+   dH_ads = [31.164e3,20.856e3]   # J/mol
+   Cp_s = 900
+   Cp_g = [38.236, 35.8]          # J/mol/K
+   h_heat = 100                   # J/m2/K/s
+   CR1.thermal_info(dH_ads, Cp_s, Cp_g, h_heat)
 
    # Boundary condition setting
-   P_inlet = 8      # Feed presure (bar)
-   P_outlet = 1
-   T_feed = 313.15    # Feed temperature (K)
-   y_feed = [0.25,0.01, 0.74] # Feed mole fraction (mol/mol)
-   c1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed)
+   P_inlet = 9
+   P_outlet = 8.0
+   T_feed = 323
+   y_feed = [0.67,0.33]
+
+   Cv_inlet = 0.02E-1             # inlet valve constant (m/sec/bar)
+   Cv_outlet= 2.0E-1           # outlet valve constant (m/sec/bar)
+   Q_feed = 0.05*A_cros  # volumetric flowrate (m^3/sec)
+
+   CR1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
+                     Cv_inlet, Cv_outlet,
+                     Q_inlet = Q_feed,
+                     assigned_v_option = True)
 
    # Initial condition setting
-   P_init = P_inlet*np.ones(11)
-   y_init = [0.2*np.ones(11), 0.7*np.ones(11), 0.1*np.ones(11)]
-   Tg_init = T_feed*np.ones(11)
-   Ts_init = T_feed*np.ones(11)
+   P_init = 8.5*np.ones(N)                   # (bar)
+   y_init = [0.5*np.ones(N), 0.5*np.ones(N)] # (mol/mol)
+   T_init = T_feed*np.ones(N)
+   q_init = mix_iso_arr(P_init*np.array(y_init), T_init)
 
-   P_partial = [P_init*y_init[i] for i in range(n_comp)]
-   q_init = iso_mix(P_partial, Ts_init)
+   CR1.initialC_info(P_init, T_init, T_init, y_init, q_init)
+   print(CR1)
 
    # Simulation run
-   y,z, t = c1.run_mamoen(2000, n_sec=10, CPUtime_print=True)
+   y_res, z_res, t_res = CR1.run_mamoen(25,n_sec = 20, 
+                                    CPUtime_print = True)
 
 :py:mod:`pyAPEP.simsep` **module gives various results plotting functions. Here, we using those functions.**
 
 .. code-block:: python
 
    # Internal pressure in z direction
-   c1.Graph_P(200)
+   fig, ax = CR1.Graph_P(2, loc=[1.15,0.9])
 
 .. image:: images/simsep_example_pressure.png
   :width: 400
@@ -288,16 +327,18 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
 .. code-block:: python 
 
    # Concentration of gas and solid phase in z direction
-   c1.Graph(200, 0, yaxis_label='Gas Concentration (mol/m$^3$)', loc = [0.9, 0.95])
-   c1.Graph(200, 2, yaxis_label='Soild concentration (uptake) (mol/kg)', loc = [0.9, 0.95])
+   fig = CR1.Graph(2, 0, loc=[1.15,0.9], 
+                  yaxis_label = 'Gas concentration of CO$_2$ (mol/m$^3$)',
+                  file_name = 'C1.png')
+   fig = CR1.Graph(2, 1, loc=[1.15,0.9], 
+                  yaxis_label = 'Gas concentration of CH$_4$ (mol/m$^3$)',
+                  file_name = 'C2.png')
 
-.. image:: images/simsep_example_gasphase.png
-  :width: 400
-  :alt: simsep_example_gasphase
-  :align: center
+.. |pic3| image:: images/CH4_gas_conc.png
+    :width: 49%
 
-.. image:: images/simsep_example_soildphase.png
-  :width: 400
-  :alt: simsep_example_soildphase
-  :align: center
+.. |pic4| image:: images/CO2_gas_conc.png
+    :width: 49%
+
+|pic3| |pic4|
 
