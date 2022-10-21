@@ -6,6 +6,8 @@ Here are some examples.
 1. Ideal PSA simulation for green hydrogen production
 '''''''''''''''''''''''''''''''''''''''''''''''''''''''
 
+In this example, :py:mod:`pyAPEP.simide` is used to simulate ideal PSA process for the separation of H\ :sub:`2`/N\ :sub:`2` from the green ammonia.
+
 **Background**
 
 Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification technologies have gained increasing attention. Among the various options for H\ :sub:`2` separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H\ :sub:`2` decomposed from green NH\ :sub:`3` and determine the hydrogen recovery of the columns given adsobents properties.
@@ -23,7 +25,7 @@ H\ :sub:`2` produced in regions rich in renewable energy is transported to other
 
 The goal of this example is the find best adsorbent among three adsorbents by comparing PSA perfomances. Adsorbent candidates are Zeolite 13X, 5A and activated carbon. All adsorbents and its pressure-uptake data could be found in literatures. This example contains isotherm fitting with given data(.csv), isotherm validation, development of mixture isotherm for each adsorbent, and ideal PSA simulation.
 
-**First, import pyAPEP package and other python packages for data treatment and visualization**
+**Before we start, import pyAPEP package and other python packages for data treatment and visualization. Also, users need to download the adsorption data files for three adsobents**
 
 .. code-block:: python
 
@@ -40,7 +42,7 @@ The goal of this example is the find best adsorbent among three adsorbents by co
 
 .. _isotherm_definition:
 
-**Then, define pure isotherm function for hydrogen and nitrogen using pressure-uptake data samples.** Before developoing isotherm, users need to define or import datasets. If the isotherm parameters already exist, users can use those parameters by defining isotherm function manually.
+**Then, define pure isotherm function for hydrogen and nitrogen using pressure-uptake data samples.** Before developing isotherm, users need to define or import datasets. If the isotherm parameters already exist, users can use those parameters by defining isotherm function manually.
 
 .. code-block:: python
 
@@ -105,7 +107,7 @@ Check developed pure isotherm functions by comparing with raw data.
    :alt: Zeolite5A
    :align: center
 
-**We need mixture isotherm function to simulate PSA process. Here we define the hydrogen/nitrogen mixture isotherm with** :py:mod:`isofit.IAST`
+**We need mixture isotherm functions to simulate PSA process. Here we define the hydrogen/nitrogen mixture isotherm functions with** :py:mod:`isofit.IAST`
 
 .. code-block:: python
 
@@ -168,7 +170,7 @@ Substituting above mass balance to recovery equation then,
       R_H2 = 1- (y_N2*(1-x_N2))/(x_N2*(1-y_N2))*100
       print(f'Recovery of {Adsorbent[i]}: ', R_H2, '(%)' )
 
-The results shows below. Finally, we found the best performance adsorbent.
+**The results shows below. Finally, we found the best performance adsorbent.**
 
 .. image:: images/H2_results.png
    :width: 49%
@@ -181,22 +183,25 @@ The results shows below. Finally, we found the best performance adsorbent.
 2. Real PSA simulation for biogas upgrading
 '''''''''''''''''''''''''''''''''''''''''''''''
 
-바이오가스는 축산 분뇨, 농업 폐기물, 하수 슬러지 등의 바이오 매스가 혐기성 소화처리 되면서 발생하는 일종의 가스 혼합물이다. 생성된 원료 바이오 가스의 조성은 일반적으로 메탄 50-70%, 이산화탄소 30-45% 로 이루어져 있으며 기타 조성인 H2S, N2, O2, NH3 등의 가스는 4% 미만으로 미량 존재한다. 메탄은 이산화탄소보다 지구 온난화 잠재력이 21배 더 높기 때문에 바이오가스로부터의 에너지 회수는 경제적 이익뿐만 아니라 환경적 이익으로도 이어지므로 최근 많은 관심을 받고있다. 따라서 본 예제에서는 biogas upgading 을 위해 일반적으로 사용되는 공정인 PSA 공정을 pyAPEP.simsep 모듈을 활용해 시뮬레이션 한다.
+In this example, :py:mod:`pyAPEP.simsep` is used to simulate real PSA process for the separation of CO\ :sub:`2`/CH\ :sub:`4` in biogas upgrading process.
+
+**Background**
+Biogas is a gas mixture that is produced when biomass such as livestock manure, agricultural waste, and sewage sludge is anaerobic digested. The composition of the biogas is generally composed of 50-70% of methane and 30-45% of carbon dioxide, and the other compositions such as H\ :sub:`2`S, N\ :sub:`2`, O\ :sub:`2`, and NH\ :sub:`3` are present in a small amount of less than 4%. Methane has 21 times higher global warming potential thdan carbon dioxie, so energy recovery from biogas leads to environmental benefits as well as economic benefits, so it has recently received a lot of attention. Among the energy recovery methods, bio-mathane production through biogas upgrading is in the spotlight because the bio-mathane can be used for fuel, heating, and electricity production.
+**Therefore, in this example, the PSA process, which is a commonly used process for biogas upgrading, is simulated using the pyAPEP.simsep module.**
 
 .. image:: images/Biogas.png
   :width: 700
   :alt: GreenNH3 process
   :align: center
 
-Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리 공정을 거쳐 메탄, CO2가 각각 67, 33 mol% 의 조성비를 갖는 기체가 된다. 메탄은 최근 fuel cell 과 electricity 등에 사용될 수 있어 각광을 받고있는 물질로, 이 메탄을 에너지원으로 사용하기 위해서는 혼합가스를 정제가 필요하다. 본 예제에서는 주어진 흡착제 및 공정 조건을 바탕으로 2성분계 real PSA 시뮬레이션을 수행한다. Biogas upgrading 을 위한 PSA 공정은 8 bar 에서 흡착, 0.3 bar 에서 탈착을 거치며, feed 의 온도와 압력은 323 K 과 9 bar 로 유입된다. Here we simulate the commercial adsorbent, zeolite 13X for the biogas upgading.
+**Process description**
+Biogas produced through anaerobic digester is a gas that has a composition ratio of 67 and 33 mol% of CH\ :sub:`4` and CO\ :sub:`2` through a desulfurization pretreatment process. A two-component system real PSA simulation is performed based on process conditions to purify the biogas. The PSA process for biogas upgrading is adsorbed at 9 bar and desorbed at 1 bar, and the temperature and pressure of feed flow into 323 K. Here, we evaluate the commercial adsorbent, zeolite 13X for the biogas upgading.
 
-이 예제는 크게 3단계로 구성돼있다.
-1. Pure isotherm function definition
-2. Mixture isotherm function definition
-3. Real PSA simulation
+**Goal**
 
+The goal of this example is the simulation of biogas upgrading process with commercial adsorbent. Zeolite 13X and its pressure-uptake data could be found in the literature. This example contains isotherm fitting with given data(.csv), development of mixutre isotherm function and real PSA simulation.
 
-**First, import pyAPEP packages. Also, users need to download adsorption data file (Example2_Zeolite13X.csv)**
+**Before we start, import pyAPEP packages. Also, users need to download adsorption data file (Example2_Zeolite13X.csv)**
 
 .. code-block:: python
 
@@ -211,7 +216,7 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
    # Data visualization package import
    import matplotlib.pyplot as plt
 
-**First, from the adsorption data samples, we need to find pure isotherm function for methane and carbon dioxide.**
+**Fist, from the adsorption data samples, we need to find pure isotherm function for methane and carbon dioxide.** Before developing isotherm, users need to define or import datasets. If the isotherm parameters already exist, users can use those parameters by defining isotherm function manually.
 
 .. code-block:: python
 
@@ -230,7 +235,7 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
    CO2_iso_ = lambda P,T: CO2_iso(P)
    CH4_iso_ = lambda P,T: CH4_iso(P)
 
-**Then, we need mixture isotherm function to simulate PSA process for three components. Here we define the carbon dioxide and methane mixture isotherm with** :py:mod:`isofit.IAST`. **The mixture isotherm defined from** :py:mod:`isofit.IAST` **is used to newly define the mixture isotherm that can be utilized in real PSA simulations.**
+**Then, we need mixture isotherm function to simulate PSA process for three components. Here we define the carbon dioxide and methane mixture isotherm with** :py:mod:`isofit.IAST`. **The developed mixture isotherm is used to newly define the mixture isotherm that can be utilized in a real PSA simulation.**
 
 .. code-block:: python
 
@@ -250,7 +255,7 @@ Anaerobic digester 를 통해 생산된 biogas 는 desulfurization 의 전처리
       q2_arr = np.array(q2_re)    
       return [q1_arr, q2_arr]
 
-**Then we need to define and run real PSA process.**
+**Then we need to define and run real PSA process. Most of the process parameters are the same with the literature. \ref **
 
 .. code-block:: python
 
