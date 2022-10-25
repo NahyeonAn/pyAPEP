@@ -353,7 +353,7 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
                   yaxis_label = 'Soild concentration (uptake) of CH4 (mol/kg)',
                   file_name = 'CH4_uptake.png')
 
-.. |pic5| image:: images/CO2_gas_conc.png
+.. |pic5| image:: images/CO2_uptake.png
     :width: 49%
 
 .. |pic6| image:: images/CH4_uptake.png
