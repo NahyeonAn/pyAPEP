@@ -147,11 +147,10 @@ Finding best isotherm function algorithm
 
 이 알고리즘은 일반적으로 사용되는 5개의 isotherm function candidates 와 python optimizer candidate 로부터 주어진 data 에 가장 적절한 isothem function 과 그 parameter 를 도출한다. 알고리즘의 전반적인 내용은 아래 그림과 같다.
 
-.. image:: images/Best_isotherm.png
-  :width: 800
+.. image:: images/algorithm.png
+  :width: 500
   :alt: Isotherm fitting algorithm
   :align: center
-
 
 
 5개의 isotherm function 은 Arrh, Langmuir (Lang), Freundlich (Freu), Quadratic (Quad), Sips, Dual-site Langmuir (DSLang) 이며 각 수식은 아래와 같다. 
@@ -160,7 +159,7 @@ Finding best isotherm function algorithm
 | # of      | Name   | Equation                                                                                   |
 |parameters |        |                                                                                            |
 +===========+========+============================================================================================+
-|     1     | Arrh   | :math:`q(P) =e^{\frac{\vartriangle H}{R} \left (\frac {1}/{T}-\frac {1}/{T_{ref}} \right)}`                                                        |
+|     1     | Arrh   | :math:`q(P) =e^{\frac{\vartriangle H}{R} \left (\frac {1}{T}-\frac {1}{T_{ref}} \right)}`  |
 +-----------+--------+--------------------------------------------------------------------------------------------+
 |     2     | Lang   | :math:`q(P) = M\frac{KP}{1+KP}`                                                            |
 +           +--------+--------------------------------------------------------------------------------------------+

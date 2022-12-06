@@ -222,7 +222,7 @@ The goal of this example is the simulation of biogas upgrading process with comm
    # Data visualization package import
    import matplotlib.pyplot as plt
 
-**Fist, from the adsorption data samples, we need to find pure isotherm function for methane and carbon dioxide.** Before developing isotherm, users need to define or import datasets. If the isotherm parameters already exist, users can use those parameters by defining isotherm function manually.
+**First, from the adsorption data samples, we need to find pure isotherm function for methane and carbon dioxide.** Before developing isotherm, users need to define or import datasets. If the isotherm parameters already exist, users can use those parameters by defining isotherm function manually. Also, in this example, the single isotherm functions are used to simplify the process model.
 
 .. code-block:: python
 
@@ -241,32 +241,17 @@ The goal of this example is the simulation of biogas upgrading process with comm
    CO2_iso_ = lambda P,T: CO2_iso(P)
    CH4_iso_ = lambda P,T: CH4_iso(P)
 
-Then, we need mixture isotherm function to simulate PSA process for all components. Here we define the carbon dioxide and methane mixture isotherm with :py:mod:`isofit.IAST`. **The developed mixture isotherm is used to newly define the mixture isotherm that can be utilized in a real PSA simulation.**
+   def MixIso(P, T):
+      q1 = CO2_iso(P[0])
+      q2 = CH4_iso(P[1])
+      return q1, q2
 
-.. code-block:: python
-
-   iso_mix = lambda P,T : isof.IAST(iso_list, P, T)
-
-   def mix_iso_arr(P_list, T_list):       # Newly defined mixture isotherm
-      q1_re = []
-      q2_re = []
-      for i in range(len(P_list[0])):
-         P = [P_list[0][i]] + [P_list[1][i]]
-         q = iso_mix(P, T_list[i])
-         q1, q2 = q[0], q[1]
-         q1_re.append(q1)
-         q2_re.append(q2)
-
-      q1_arr = np.array(q1_re)
-      q2_arr = np.array(q2_re)    
-      return [q1_arr, q2_arr]
-
-**Then we need to define and run real PSA process. Most of the process parameters are the same with the literature. \ref **
+**Next, define and run a real PSA process. Most of the process parameters are the same as in the literature (ref). In this example, Skarstrom cycle which is the operation method for PSA process is simulated in four stages of adsorption-blowdown-purge-pressurization.**
 
 .. code-block:: python
 
    # Column design
-   N = 21
+   N = 11
    L = 1.35
    A_cros = np.pi*0.15**2
    CR1 = simsep.column(L, A_cros, n_component=2, N_node = N)
@@ -283,9 +268,9 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
    CR1.gas_prop_info(Mmol, mu_visco)
 
    # Mass transfer information setting
-   k_MTC  = [1E-4, 1E-4]     # m/sec
+   k_MTC  = [1E-2, 1E-2]     # m/sec
    a_surf = 1                # m2/m3
-   D_disp = [1E-6, 1E-6]     # m^2/sec 
+   D_disp = [1E-2, 1E-2]     # m^2/sec 
    CR1.mass_trans_info(k_MTC, a_surf, D_disp)
 
    # Thermal information setting
@@ -296,8 +281,8 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
    CR1.thermal_info(dH_ads, Cp_s, Cp_g, h_heat)
 
    # Boundary condition setting
-   P_inlet = 9
-   P_outlet = 8.0
+   P_inlet = 9.5
+   P_outlet = 9
    T_feed = 323
    y_feed = [0.67,0.33]
 
@@ -311,17 +296,104 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
                      assigned_v_option = True)
 
    # Initial condition setting
-   P_init = 8.5*np.ones(N)                   # (bar)
-   y_init = [0.5*np.ones(N), 0.5*np.ones(N)] # (mol/mol)
+   P_init = 9.25*np.ones(N)                   # (bar)
+   y_init = [0.001*np.ones(N), 0.999*np.ones(N)] # (mol/mol)
    T_init = T_feed*np.ones(N)
    q_init = mix_iso_arr(P_init*np.array(y_init), T_init)
 
    CR1.initialC_info(P_init, T_init, T_init, y_init, q_init)
    print(CR1)
 
+This example considers the mass, momentum, and energy balance equations, therefore run_mamoen function is used to run the simulation.
+
+.. code-block:: python
+
    # Simulation run
    y_res, z_res, t_res = CR1.run_mamoen(25,n_sec = 20, 
                                     CPUtime_print = True)
+
+The simulation of the adsorption step is completed. The final results of this stage would become the initial condition of the next step, the purge step, and the boundary condition should be modified. Repeat the initial condition update, modification of boundary conditions, and the simulation running until the last step, the pressurization step.
+
+.. code-block:: python
+
+   ### Blowdown step ###
+   CR1.next_init()
+   CR1.change_init_node(11)
+
+   ### Operating conditions
+   P_inlet = 9
+   P_outlet = 1
+   T_feed = 323
+   y_feed = [0.001,0.999]
+
+   Cv_inlet = 0E-1             # inlet valve constant (m/sec/bar)
+   Cv_outlet= 1E-1           # outlet valve constant (m/sec/bar)
+
+   CR1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
+                     Cv_inlet, Cv_outlet,
+                     foward_flow_direction = False)
+
+   y_res = CR1.run_mamoen(1000,n_sec = 10, CPUtime_print = True)
+
+.. code-block:: python
+
+   ### Purge step ###
+   CR1.next_init()
+
+   ### Operating conditions
+   P_inlet = 1.5
+   P_outlet = 1
+   T_feed = 323
+   y_feed = [0.001,0.999]
+
+   Cv_inlet = 1E-1             # inlet valve constant (m/sec/bar)
+   Cv_outlet= 4E-1           # outlet valve constant (m/sec/bar)
+
+   CR1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
+                     Cv_inlet, Cv_outlet,
+                     foward_flow_direction = False)
+
+   y_res = CR1.run_mamoen(1000,n_sec = 10, CPUtime_print = True)
+
+To calculate the pressurization step, an iterative method is needed to stabilize the simulation. By using the iterative calculation, the column is pressurized from 1 bar to over 8 bar.
+
+.. code-block:: python
+   
+   ### Pressurization step ###
+   CR1.next_init()
+
+   total_y = []
+   R_gas = 8.3145      # 8.3145 J/mol/K
+   P_outlet = 1
+   P_inlet = 2
+   Cv_outlet= 0E-1
+   T_feed = 323
+   y_feed = [0.33,0.67]
+   while P_outlet<8.1:
+      Cv_inlet =(P_inlet-P_outlet)*0.1
+      CR1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
+                     Cv_inlet, Cv_outlet,
+                     foward_flow_direction = True)
+      y_res = CR1.run_mamoen(5,n_sec = 10, CPUtime_print = True)
+      total_y.append(y_res)
+      
+      P = np.zeros(11)
+      for ii in range(2):
+         Tg_res = y_res[0][:,2*2*11 : 2*2*11+11]
+         P = P + y_res[0][:,(ii)*11:(ii+1)*11]*R_gas*Tg_res/1E5
+         
+      P_outlet = np.mean(P[-1])
+      P_inlet = P_outlet+1.1
+      CR1.next_init()
+
+The simulation results at each step are shown in below figure.
+
+.. figure:: images/Example2.png
+   :figwidth: 99%
+   :alt: Example2
+   :align: center
+
+
 
 :py:mod:`pyAPEP.simsep` **module gives various results plotting functions. Here, we using those functions.**
 
@@ -353,7 +425,7 @@ Then, we need mixture isotherm function to simulate PSA process for all componen
                   yaxis_label = 'Soild concentration (uptake) of CH4 (mol/kg)',
                   file_name = 'CH4_uptake.png')
 
-.. |pic5| image:: images/CO2_gas_conc.png
+.. |pic5| image:: images/CO2_uptake.png
     :width: 49%
 
 .. |pic6| image:: images/CH4_uptake.png
