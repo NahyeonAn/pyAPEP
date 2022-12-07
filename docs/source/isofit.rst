@@ -144,16 +144,43 @@ Theory
 
 Finding best isotherm function algorithm
 ''''''''''''''''''''''''''''''''''''''''''
-
-이 알고리즘은 일반적으로 사용되는 5개의 isotherm function candidates 와 python optimizer candidate 로부터 주어진 data 에 가장 적절한 isothem function 과 그 parameter 를 도출한다. 알고리즘의 전반적인 내용은 아래 그림과 같다.
+ 
+This module enables to automatically develop pure and mixture isotherm functions from pressure and uptake data samples. Below figure shows the schematic diagram of the algorithm to find the best isotherm function.
 
 .. image:: images/algorithm.png
   :width: 500
   :alt: Isotherm fitting algorithm
   :align: center
 
+Objective function of isotherm fitting
+*********************************************
 
-5개의 isotherm function 은 Arrh, Langmuir (Lang), Freundlich (Freu), Quadratic (Quad), Sips, Dual-site Langmuir (DSLang) 이며 각 수식은 아래와 같다. 
+Estimation of the isotherm function is the same as solving an optimization problem as the following equation.
+
+.. math::
+
+    J = \min_{K_1, K_2, ...} \left( \sum_{i=1}^{N_{fit}} (q_i-\hat{q}_i)^2 \right )
+
+.. math::
+
+    \hat{q} = f(P, T, K_1, K_2, ...)
+
+where :math:`q`, :math:`N_{fit}`, and :math:`K` refer to gas uptake, the number of data samples for isotherm fitting, and isotherm parameters, respectively. :math:`f` means the isotherm function, and :math:`\hat{q}` is the predicted uptake from :math:`f`. By solving the objective function, the isotherm parameters are derived that satisfy the minimum error between actual and predicted uptake data.
+
+Optimization with multiple optimization methods
+***************************************************
+
+To find the best isotherm parameters, isofit module considers five optimization solvers. Optimization solvers are given by the public python package, scipy, and those are Nelder-mead, Powell, COBYLA, shgo, and differential evolution. The solver with the minimum objective function is selected and the isotherm function is derived as the following equation.
+
+.. math::
+
+    f = \arg\min_{solver}(J)
+
+Isotherm model selection
+********************************
+
+:py:mod:`isofit.best_isomodel` automatically find the best isotherm function by applying the above equations to five different isotherm functions. Five isotherm functions are described in below table. Then, the solvers and parameters could be found for each isotherm function. Among isotherm functions, a function with the smallest objective function value is selected as the best isotherm function.
+
 
 +-----------+--------+--------------------------------------------------------------------------------------------+
 | # of      | Name   | Equation                                                                                   |
@@ -174,7 +201,7 @@ Finding best isotherm function algorithm
 
 
 .. note::
-   사용자는 candidates 로 사용하고자 하는 모델의 parameter 개수를 고려하여 data sample 을 제공해야한다. 예를 들어 Dual site Langmuir 함수를 candidates 에 포함하고자 한다면 사용자는 3 개 이상의 data sample 이 필요하다.
+   The user should provide a data sample in consideration of the number of parameters of the model to be used as candidates. For example, if you want to include the Dualsite Langmuir function in candates, the user needs more than three data samples.
 
 
 Adosption at different temperature (using heat of adsorption)
@@ -189,8 +216,8 @@ where :math:`H_{ads,i}` is heat of adsorption and :math:`T_{ref}` is reference t
 Ideal adsorbed solution theory (IAST)
 ''''''''''''''''''''''''''''''''''''''''
 
-IAST 는 component 간의 경쟁적인 흡착을 고려하여 pure isothrm function 으로부터 mixture isotherm function 을 도출한다.
-IAST 는 아래 사항을 가정한다.
+IAST derives a mixture function from pure isothrm functions in consideration of competitive adsorption between components.
+IAST assumes the following:
 
    * The temperature is fixed and the pure isotherm are measured at the same temperature.
    * The thermodynamic property of the adsorbent during the adsorption is negligible.
