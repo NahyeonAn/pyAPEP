@@ -292,9 +292,26 @@ The explanation include function usage, algorithm (or related theroy), and funct
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
 <section id="finding-best-isotherm-function-algorithm">
 <h3>Finding best isotherm function algorithm<a class="headerlink" href="#finding-best-isotherm-function-algorithm" title="Permalink to this heading"></a></h3>
-<p>이 알고리즘은 일반적으로 사용되는 5개의 isotherm function candidates 와 python optimizer candidate 로부터 주어진 data 에 가장 적절한 isothem function 과 그 parameter 를 도출한다. 알고리즘의 전반적인 내용은 아래 그림과 같다.</p>
+<p>This module enables to automatically develop pure and mixture isotherm functions from pressure and uptake data samples. Below figure shows the schematic diagram of the algorithm to find the best isotherm function.</p>
 <a class="reference internal image-reference" href="_images/algorithm.png"><img alt="Isotherm fitting algorithm" class="align-center" src="_images/algorithm.png" style="width: 500px;" /></a>
-<p>5개의 isotherm function 은 Arrh, Langmuir (Lang), Freundlich (Freu), Quadratic (Quad), Sips, Dual-site Langmuir (DSLang) 이며 각 수식은 아래와 같다.</p>
+<section id="objective-function-of-isotherm-fitting">
+<h4>Objective function of isotherm fitting<a class="headerlink" href="#objective-function-of-isotherm-fitting" title="Permalink to this heading"></a></h4>
+<p>Estimation of the isotherm function is the same as solving an optimization problem as the following equation.</p>
+<div class="math notranslate nohighlight">
+\[J = \min_{K_1, K_2, ...} \left( \sum_{i=1}^{N_{fit}} (q_i-\hat{q}_i)^2 \right )\]</div>
+<div class="math notranslate nohighlight">
+\[\hat{q} = f(P, T, K_1, K_2, ...)\]</div>
+<p>where <span class="math notranslate nohighlight">\(q\)</span>, <span class="math notranslate nohighlight">\(N_{fit}\)</span>, and <span class="math notranslate nohighlight">\(K\)</span> refer to gas uptake, the number of data samples for isotherm fitting, and isotherm parameters, respectively. <span class="math notranslate nohighlight">\(f\)</span> means the isotherm function, and <span class="math notranslate nohighlight">\(\hat{q}\)</span> is the predicted uptake from <span class="math notranslate nohighlight">\(f\)</span>. By solving the objective function, the isotherm parameters are derived that satisfy the minimum error between actual and predicted uptake data.</p>
+</section>
+<section id="optimization-with-multiple-optimization-methods">
+<h4>Optimization with multiple optimization methods<a class="headerlink" href="#optimization-with-multiple-optimization-methods" title="Permalink to this heading"></a></h4>
+<p>To find the best isotherm parameters, isofit module considers five optimization solvers. Optimization solvers are given by the public python package, scipy, and those are Nelder-mead, Powell, COBYLA, shgo, and differential evolution. The solver with the minimum objective function is selected and the isotherm function is derived as the following equation.</p>
+<div class="math notranslate nohighlight">
+\[f = \arg\min_{solver}(J)\]</div>
+</section>
+<section id="isotherm-model-selection">
+<h4>Isotherm model selection<a class="headerlink" href="#isotherm-model-selection" title="Permalink to this heading"></a></h4>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit.best_isomodel</span></code> automatically find the best isotherm function by applying the above equations to five different isotherm functions. Five isotherm functions are described in below table. Then, the solvers and parameters could be found for each isotherm function. Among isotherm functions, a function with the smallest objective function value is selected as the best isotherm function.</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><blockquote>
@@ -333,8 +350,9 @@ The explanation include function usage, algorithm (or related theroy), and funct
 </table>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>사용자는 candidates 로 사용하고자 하는 모델의 parameter 개수를 고려하여 data sample 을 제공해야한다. 예를 들어 Dual site Langmuir 함수를 candidates 에 포함하고자 한다면 사용자는 3 개 이상의 data sample 이 필요하다.</p>
+<p>The user should provide a data sample in consideration of the number of parameters of the model to be used as candidates. For example, if you want to include the Dualsite Langmuir function in candates, the user needs more than three data samples.</p>
 </div>
+</section>
 </section>
 <section id="adosption-at-different-temperature-using-heat-of-adsorption">
 <h3>Adosption at different temperature (using heat of adsorption)<a class="headerlink" href="#adosption-at-different-temperature-using-heat-of-adsorption" title="Permalink to this heading"></a></h3>
@@ -344,8 +362,8 @@ The explanation include function usage, algorithm (or related theroy), and funct
 </section>
 <section id="ideal-adsorbed-solution-theory-iast">
 <h3>Ideal adsorbed solution theory (IAST)<a class="headerlink" href="#ideal-adsorbed-solution-theory-iast" title="Permalink to this heading"></a></h3>
-<p>IAST 는 component 간의 경쟁적인 흡착을 고려하여 pure isothrm function 으로부터 mixture isotherm function 을 도출한다.
-IAST 는 아래 사항을 가정한다.</p>
+<p>IAST derives a mixture function from pure isothrm functions in consideration of competitive adsorption between components.
+IAST assumes the following:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>The temperature is fixed and the pure isotherm are measured at the same temperature.</p></li>
