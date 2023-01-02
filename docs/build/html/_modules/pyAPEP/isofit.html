@@ -73,7 +73,7 @@
   <h1>Source code for pyAPEP.isofit</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">====================================</span>
-<span class="sd"> :mod:`isofit` 모듈 isofit</span>
+<span class="sd"> :mod:`isofit` module</span>
 <span class="sd">====================================</span>
 <span class="sd">This module develops the pure and mixuture isotherm function, given the</span>
 <span class="sd">partial pressure and adsorption data.</span>
@@ -81,7 +81,6 @@
 <span class="c1">#%% Importing</span>
 <span class="c1"># numericals</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># scipy</span>
 <span class="kn">from</span> <span class="nn">scipy.integrate</span> <span class="kn">import</span> <span class="n">trapz</span>
@@ -90,7 +89,7 @@
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">differential_evolution</span>
 <span class="c1"># files handling</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="c1"># import pickle</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
 
 <span class="c1"># Graph</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -197,19 +196,19 @@
 <span class="n">iso_fun_lists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">iso_fun_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0E-5</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to find best isotherm model for given datast with multiple isotherm and optimizer candidates.</span>
+<span class="sd">    Function to automatically find best isotherm model for given datast with multiple isotherm and optimizer candidates.</span>
 <span class="sd">    </span>
 <span class="sd">    Models supported are as follows. Here, :math:`q` is the gas uptake,</span>
 <span class="sd">    :math:`P` is partial pressure (fugacity technically).  </span>
 
 <span class="sd">    :param P: Partial pressure list</span>
 <span class="sd">    :param q: Acutal or simulated uptake list of given P</span>
-<span class="sd">    :param iso_par_nums: The number of parameters to isotherm fitting (dtype : list)</span>
+<span class="sd">    :param iso_par_nums: The number of parameters for isotherm models</span>
 <span class="sd">    :param iso_fun_lists: Isotherm function candidates</span>
 <span class="sd">    :param iso_fun_index: Each name for iso_fun_lists</span>
 <span class="sd">    :param tol: Tolerance</span>
 <span class="sd">    </span>
-<span class="sd">    :return: best_isotherm, parameters, best_function_name, val_err</span>
+<span class="sd">    :return: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     
     <span class="k">if</span> <span class="n">iso_fun_lists</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
@@ -223,10 +222,14 @@
                 <span class="n">iso_fun_lists</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">DSLa</span><span class="p">,])</span>
     <span class="k">if</span> <span class="n">iso_fun_index</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">iso_fun_index</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">isolii</span> <span class="ow">in</span> <span class="n">iso_fun_lists</span><span class="p">:</span>
-            <span class="n">indx_tmp</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">isolii</span><span class="p">)))</span>
-            <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">indx_tmp</span><span class="p">)</span>
-
+        <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Langmuir&quot;</span><span class="p">,</span><span class="s2">&quot;Freundlich&quot;</span><span class="p">])</span>
+        <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Quadratic&quot;</span><span class="p">,</span><span class="s2">&quot;Sips&quot;</span><span class="p">])</span>
+        <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Dual-site Langmuire&quot;</span><span class="p">])</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        for isolii in iso_fun_lists:</span>
+<span class="sd">            indx_tmp = list(range(len(isolii)))</span>
+<span class="sd">            iso_fun_index.append(indx_tmp)</span>
+<span class="sd">        &#39;&#39;&#39;</span>
     <span class="n">optfn_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">optx_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">iso_best_list</span> <span class="o">=</span> <span class="p">[]</span>
@@ -271,20 +274,20 @@
         <span class="n">iso_fun_lists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
         <span class="n">iso_fun_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0E-5</span><span class="p">):</span>
-
+    
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to fit isotherm model for given datast.</span>
+<span class="sd">    Function to fit isotherm model for given datast based on the different temperatures.</span>
 <span class="sd">    </span>
 <span class="sd">    :param p_list: Partial pressure list</span>
 <span class="sd">    :param q_list: Acutal or simulated uptake list of given P</span>
 <span class="sd">    :param T_list: Temperature list</span>
 <span class="sd">    :param i_ref: Reference temperature index in T_list</span>
-<span class="sd">    :param iso_par_nums: The number of parameters to isotherm fitting</span>
+<span class="sd">    :param iso_par_nums: The number of parameters for isotherm models</span>
 <span class="sd">    :param iso_fun_lists: Isotherm function candidates</span>
 <span class="sd">    :param iso_fun_index: Each name for iso_fun_lists</span>
 <span class="sd">    :param tol: Tolerance</span>
 <span class="sd">    </span>
-<span class="sd">    :return: var_return (iso_all, iso_params, str_best, err_fit_all, dH, T_ref, theta_list)</span>
+<span class="sd">    :return: var_return (isotherm function, isotherm parameters, errors, calculated heat of adsorption, reference temperature, a list of :math:`\theta_{T_{j}}`)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">p_ref</span> <span class="o">=</span> <span class="n">p_list</span><span class="p">[</span><span class="n">i_ref</span><span class="p">]</span>
@@ -293,7 +296,7 @@
             <span class="n">iso_par_nums</span><span class="p">,</span> <span class="n">iso_fun_lists</span><span class="p">,</span> <span class="n">iso_fun_index</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
     <span class="n">iso_ref</span><span class="p">,</span> <span class="n">param_ref</span><span class="p">,</span> <span class="n">model_ref</span><span class="p">,</span> <span class="n">fnval_ref</span> <span class="o">=</span> <span class="n">fit_res_ref</span>
     <span class="c1">#print(model_ref)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">fit_res_ref</span><span class="p">)</span>
+    <span class="c1">#print(fit_res_ref)</span>
     <span class="n">n_da</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">T_list</span><span class="p">)</span>
     <span class="n">theta_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">p_norm</span> <span class="o">=</span> <span class="p">[]</span>
@@ -345,12 +348,15 @@
             <span class="n">iso_par_nums</span><span class="p">,</span> <span class="n">iso_fun_lists</span><span class="p">,</span> <span class="n">iso_fun_index</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
 
             <span class="c1">#p_norm_arr,q_norm_arr, tol = 1E-5)</span>
-    <span class="n">iso_all</span> <span class="o">=</span> <span class="n">fit_res_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">iso_ref</span> <span class="o">=</span> <span class="n">fit_res_all</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">err_fit_all</span> <span class="o">=</span> <span class="n">fit_res_all</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
     <span class="n">iso_params</span> <span class="o">=</span> <span class="n">fit_res_all</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">str_best</span> <span class="o">=</span> <span class="n">fit_res_all</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">R_gas</span> <span class="o">=</span> <span class="mf">8.3145</span>
+    <span class="n">iso_all</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P_in</span><span class="p">,</span> <span class="n">T_in</span> <span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">iso_ref</span><span class="p">(</span><span class="n">P_in</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">dH</span><span class="o">/</span><span class="n">R_gas</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">T_in</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="n">T_ref</span><span class="p">))),</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,])</span>
+    <span class="n">iso_all</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P_in</span><span class="p">,</span> <span class="n">T_in</span> <span class="p">:</span> <span class="n">iso_ref</span><span class="p">(</span><span class="n">P_in</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">dH</span><span class="o">/</span><span class="n">R_gas</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">T_in</span> <span class="o">-</span> <span class="mi">1</span><span class="o">/</span><span class="n">T_ref</span><span class="p">)))</span>
     <span class="c1">#print(err_fit_all)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">fit_res_all</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="c1">#print(fit_res_all[2])</span>
     <span class="c1">#q_pre_norm = iso_ref(p_norm_arr)</span>
     <span class="c1">#diff_all = (q_pre_norm - q_norm_arr)/(q_norm_arr+1E-3)</span>
     <span class="c1">#err_fit_all = np.mean(diff_all**2)</span>
@@ -385,7 +391,7 @@
     <span class="k">return</span> <span class="n">ln_gamma</span>
 
 <span class="c1">#%% RAST 2: RAST mixture isotherm model</span>
-<div class="viewcode-block" id="rast"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.rast">[docs]</a><span class="k">def</span> <span class="nf">rast</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span><span class="n">P_i</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="n">Lamb</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">rast</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span><span class="n">P_i</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="n">Lamb</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to develop mixture isotherm model with RAST.</span>
@@ -542,7 +548,7 @@
         <span class="n">q_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">iso_list</span><span class="p">[</span><span class="n">ii</span><span class="p">](</span><span class="n">P_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
     <span class="n">q_tot</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_re</span><span class="o">/</span><span class="n">q_pure</span><span class="p">))</span>
     <span class="n">q_return</span> <span class="o">=</span> <span class="n">q_tot</span><span class="o">*</span><span class="n">x_re</span>
-    <span class="k">return</span> <span class="n">q_return</span></div>
+    <span class="k">return</span> <span class="n">q_return</span>
 <span class="k">def</span> <span class="nf">iso2isoArr</span><span class="p">(</span><span class="n">iso_P_only</span><span class="p">,</span> <span class="n">dH</span><span class="p">,</span><span class="n">T_ref</span><span class="p">):</span>
     <span class="n">iso_PT</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">iso_P_only</span><span class="p">(</span><span class="n">Arrh</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">dH</span><span class="p">,</span><span class="n">T_ref</span><span class="p">)</span><span class="o">*</span><span class="n">P</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">iso_PT</span>
@@ -552,7 +558,7 @@
 <div class="viewcode-block" id="IAST"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.IAST">[docs]</a><span class="k">def</span> <span class="nf">IAST</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span> <span class="n">P_i</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
     
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function to fit isotherm model for given datast.</span>
+<span class="sd">    Function to develop the mixture isotherm model for given datast.</span>
 <span class="sd">    </span>
 <span class="sd">    :param isotherm_list: Pure isotherm function list of each components</span>
 <span class="sd">    :param P_i: Partial pressure of each components</span>
@@ -592,11 +598,17 @@
         <span class="n">Po_i</span> <span class="o">=</span> <span class="n">P_i</span><span class="o">/</span><span class="n">xx</span>
         <span class="n">spr_P_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">P_i</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mf">0.001</span><span class="p">:</span>
+                <span class="n">spr_P_new</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">spr_P</span>
+                <span class="n">rms_err</span> <span class="o">=</span> <span class="n">rms_err</span> <span class="o">+</span> <span class="mi">1000</span><span class="o">*</span><span class="n">xx</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span><span class="o">**</span><span class="mi">2</span>
+                <span class="k">continue</span>
             <span class="n">spr_P_tmp</span> <span class="o">=</span> <span class="n">spr_press</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">Po_i</span><span class="p">[</span><span class="n">ii</span><span class="p">],</span> <span class="n">T</span><span class="p">)</span>
             <span class="n">spr_P_new</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">spr_P_tmp</span>
         <span class="n">rms_err</span> <span class="o">=</span> <span class="n">rms_err</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">spr_P_new</span> <span class="o">-</span> <span class="n">spr_P</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">rms_err</span>
-
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P_i</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">0.001</span><span class="p">:</span>
+        <span class="n">q_return</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">P_i</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q_return</span>
     <span class="n">y_i</span> <span class="o">=</span> <span class="n">P_i</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P_i</span><span class="p">)</span>
     <span class="n">x_init</span> <span class="o">=</span> <span class="n">P_i</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">P_i</span><span class="p">)</span>
     <span class="n">x_init</span> <span class="o">=</span> <span class="n">x_init</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -606,6 +618,10 @@
     <span class="n">qm</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">bP</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">iso</span><span class="p">,</span> <span class="n">pp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span> <span class="n">P_i</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pp</span> <span class="o">&lt;</span> <span class="mf">0.0001</span><span class="p">:</span>
+            <span class="n">bP</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">qm</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+            <span class="k">continue</span>
         <span class="n">P_ran</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">pp</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
         <span class="n">q_P</span> <span class="o">=</span> <span class="n">iso</span><span class="p">(</span><span class="n">P_ran</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="n">P_ran</span>
         <span class="n">piA_RT_tmp</span> <span class="o">=</span> <span class="n">trapz</span><span class="p">(</span><span class="n">q_P</span><span class="p">,</span> <span class="n">P_ran</span><span class="p">)</span>
@@ -664,13 +680,15 @@
     <span class="n">x_re</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">opt_list</span><span class="p">[</span><span class="n">arg_min</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">x_re</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">([</span><span class="mi">1</span><span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_re</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">)])</span>
     <span class="n">piA_RT_re</span> <span class="o">=</span> <span class="n">opt_list</span><span class="p">[</span><span class="n">arg_min</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">arg_0</span> <span class="o">=</span> <span class="n">x_re</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="n">arg_0</span> <span class="o">=</span> <span class="n">x_re</span> <span class="o">&lt;=</span> <span class="mf">0.00001</span>
     <span class="n">arg_non0</span> <span class="o">=</span> <span class="n">arg_0</span> <span class="o">==</span> <span class="kc">False</span>
     <span class="n">P_pure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="n">P_pure</span><span class="p">[</span><span class="n">arg_non0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">P_i</span><span class="p">)[</span><span class="n">arg_non0</span><span class="p">]</span><span class="o">/</span><span class="n">x_re</span><span class="p">[</span><span class="n">arg_non0</span><span class="p">]</span>
     <span class="n">q_pure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">ii</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
         <span class="n">q_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="n">iso_list</span><span class="p">[</span><span class="n">ii</span><span class="p">](</span><span class="n">P_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">q_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">0.0001</span><span class="p">:</span>
+            <span class="n">q_pure</span><span class="p">[</span><span class="n">ii</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0001</span>
     <span class="n">q_tot</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">x_re</span><span class="o">/</span><span class="n">q_pure</span><span class="p">))</span>
     <span class="n">q_return</span> <span class="o">=</span> <span class="n">q_tot</span><span class="o">*</span><span class="n">x_re</span>
     <span class="k">return</span> <span class="n">q_return</span>            </div>
@@ -788,8 +806,6 @@
 <span class="sd">    print(&#39;Parameters:&#39;,xb_test)</span>
 <span class="sd">    print(&#39;Model (string): &#39;,strb_test)</span>
 <span class="sd">&#39;&#39;&#39;</span>
-
-<span class="c1"># %%</span>
 </pre></div>
 
            </div>

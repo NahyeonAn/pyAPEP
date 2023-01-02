@@ -9,12 +9,11 @@ First, import isofit into Python after installation.
 
    import pyAPEP.isofit as isofit
 
-In this module, four main functions exist.
+In this module, three main functions exist.
 
    1. Finding best isotherm function (:py:mod:`isofit.best_isomodel`) 
    2. Fitting isotherm for different temperature (:py:mod:`isofit.fit_diffT`)
    3. Developing mixuture isotherm with RAST (:py:mod:`isofit.rast`)
-   4. Developing mixuture isotherm with IAST (:py:mod:`isofit.iast`)
 
 Detailed description of each function are described in next senction.
 The explanation include function usage, algorithm (or related theroy), and function structure.
@@ -93,29 +92,6 @@ IAST : Ideal adsorbed solution Theory
    # Develop mixture isotherm
    iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
 
-
-4. Developing mixuture isotherm with RAST
-'''''''''''''''''''''''''''''''''''''''''''
-RAST : Real adsorbed solution Theory
-
-.. code-block:: python
-
-   # Pure isotherm definition
-   def iso1(P, T):
-    nume =1*0.05*P
-    deno = 1+0.05*P
-    q = nume/deno
-    return q
-
-   def iso2(P,T):
-      nume = 2*0.1*P
-      deno = 1+0.1*P
-      q = nume/deno
-      return q
-
-   # Develop mixture isotherm
-   iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
-
 ----------------------------------------
 
 Function structures
@@ -128,10 +104,6 @@ Function structures
 .. currentmodule:: pyAPEP.isofit
 
 .. autofunction:: fit_diffT
-
-.. currentmodule:: pyAPEP.isofit
-
-.. autofunction:: rast
 
 .. currentmodule:: pyAPEP.isofit
 
@@ -251,18 +223,5 @@ For components :math:`i = 1, 2, ..., N`, the pure component spreading pressure :
 
 Find the spreading pressure for all components with :math:`x_{guess}`, until that spreading pressure of mixture is the same with that of each components.
 check the spreading pressure from :math:`x_i` until the difference between :math:`\pi_i` and :math:`\pi_j` becomes smaller than the tolerance.
-
-
-Real adsorbed solution theory (RAST)
-''''''''''''''''''''''''''''''''''''''''
-
-In the real adsorbed solution theory, the pressure is calculated with modified Raoults' law to consider the actual behavior with activity coefficient. Other equations and algorithm is the same with IAST.
-
-**Modified Raoult' law**
-
-.. math::
-   y_i \phi  P = x_i \gamma_i P^{\circ}_i,
-
-where  :math:`\phi` is fugacity coefficient and :math:`\gamma_i` is activity coefficient.
 
 ----------------------------------------
