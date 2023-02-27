@@ -5,7 +5,12 @@
 
 Documentation for pyAPEP
 ===================================
-**pyAPEP** (Python based adsorption process evaluation package) is the all-in-one package for the pressure swing adsorption (PSA) simulation. pyAPEP includes the module for defining pure and mixture isotherm function, and simulating PSA under ideal and real conditions.
+**pyAPEP** (Python based adsorption process evaluation package) is the all-in-one package for evaluation of adsorbents with process simulation. pyAPEP includes the module for deriving isotherm functions from given data set, and simulating PSA process under ideal and real conditions.
+
+.. image:: images/pyAPEP_logo.png
+  :width: 700
+  :alt: pyAPEP_logo
+  :align: center
 
 ---------
 
@@ -26,3 +31,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+---------------------------
+
+The source code for pyAPEP is registered as an official Python package with the Python Package Index (PyPI) under an MIT license.

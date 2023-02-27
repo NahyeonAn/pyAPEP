@@ -5,11 +5,11 @@ To install pyAPEP, use the Python package manager `pip <https://pypi.python.org/
 
 .. code-block:: bash
    
-   sudo pip install pyAPEP
+   sudo pip install pyapep
 
 pyAPEP runs on both Python 2 and Python 3.
 
-As an alternative method to install pyAPEP, clone the repository on `Github <https://github.com/NahyeonAn/rtd-tutorial`_. `cd` into the main directory `pyAPEP` and run the `setup.py` script in the terminal:
+As an alternative method to install pyAPEP, clone the repository on `Github <https://github.com/NahyeonAn/pyAPEP`. `cd` into the main directory `pyAPEP` and run the `setup.py` script in the terminal:
 
 .. code-block:: bash
    
