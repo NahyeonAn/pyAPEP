@@ -92,8 +92,7 @@ Theory
   :alt: PSA process
   :align: center
 
-
-Ideal PSA 의 주요 assumption 은 아래와 같다.
+Ideal PSA process simulations exclude non-ideal factors deteriorating the separation performances of PSA processes such as thermal effect and pressure gradient along the adsorption column. Since the computation of the non-ideal impact requires most of the computational cost, the ideal PSA process model (shortcut method) drastically reduces the computation time from several days to less tha one second, estimating the theoretical potential of each adsorbent in a PSA process. A few assumptions are made for the idealization of the PSA process.
 
     *	Extremely fast mass & heat transfer between gas and solid phases
     *	The operation of the ideal PSA process is isothermal by perfectly controlling temperature.
@@ -102,35 +101,44 @@ Ideal PSA 의 주요 assumption 은 아래와 같다.
     *	During the desorption step, the detrimental influence of the void fraction on the tail gas purity is ignored.
     *	Uniform pressure distribution is assumed all along the adsorbent bed of the PSA process.
 
-Ideal PSA simulation 을 통해 tail gas 에서의 조성을 도출할 수 있으며, :math:`x_{guess}` 와 계산된 :math:`x` 와의 mismatch 를 최소화 하는 방향으로 solution 이 도출된다.
+In ideal PSA simulations, the calculated tail gas composition must satisfy the conditions. To determine the tail gas composition (:math:`x`), an initial guess (:math:`x_{guess}`) should be given. The optimization problem is solved to minimize the difference between the calculated tail gas composition and the initial guess.
 
 .. math::
 
     \min_{x_{guess}} ||x_i-x_{guess}||^2_2
 
-such that
+The gas uptake (:math:`q`) is obtained using below equations.
+
+    .. math::
+        q_{1,h}, q_{2,h} = f_{IAST} \left(P_{h}, T, y \right )
+
+    .. math::
+        q_{1,l}, q_{2,l} = f_{IAST} \left(P_{l}, T, x_{guess} \right )
+
+where :math:`f_{IAST}` is the mixture isotherm function driven by the pure isotherm function for each component, :math:`P` and :math:`T` refer to the pressure and temperature, and :math:`h` and :math:`l` denote high and low, respectively. The tail gas composition was then calculated using the following equations:
+
+    .. math::
+        \Delta q_i = q_{i,h} - q_{i,l} \; \textrm{for} \, i=1\,\textrm{to} \, n
+
+    .. math::
+        x_i = \frac{\Delta q_i}{\sum_{i=1}^{n} \Delta q_i}
+
+Because the composition of the tail gas is calculated through an ideal PSA simulation, the product recovery may be easily derived. Product recovery is the ratio of the flow rate of the produced product to the feed flow rate and is defined as shown in below.
 
     .. math::
 
-        x = \frac{\vartriangle q_1}{\vartriangle q_1 + \vartriangle q_2}
+        R_{P} =\frac{F_{P, raffinate}}{F_{P, feed}}= \frac{F_{P, feed}-F_{P, tail}}{F_{P, feed}}
+
+where :math:`R` and :math:`F` are the product recovery and flow rate, respectively, and :math:`P` denotes the product components. The ideal PSA process assumes 100 % purity of the product produced in the raffinate. Therefore, the mass balance equation for the impurity component is expressed using equation below.
 
     .. math::
 
-        \vartriangle q_1 = q_{1,high} - q_{1,low}
+        F_{tail} = \frac{y_{I}}{x_{I}} \cdot F_{feed}
+
+where :math:`x` and :math:`y` are the mole fractions of the tail gas and feed flow, respectively, and :math:`I` denotes the impurity component.
+By substituting for the mass balance described above into the recovery equation, product recovery can be constructed as follows:
 
     .. math::
-
-        \vartriangle q_2 = q_{2,high} - q_{2,low}
-
-    .. math::
-
-        q_{1,high}, q_{2,high} = f_{IAST} \left(P_{high}, T, y \right )
-
-    .. math::
-
-        q_{1,low}, q_{2,low} = f_{IAST} \left(P_{low}, T, x_{guess} \right )
-
-where :math:`y` is the mole fraction in gas phase during the adsorption step.
-
+        R_{P} = \frac{(1-y_{I})F_{feed} - (1-x_{I})F_{tail}}{(1-y_{I})F_{feed}} = 1 - \frac{y_{I}(1-x_{I})}{x_{I}(1-y_{I})}
 
 --------------------------------

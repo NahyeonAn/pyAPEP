@@ -1,7 +1,7 @@
 Isotherm fitting module (:py:mod:`pyAPEP.isofit`)
 ====================================================
 
-:py:mod:`pyAPEP.isofit` is a module to define isotherm functions from pressure and uptake data samples. Three main functions are developed in this module: :py:mod:`best_isomodel`, :py:mod:`diff_T`, and :py:mod:`IAST`. :py:mod:`best_isomodel` automatically finds the best isotherm function for the pure component. :py:mod:`diff_T` derives isotherm according to temperature and pressure, and :py:mod:`IAST` that derives mixture isotherm from single isotherms using Ideal adsorbed solution theory (IAST).
+ :py:mod:`isofit` is a module used to define isotherm functions from pressure and uptake data samples. Three main functions are developed in this module—:py:mod:`best_isomodel`, :py:mod:`diff_T`, and :py:mod:`IAST`. :py:mod:`best_isomodel` automatically finds the best isotherm function for the pure component. :py:mod:`diff_T` derives isotherms according to temperature and pressure, and :py:mod:`IAST` derives mixture isotherms using single isotherms, respectively.
 
 
 First, import isofit into Python after installation.
@@ -16,8 +16,7 @@ In this module, three main functions exist.
    2. Fitting isotherm for different temperature (:py:mod:`isofit.fit_diffT`)
    3. Developing mixuture isotherm with IAST (:py:mod:`isofit.IAST`)
 
-Detailed description of each function are described in next senction.
-The explanation include function usage, algorithm (or related theroy), and function structure.
+ Detailed description of each function are described in next senction. The explanation include function usage, algorithm (or related theroy), and function structure.
 
 ---------------------
 
@@ -27,7 +26,7 @@ Usage
 1. Finding best isotherm function
 '''''''''''''''''''''''''''''''''''''
 
-:py:mod:`best_isomodel` automatically finds the best isotherm function from a given pressure-uptake dataset with multiple isotherm and optimizer candidates. In this usage example, the isotherm function is found from a dummy dataset with gas uptake at four pressures (2, 3, 4, 5 bar). The function :py:mod:`best_isomodel` returns 4 elements: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model.
+ :py:mod:`best_isomodel` automatically finds the best isotherm function from a given pressure-uptake dataset with multiple isotherm and optimizer candidates. In this usage example, the isotherm function is found from a dummy dataset with gas uptake at four pressures (2, 3, 4, 5 bar). The function :py:mod:`best_isomodel` returns 4 elements: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model.
 
 
 .. code-block:: python
@@ -45,60 +44,86 @@ Usage
 2. Fitting isotherm for different temperature
 '''''''''''''''''''''''''''''''''''''''''''''''''
 
-To reflect the temperature influence on the adsorption equilibrium, adsorption isotherm data measured at different pressure and temperatures should be used in composing an isotherm model. :py:mod:`fit_diffT` finds the isotherm model considering both pressure and temperature effects.
+ To reflect the temperature influence on the adsorption equilibrium, adsorption isotherm data measured at different pressure and temperatures should be used in composing an isotherm model. :py:mod:`fit_diffT` finds the isotherm model considering both pressure and temperature effects.
 
 .. code-block:: python
 
-   # Data import
-   P = [2, 3, 4, 5]
-   q = [1, 2, 3, 4]
+   # Generate a data dummy data
+   qm_dum = 4.5 # mol/kg
+   K1_dum = 3.0 # 1/bar
+   K2_dum = 0.5 # 1/(bar^2)
+   P_dum = np.linspace(0, 2, 9)
+   T_dum = [280, 300, 305, 310, 320] # dummy T
+   dH_dum = 25000 # J/mol : heat of adsorption
+   R_gas = 8.3145
+   T_ref = T_dum[1] # Reference temperature = 300 K
 
-   # Find best isotherm function
-   best_isotherm, parameters, fn_type, val_err = isofit.best_isomodel(P, q)
+   q_dum = []
+   for T in T_dum:
+      P_norm = np.exp(dH_dum/R_gas*(1/T - 1/T_ref))*P_dum
+      err_dum = 0.05*np.random.rand(len(P_norm))
+      q_tmp = qm_dum*(K1_dum*P_norm + 2*K2_dum*P_norm**2)/(
+               1+ K1_dum*P_norm + K2_dum*P_norm**2)
+      q_w_err = q_tmp + err_dum
+      q_dum.append(q_w_err)
+   # Use isofit
+   P_list = [P_dum,]*len(q_dum)
+   res_diffT = isofit.fit_diffT(P_list,q_dum, T_dum, 1, tol = 2E-4)
+   iso_function, iso_param, zerr = res_diffT[:3]
+   fit_error, dH_found, Tref_found, theta_list = res_diffT [3:]
+   print("This data is fitted with {}.".format(zerr))
+
+   # Prediction for different T
+   P_pred = np.linspace(0,2.5, 51)
+   q_pred = []
+   for T in T_dum:
+      q_tmp =iso_function(P_pred, T)
+      q_pred.append(q_tmp)
 
 3. Developing mixuture isotherm with IAST
 '''''''''''''''''''''''''''''''''''''''''''
 
  :py:mod:`IAST` provides Ideal adsorbed solution theory (IAST) calculation. IAST is widely used for predicting the isotherm of multiple components using pure isotherm models for each gas component. 
 
-**Option 1)** Users can define their own isotherm function for each components,
-
 .. code-block:: python
 
-   # Pure isotherm definition
-   def iso1(P, T):
-    nume =1*0.05*P
-    deno = 1+0.05*P
-    q = nume/deno
-    return q
-
+   # Pure isotherm functions
+   def iso1(P,T):
+      deno = 1 + 0.3*P
+      nume = 2*0.3*P
+      return  nume/deno
    def iso2(P,T):
-      nume = 2*0.1*P
-      deno = 1+0.1*P
-      q = nume/deno
-      return q
+      deno = 1 + 0.3*P + 0.1*P**2
+      nume = 2*(0.3*P + 2*0.1*P**2)
+      return nume/deno
+   def iso3(P,T):
+      return 2*P**0.4
 
-   # Develop mixture isotherm
-   iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
-
-**Option 2)** Or use developed isotherm function from :py:mod:`isofit.best_isomodel`
-
-.. code-block:: python
-
-   P = [2, 3, 4, 5]
-   q_comp1 = [1, 2, 3, 4]     # Gas adsorption of component 1
-   q_comp2 = [1, 5, 7, 10]    # Gas adsorption of component 2
-
-   # Define pure isotherm of each component
-   iso1, param1, fn_type1, val_err1 = isofit.best_isomodel(P, q_comp1)
-   iso2, param2, fn_type2, val_err2 = isofit.best_isomodel(P, q_comp2)
-   
-   # Develop mixture isotherm
-   iso_mix = lambda P,T : isof.IAST([iso1, iso2], P, T)
+   iso_list = [iso1, iso2, iso3]
+   P_arr = np.linspace(0,4,9)  # pressure (bar)
+   T = 300    # temperature (K) 
+   y_gas = [] # mole fraction (mol/mol)
+   y1 = [0, 0.2, 0.4, 0.6] # mol. frac. of 1 (mo/mol)
+   for y in y1:
+      y_tmp = np.array([y, 0.6-y, 0.4])
+      y_gas.append(y_tmp)
+   q_comp1 = []
+   q_comp2 = []
+   for yy in y_gas:
+      res_list = []
+      q1_tmp = []
+      q2_tmp = []
+      for p in P_arr:
+         res_tmp = isofit.IAST(iso_list,p*yy, T)
+         res_list.append(res_tmp)
+         q1_tmp.append(res_tmp[0])
+         q2_tmp.append(res_tmp[1])
+      q_comp1.append(q1_tmp)
+      q_comp2.append(q2_tmp)
 
 ----------------------------------------
 
-Function structures
+F:py:mod:{unction structures
 ---------------------
 
 .. currentmodule:: pyAPEP.isofit
@@ -120,17 +145,15 @@ Theory
 
 Finding best isotherm function algorithm
 ''''''''''''''''''''''''''''''''''''''''''
- 
-This module enables to automatically develop pure and mixture isotherm functions from pressure and uptake data samples. Below figure shows the schematic diagram of the algorithm to find the best isotherm function.
+
+ A primary function, :py:mod:`best_isomodel`, automatically determines the best isotherm function from a given pressure-uptake dataset. Figure below shows the algorithm of :py:mod:`best_isomodel`. The algorithm consists of three main stages. First, the parameter was estimated using a given isotherm function and an optimization solver. In the next stage, the best optimization solver with the least error was identified by repeatedly solving the objective problems using five optimization solvers. Finally, the best isotherm function among the five isotherm candidates was found by repeating the first and second stages. A detailed explanation of each stage is provided below:
 
 .. image:: images/algorithm.png
   :width: 500
   :alt: Isotherm fitting algorithm
   :align: center
 
-
 Figure shows the algorithm of :py:mod:`isofit.best_isomodel`. The algorithm consists of three stages. First, the parameter estimation is carried out with a given isotherm function and an optimization solver. The next stage finds the best optimization solver with the least error by repeatedly solving the objective problems with five optimization solvers. Lastly, the best isotherm function is found among five isotherm candidates by repeating the first and second stages. A detailed explanation of each stage is described followings.
-
 
 Parameters estimation of the isotherm function is the same as solving an optimization problem as followings:
 
@@ -157,6 +180,8 @@ The best isotherm function with the smallest objective function value is derived
     f = \arg\min_{F\_list}(J(s))
 
 
+:py:mod:`isofit` estimates the parameters for adsorption isotherm models. If the user provides a list of adsorption isotherm models to fit the data, the :py:mod:`isofit` module uses the default list of isotherm models. The default list includes the following default isotherm models---Langmuir, Freundlich, Quadratic, Sips, and Dual-site Langmuir isotherm models. These isotherm models are described using the following equations as in below table. 
+
 +-----------+--------+--------------------------------------------------------------------------------------------+
 | # of      | Name   | Equation                                                                                   |
 |parameters |        |                                                                                            |
@@ -174,7 +199,7 @@ The best isotherm function with the smallest objective function value is derived
 |     4     | DSLang | :math:`q(P) = M_1 \frac{K_1 P}{1+K_1 P} +  M_2 \frac{K_2 P}{1+K_2 P}`                      |
 +-----------+--------+--------------------------------------------------------------------------------------------+
 
-Langmuir isotherm model is an isotherm model derived from the assumption that identical elementary adsorption sites exist on the adsorbent surface. The Langmuir isotherm model is also know as simple Langmuir or Single-site Langmuir isotherm model to be distinguished from multi-site Langmuir models. Freundlish model is an empirically deduced isotherm model. Although it is well know that Freundlich model is neither physically nor thermodynamically consistent, this model has been widely used still today. Moreover, Quadratic isotherm model is the simplest cooperative adsorption isotherm model. Quadratic isotherm model assumes identical adsorption sites hosting multiple adsorbate molecules. In addition, Sips model is a combination of Langmuir and Freundlich isotherm models. While Sips model follows Freundlich isotherm model at low pressure, the model predicts the saturation of the adsorbent at high pressure as Langmuir isotherm model does. Lastly, Dual-site Langmuir model is the most well-known multisite Langmuir isotherm model. Dual-site Langmuir isotherm model is derived from the assumption t that there exist two distinct types of adsorption sites. These default adsorption isotherm models are considered to select the best adsorption isotherm model for the given data in :py:mod:`isofit` module.where
+Langmuir isotherm model is an isotherm model derived from the assumption that identical elementary adsorption sites exist on the adsorbent surface. The Langmuir isotherm model is also know as simple Langmuir or Single-site Langmuir isotherm model to be distinguished from multi-site Langmuir models. Freundlish model is an empirically deduced isotherm model. Although it is well know that Freundlich model is neither physically nor thermodynamically consistent, this model has been widely used still today. Moreover, Quadratic isotherm model is the simplest cooperative adsorption isotherm model. Quadratic isotherm model assumes identical adsorption sites hosting multiple adsorbate molecules. In addition, Sips model is a combination of Langmuir and Freundlich isotherm models. While Sips model follows Freundlich isotherm model at low pressure, the model predicts the saturation of the adsorbent at high pressure as Langmuir isotherm model does. Lastly, Dual-site Langmuir model is the most well-known multisite Langmuir isotherm model. Dual-site Langmuir isotherm model is derived from the assumption t that there exist two distinct types of adsorption sites. These default adsorption isotherm models are considered to select the best adsorption isotherm model for the given data in :py:mod:`isofit` module.
 
 
 .. note::
@@ -226,14 +251,13 @@ Using the temperature and :math:`\theta_{T_{j}}` data, therefore, the heat of ad
 .. math::
    \min_{\Delta H_{ad}} \left( \theta_{T_{j}, pred} - \theta_{T_{j}} \right)^{2}
 
-To find an isotherm model as a function of both pressure and temperature, an isotherm model explaining the reference curve should be found. Since the normalized pressure can be expressed with a function of pressure, the algorithm explained in Figure ref{fig:algorithm} is employed, which provides the best isotherm model for a reference function, :math:`f_{ref}(P)`.
+To find an isotherm model as a function of both pressure and temperature, an isotherm model explaining the reference curve should be found. Since the normalized pressure can be expressed with a function of pressure, the algorithm is employed, which provides the best isotherm model for a reference function, :math:`f_{ref}(P)`.
 
 Using the model and parameters found above, the prediction of uptake (:math:`q`) is realized with the equation: 
 
 .. math::
    q = f_{ref}(P\times\exp{\left( \frac{\Delta H_{ad}}{R_{gas}} \left( \frac{1}{T} - \frac{1}{T_{ref} }\right) \right)})
 
-Example prediction results are illustrated in Figure ref{fig:sec3:prediction}, whose isotherm data are the data of Figure ref{fig:sec3:qP_compare}. 
 
 Ideal adsorbed solution theory (IAST)
 ''''''''''''''''''''''''''''''''''''''''

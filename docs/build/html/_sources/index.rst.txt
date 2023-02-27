@@ -20,7 +20,7 @@ Documentation for pyAPEP
    
    Installation
    pyAPEP
-   Examples
+   Case studies
    FAQs
    Citation
 

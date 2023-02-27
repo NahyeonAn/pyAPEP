@@ -1,5 +1,5 @@
-Examples
-========
+Case studies
+================
 
 Here are some examples.
 
@@ -12,8 +12,8 @@ In this example, :py:mod:`pyAPEP.simide` is used to simulate ideal PSA process f
 
 Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification technologies have gained increasing attention. Among the various options for H\ :sub:`2` separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H\ :sub:`2` decomposed from green NH\ :sub:`3` and determine the hydrogen recovery of the columns given adsobents properties.
 
-.. figure:: images/GreenNH3_process.png
-  :figwidth: 100%
+.. figure:: images/example1.png
+  :figwidth: 70%
   :alt: GreenNH3 process
   :align: center
 
@@ -89,8 +89,8 @@ The goal of this example is the find best adsorbent among three adsorbents by co
       plt.xlabel('Pressure (bar)')
       plt.ylabel('Uptake (mol/kg)')
       plt.title(f'{Adsorbent[i]}')
-      plt.legend(['$N_2$ data', '$H_2$ data',
-                  '$N_2$ isotherm','$H_2$ isotherm'], loc='best')
+      plt.legend(['`N_2` data', '`H_2` data',
+                  '`N_2` isotherm','`H_2` isotherm'], loc='best')
       
       plt.show()
 
@@ -179,6 +179,24 @@ Substituting above mass balance to recovery equation then,
    :alt: H2_results
    :align: center
 
+**Additionally, sensitivity analysis was carried out.** Below figure shows the results of sensitivity analysis for each variable using the developed PSA process model. 
+
+.. figure:: images/example1_sa1.png
+   :figwidth: 80%
+   :alt: sa1
+   :align: center
+
+The left, center, and right columns show the results for zeolite 13X, activated carbon, and zeolite 5A. The results show the difference in H\ :sub:`2`` recovery for adsorption (:math:`P_{f}`), regeneration pressure (:math:`P_{t}`), temperature ({:math:`T_{f}`}), and H\ :sub:`2`` composition (:math:`y_{H_2}`) of the feed flow, and H\ :sub:`2`` and N`_{2}` uptake (:math:`q`) were adjusted from -30 to +30%, respectively, while all other parameters were fixed. All three adsorbents reacted sensitively to H\ :sub:`2`` recovery according to the feed temperature, and in particular, in the case of zeolite 5A, when the temperature increased by 30 %, the H\ :sub:`2`` recovery rapidly decreased to approximately 50 %. 
+
+Below figure shows the H\ :sub:`2`` recovery for the  five variables, except for the feed temperature, which further helped analyze the impact of other variables more clearly.
+
+.. figure:: images/example1_sa2.png
+   :figwidth: 80%
+   :alt: sa1
+   :align: center
+
+Although the degree of sensitivity for each adsorbent is different, the recovery increases with :math:`P_{f}` and :math:`q_{N_2}`, and it tends to decrease as :math:`P_{t}`, :math:`y_{H_2}` and :math:`q_{H_2}` increase. Among all three adsorbents, :math:`T_{f}` had the most significant impact H\ :sub:`2`` recovery, followed by :math:`q_{H_2}`.
+
 ------------------------------------------------------------------------
 
 
@@ -192,9 +210,9 @@ In this example, :py:mod:`pyAPEP.simsep` is used to simulate real PSA process fo
 Biogas is a gas mixture that is produced when biomass such as livestock manure, agricultural waste, and sewage sludge is anaerobic digested. The composition of the biogas is generally composed of 50-70% of methane and 30-45% of carbon dioxide, and the other compositions such as H\ :sub:`2` S, N\ :sub:`2` , O\ :sub:`2`, and NH\ :sub:`3` are present in a small amount of less than 4%. Methane has 21 times higher global warming potential thdan carbon dioxie, so energy recovery from biogas leads to environmental benefits as well as economic benefits, so it has recently received a lot of attention. Among the energy recovery methods, bio-mathane production through biogas upgrading is in the spotlight because the bio-mathane can be used for fuel, heating, and electricity production.
 **Therefore, in this example, the PSA process, which is a commonly used process for biogas upgrading, is simulated using the pyAPEP.simsep module.**
 
-.. figure:: images/Biogas.png
-  :figwidth: 100%
-  :alt: GreenNH3 process
+.. figure:: images/Example2.png
+  :figwidth: 70%
+  :alt: ex2
   :align: center
 
   Figure. Schematic of bio-mathane production process.
@@ -388,72 +406,7 @@ To calculate the pressurization step, an iterative method is needed to stabilize
 
 The simulation results at each step are shown in below figure.
 
-.. figure:: images/Example2.png
+.. figure:: images/Example2_results.png
    :figwidth: 99%
-   :alt: Example2
+   :alt: Example2_results
    :align: center
-
-
-
-:py:mod:`pyAPEP.simsep` **module gives various results plotting functions. Here, we using those functions.**
-
-.. code-block:: python 
-
-   # Concentration of gas phase in z direction
-   fig = CR1.Graph(2, 0, loc=[1.15,0.9], 
-                  yaxis_label = 'Gas concentration of CO2 (mol/m$^3$)',
-                  file_name = 'CO2_gas_conc.png')
-   fig = CR1.Graph(2, 1, loc=[1.15,0.9], 
-                  yaxis_label = 'Gas concentration of CH4 (mol/m$^3$)',
-                  file_name = 'CH4_gas_conc.png')
-
-.. |pic3| image:: images/CH4_gas_conc.png
-    :width: 49%
-
-.. |pic4| image:: images/CO2_gas_conc.png
-    :width: 49%
-
-|pic3| |pic4|
-
-.. code-block:: python 
-
-   # Concentration of solid phase in z direction
-   fig = CR1.Graph(2, 2, loc=[1.15,0.9], 
-                  yaxis_label = 'Soild concentration (uptake) of CO2 (mol/kg)',
-                  file_name = 'CO2_uptake.png')
-   fig = CR1.Graph(2, 3, loc=[1.15,0.9], 
-                  yaxis_label = 'Soild concentration (uptake) of CH4 (mol/kg)',
-                  file_name = 'CH4_uptake.png')
-
-.. |pic5| image:: images/CO2_uptake.png
-    :width: 49%
-
-.. |pic6| image:: images/CH4_uptake.png
-    :width: 49%
-
-|pic5| |pic6|
-
-.. code-block:: python
-
-   # Breakthrough test results
-   bt = CR1.breakthrough(True)
-
-.. figure:: images/simsep_breakthrough.png
-  :figwidth: 70%
-  :alt: simsep_breakthrough
-  :align: center
-
-  Figure. The result of breakthrough test
-
-
-.. code-block:: python
-
-   # Internal pressure in z direction
-   fig, ax = CR1.Graph_P(2, loc=[1.15,0.9])
-
-.. figure:: images/simsep_pressure.png
-  :figwidth: 70%
-  :alt: simsep_example_pressure
-  :align: center
-
-  Figure. Pressure gradient with time and position
