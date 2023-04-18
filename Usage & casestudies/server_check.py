@@ -9,6 +9,7 @@ import pandas as pd
 # Data visualization package import
 import matplotlib.pyplot as plt
 from multiprocessing import Pool, cpu_count, Manager
+import pickle
 
 # Data import
 Data = pd.read_csv('Casestudy2_Zeolite13X.csv')
@@ -83,26 +84,26 @@ def simsep_cs(i):
     
     ### Initial conditions
     P_init = (P_inlet-0.5)*np.ones(N)    # (bar)
-    y_init = [0.2*np.ones(N), 0.8*np.ones(N)] # (mol/mol)
+    y_init = [0.001*np.ones(N), 0.999*np.ones(N)] # (mol/mol)
     T_init = T_feed*np.ones(N)
     q_init = MixIso(P_init*np.array(y_init), T_init)
 
     CR1.initialC_info(P_init, T_init, T_init, y_init, q_init)
 
-    y_res, z_res, t_res = CR1.run_mamoen(700,n_sec = 10, 
+    y_res, z_res, t_res = CR1.run_mamoen(1000,n_sec = 10, 
                                     CPUtime_print = True)
     
     bt = CR1.breakthrough(draw_graph = True)
     
-    t_sim = np.arange(100, 700, 100)
+    t_sim = np.arange(100, 1000, 10)
     c1_frac = bt[0](t_sim)
     
     cs_res = [L, R, P_inlet, c1_frac]
-    with open(f'results/{i}.pickle', wb) as fw:
+    with open(f'results/{i}.pickle', 'wb') as fw:
         pickle.dump(cs_res, fw)
-    
-idx = np.arange(3)
+jj =4
+#int(input("Type 0 to 4: "))    
+idx = np.arange(1000)[200*jj:200*(jj+1)]
 with Pool(processes = cpu_count()) as p:
     p.map(simsep_cs, idx)
 
-print(res_list)
