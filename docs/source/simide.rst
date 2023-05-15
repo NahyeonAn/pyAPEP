@@ -6,7 +6,9 @@ First, import simide into Python after installation.
 
 .. code-block:: python
 
-   import pyAPEP.simide as simide
+   # Package import
+    import pyapep.isofit as isofit
+    import pyapep.simide as simide
 
 Then users need to 5-steps to simulate.
     1. Mixture isotherm function definition
@@ -30,16 +32,28 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
 
 .. code-block:: python
 
-    iso_mix = lambda P,T: isof.IAST([iso1, iso2], P, T)
-    # iso1 and iso2 == Pure isotherm function of each componet.
+    # Generate dummy data
+    P = [2, 3, 4, 5]
+    q_comp1 = [1, 2, 3, 4]     # Gas adsorption of component 1
+    q_comp2 = [1, 5, 7, 10]    # Gas adsorption of component 2
+
+    # Define pure isotherm of each component
+    iso1, param1, fntype1, err1 = isofit.best_isomodel(P, q_comp1)
+    iso2, param2, fntype2, err2 = isofit.best_isomodel(P, q_comp2)
+
+    # Mixture isotherm function definition
+    # iso1 and iso2 == Pure isotherm function of each component.
+    iso_mix = lambda P,T: isofit.IAST([iso1, iso2], P, T)
 
 2. Ideal column definition
 ''''''''''''''''''''''''''''''''''''''''''''''
 
 .. code-block:: python
 
-    num_comp = 2                                       # The number of components
-    Column1 = simi.IdealColumn(num_comp, iso_mix, )    # Ideal column definition
+    # The number of components
+    num_comp = 2                     
+    # Ideal column definition
+    Column1 = simide.IdealColumn(num_comp, iso_mix )  
     print(Column1)                                     # Chek input condition
 
 3. Feed condition setting
@@ -141,4 +155,4 @@ By substituting for the mass balance described above into the recovery equation,
     .. math::
         R_{P} = \frac{(1-y_{I})F_{feed} - (1-x_{I})F_{tail}}{(1-y_{I})F_{feed}} = 1 - \frac{y_{I}(1-x_{I})}{x_{I}(1-y_{I})}
 
---------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

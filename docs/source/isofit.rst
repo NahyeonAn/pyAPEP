@@ -1,7 +1,7 @@
 Isotherm fitting module (:py:mod:`pyAPEP.isofit`)
 ====================================================
 
- :py:mod:`isofit` is a module used to define isotherm functions from pressure and uptake data samples. Three main functions are developed in this module—:py:mod:`best_isomodel`, :py:mod:`diff_T`, and :py:mod:`IAST`. :py:mod:`best_isomodel` automatically finds the best isotherm function for the pure component. :py:mod:`diff_T` derives isotherms according to temperature and pressure, and :py:mod:`IAST` derives mixture isotherms using single isotherms, respectively.
+:py:mod:`isofit` is a module used to define isotherm functions from pressure and uptake data samples. Three main functions are developed in this module—:py:mod:`best_isomodel`, :py:mod:`diff_T`, and :py:mod:`IAST`. :py:mod:`best_isomodel` automatically finds the best isotherm function for the pure component. :py:mod:`diff_T` derives isotherms according to temperature and pressure, and :py:mod:`IAST` derives mixture isotherms using single isotherms, respectively.
 
 
 First, import isofit into Python after installation.
@@ -16,7 +16,7 @@ In this module, three main functions exist.
    2. Fitting isotherm for different temperature (:py:mod:`isofit.fit_diffT`)
    3. Developing mixuture isotherm with IAST (:py:mod:`isofit.IAST`)
 
- Detailed description of each function are described in next senction. The explanation include function usage, algorithm (or related theroy), and function structure.
+Detailed description of each function are described in next senction. The explanation include function usage, algorithm (or related theroy), and function structure.
 
 ---------------------
 
@@ -26,7 +26,7 @@ Usage
 1. Finding best isotherm function
 '''''''''''''''''''''''''''''''''''''
 
- :py:mod:`best_isomodel` automatically finds the best isotherm function from a given pressure-uptake dataset with multiple isotherm and optimizer candidates. In this usage example, the isotherm function is found from a dummy dataset with gas uptake at four pressures (2, 3, 4, 5 bar). The function :py:mod:`best_isomodel` returns 4 elements: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model.
+:py:mod:`best_isomodel` automatically finds the best isotherm function from a given pressure-uptake dataset with multiple isotherm and optimizer candidates. In this usage example, the isotherm function is found from a dummy dataset with gas uptake at four pressures (2, 3, 4, 5 bar). The function :py:mod:`best_isomodel` returns 4 elements: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model.
 
 
 .. code-block:: python
@@ -44,7 +44,7 @@ Usage
 2. Fitting isotherm for different temperature
 '''''''''''''''''''''''''''''''''''''''''''''''''
 
- To reflect the temperature influence on the adsorption equilibrium, adsorption isotherm data measured at different pressure and temperatures should be used in composing an isotherm model. :py:mod:`fit_diffT` finds the isotherm model considering both pressure and temperature effects.
+To reflect the temperature influence on the adsorption equilibrium, adsorption isotherm data measured at different pressure and temperatures should be used in composing an isotherm model. :py:mod:`fit_diffT` finds the isotherm model considering both pressure and temperature effects.
 
 .. code-block:: python
 
@@ -83,7 +83,7 @@ Usage
 3. Developing mixuture isotherm with IAST
 '''''''''''''''''''''''''''''''''''''''''''
 
- :py:mod:`IAST` provides Ideal adsorbed solution theory (IAST) calculation. IAST is widely used for predicting the isotherm of multiple components using pure isotherm models for each gas component. 
+:py:mod:`IAST` provides Ideal adsorbed solution theory (IAST) calculation. IAST is widely used for predicting the isotherm of multiple components using pure isotherm models for each gas component. 
 
 .. code-block:: python
 
@@ -123,7 +123,7 @@ Usage
 
 ----------------------------------------
 
-F:py:mod:{unction structures
+Function structures
 ---------------------
 
 .. currentmodule:: pyAPEP.isofit
@@ -146,7 +146,7 @@ Theory
 Finding best isotherm function algorithm
 ''''''''''''''''''''''''''''''''''''''''''
 
- A primary function, :py:mod:`best_isomodel`, automatically determines the best isotherm function from a given pressure-uptake dataset. Figure below shows the algorithm of :py:mod:`best_isomodel`. The algorithm consists of three main stages. First, the parameter was estimated using a given isotherm function and an optimization solver. In the next stage, the best optimization solver with the least error was identified by repeatedly solving the objective problems using five optimization solvers. Finally, the best isotherm function among the five isotherm candidates was found by repeating the first and second stages. A detailed explanation of each stage is provided below:
+A primary function, :py:mod:`best_isomodel`, automatically determines the best isotherm function from a given pressure-uptake dataset. Figure below shows the algorithm of :py:mod:`best_isomodel`. The algorithm consists of three main stages. First, the parameter was estimated using a given isotherm function and an optimization solver. In the next stage, the best optimization solver with the least error was identified by repeatedly solving the objective problems using five optimization solvers. Finally, the best isotherm function among the five isotherm candidates was found by repeating the first and second stages. A detailed explanation of each stage is provided below:
 
 .. image:: images/algorithm.png
   :width: 500
@@ -299,8 +299,7 @@ During the implementation of IAST, implicit calculations are required to find th
 .. math::
    \pi_{i} = h_{i}(x_{i}, y_{j}, P, T)
 
-Suppose that the function :math:`h_j` is the computations of the spreading pressure of
-component :math:`j(π_i)`. The function :math:`h_j` is a function of the given initial guess of solid phase mole fraction (:math:`x_j`), gas phase mole fraction :math:`y_j`, pressure(:math:`P`), and temperature(:math:`T`).
+Suppose that the function :math:`h_j` is the computations of the spreading pressure of component :math:`j(π_i)`. The function :math:`h_j` is a function of the given initial guess of solid phase mole fraction (:math:`x_j`), gas phase mole fraction :math:`y_j`, pressure(:math:`P`), and temperature(:math:`T`).
 
 For efficient computation, this work suggests a new method. Selecting the initial guess of solid phase mole fraction (:math:`x_{j}`) is the most important part. To find the initial guess in an efficient way, this work proposes a new method. The method uses the extended Langmuir isotherm model for the initial guess. 
 
@@ -327,4 +326,4 @@ In the equations, :math:`P_{high}` is a huge pressure enough to saturate the ads
 
 The effective Langmuir parameters are similar to finding a hydraulic diameter for pipes with different shapes. Although various hydraulic dimensionless numbers are defined based on the pipe diameter, the diameter cannot be found in the pipes with other shapes than circle. As an important hydraulic feature, the hydraulic diameter of different cross-sectional  shape is calculated with the ratio between the area and perimeter.
 
-----------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

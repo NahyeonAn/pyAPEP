@@ -10,7 +10,7 @@ In this example, :py:mod:`pyAPEP.simide` is used to simulate ideal PSA process f
 
 **Background**
 
-Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification technologies have gained increasing attention. Among the various options for H\ :sub:`2` separation, pressure swing adsorption (PSA) has the highest technological readiness level. Therefore, this example handle the ideal PSA simulation to produce H\ :sub:`2` decomposed from green NH\ :sub:`3` and determine the hydrogen recovery of the columns given adsobents properties.
+Because green ammonia is currently the favored transportation medium for carbon-free hydrogen, H\ :sub:`2` separation and purification after the decomposition of NH\ :sub:`3` is important to maximize the use of H\ :sub:`2`. Among all gas separation processes, the PSA is the most suitable process with the highest technological readiness. Therefore, this example compares adsorbents based on the performance of the ideal PSA for producing H\ :sub:`2` from the N\ :sub:`2`/H\ :sub:`2` gas mixture, and it determines the best adsorbent with the highest hydrogen recovery.
 
 .. figure:: images/example1.png
   :figwidth: 70%
@@ -21,7 +21,7 @@ Because green ammonia is currently the favored transportation medium for carbon-
 
 **Process description**
 
-H\ :sub:`2` produced in regions rich in renewable energy is transported to other locations in the form of NH\ :sub:`3`, and H\ :sub:`2` is produced by decomposing NH\ :sub:`3` into a mixture of N\ :sub:`2` and H\ :sub:`2`. The NH\ :sub:`3` reactor and residual NH\ :sub:`3` removal system are located before the PSA system. Thereafter, the 0.25% of unreacted NH\ :sub:`3` exiting the reactor is cooled and removed with a batch type uni-bed adsorption tower. Therefore, the gas entering the target PSA process was assumed to be 25 mol% N\ :sub:`2` and 75 mol% H\ :sub:`2`.
+The target green ammonia decomposition process consists of an NH\ :sub:`3` decomposition reactor, NH\ :sub:`3` separator, and PSA process for H\ :sub:`2` purification. In the NH\ :sub:`3` decomposition reactor, the H\ :sub:`2` was produced by decomposing NH\ :sub:`3` into a mixture of N\ :sub:`2` and H\ :sub:`2`. The NH\ :sub:`3` separator removed residual NH\ :sub:`3` from the feed stream. Therefore, the gas entering the target PSA process was assumed to be 25 mol\% N\ :sub:`2` and 75 mol\% H\ :sub:`2`.
 
 **Goal**
 
@@ -48,34 +48,37 @@ The goal of this example is the find best adsorbent among three adsorbents by co
 
 .. code-block:: python
 
-   #### Data import ####
-   # adsorbent 1: Zeolite 13X
-   Data_zeo13 = pd.read_csv('Example1_Zeolite13X.csv')
-   # adsorbent 2: activated carbon
-   Data_ac = pd.read_csv('Example1_ActivatedC.csv')
-   # adsorbent 3: Zeolite 5A
-   Data_zeo5 = pd.read_csv('Example1_Zeolite5A.csv')
+   # Data import
+   # adsorbent 1
+   Data_zeo13 = pd.read_csv('Casestudy1_Zeolite13X.csv')
+   # adsorbent 2
+   Data_ac = pd.read_csv('Casestudy1_Activated_carbon.csv')
+   # adsorbent 3
+   Data_zeo5 = pd.read_csv('Casestudy1_Zeolite5A.csv')
 
    Data = [Data_zeo13, Data_ac, Data_zeo5]
 
 .. code-block:: python
 
-   # Find best isotherm function and visualization
-   Adsorbent = ['Zeolite13X','ActivatedC', 'Zeolite5A']
-   pure_isotherm = []
-
+   # Find best isotherm function, Ideal PSA simulation
+   Adsorbent = ['Zeolite13X','Activated_carbon', 'Zeolite5A']
+   iso_pure = []
+   err_list = []
    for i in range(3):
       ads = Data[i]
       
       P_N2 = ads['Pressure_N2 (bar)'].dropna().values
       q_N2 = ads['Uptake_N2 (mol/kg)'].dropna().values
+
       P_H2 = ads['Pressure_H2 (bar)'].dropna().values
       q_H2 = ads['Uptake_H2 (mol/kg)'].dropna().values
       
-      N2_isotherm, par_N2, fn_type_N2, val_err_N2 = isofit.best_isomodel(P_N2, q_N2)
-      H2_isotherm, par_H2, fn_type_H2, val_err_H2 = isofit.best_isomodel(P_H2, q_H2)
-      pure_isotherm.append([N2_isotherm,H2_isotherm])
+      N2_iso, _, _, N2_err = isofit.best_isomodel(P_N2, q_N2)
+      H2_iso, _, _, H2_err = isofit.best_isomodel(P_H2, q_H2)
 
+      iso_pure.append([N2_iso, H2_iso])
+      err_list.append([N2_err, H2_err])
+      
       # visualization
       plt.figure(dpi=70)
       plt.scatter(P_N2, q_N2, color = 'r')
@@ -83,15 +86,14 @@ The goal of this example is the find best adsorbent among three adsorbents by co
       
       P_max= max(max(P_N2), max(P_H2))
       P_dom = np.linspace(0, P_max, 100)
-      plt.plot(P_dom, pure_isotherm[i][0](P_dom), color='r' )
-      plt.plot(P_dom, pure_isotherm[i][1](P_dom), color='b' )
+      plt.plot(P_dom, N2_iso(P_dom), color='r' )
+      plt.plot(P_dom, H2_iso(P_dom), color='b' )
       
       plt.xlabel('Pressure (bar)')
       plt.ylabel('Uptake (mol/kg)')
       plt.title(f'{Adsorbent[i]}')
-      plt.legend(['`N_2` data', '`H_2` data',
-                  '`N_2` isotherm','`H_2` isotherm'], loc='best')
-      
+      plt.legend(['N$_2$ data', 'H$_2$ data',
+                'N$_2$ isotherm','H$_2$ isotherm'], loc='best', fontsize=15)
       plt.show()
 
 Check developed pure isotherm functions by comparing with raw data.
@@ -113,10 +115,15 @@ Check developed pure isotherm functions by comparing with raw data.
 
 .. code-block:: python
 
-   mix_isothrm = []
+   iso_mix_list = []
    for i in range(3):
-      iso_mix = lambda P,T : isof.IAST([N2_isotherm,H2_isotherm], P, T)
-      mix_isothrm.append(iso_mix)
+      N2_iso_ = lambda P,T: iso_pure[i][0](P)
+      H2_iso_ = lambda P,T: iso_pure[i][1](P)
+      
+      iso_mix = lambda P,T : isofit.IAST([N2_iso_, H2_iso_], P, T)
+      
+      iso_mix_app = copy.deepcopy(iso_mix)
+      iso_mix_list.append(iso_mix_app)
 
 **Then we need to define and run ideal PSA process.**
 
@@ -124,7 +131,9 @@ Check developed pure isotherm functions by comparing with raw data.
 
    results = []
    for i in range(3):
-      CI1 = simide.IdealColumn(2, mix_isothrm[i] )
+      iso_mix = iso_mix_list[i]
+      
+      CI1 = simide.IdealColumn(2, iso_mix )
 
       # Feed condition setting
       P_feed = 8      # Feed presure (bar)
@@ -139,63 +148,47 @@ Check developed pure isotherm functions by comparing with raw data.
 
       # Simulation run
       x_tail = CI1.runideal()
-      print(x_tail)       # Output: [x_H2, x_N2]
-      results.append(x_tail)
+      R = 1- (y_feed[0]*(1-x_tail[0]))/(x_tail[0]*(1-y_feed[0]))
+      print(R*100)       # Output: [x_H2, x_N2]
+      results.append(R*100)
 
-**Now, we can calculate hydrogen recovery for this system.** The definition of recovery is the ratio of target material between product and feed flow. The recovery is derived below.
-
-.. math::
-
-    R_{H_2} = \frac{(H_2 \textrm{ in feed})-(H_2 \textrm{ in tail gas})}{H_2 \textrm{ in feed}} = \frac{y_{H_2}\,F_{feed}-x_{H_2}\,F_{tail}}{y_{H_2}\,F_{feed}}
-
-By the assumptions of ideal PSA columns, hydrogen mole fraction in raffinate is 1 (100 mol%). Mass balance eqaution for nitrogen becomes,
-
-.. math::
-
-    y_{N_2}\cdot F_{feed} = x_{N_2}\cdot F_{tail},
-
-.. math::
-
-    F_{tail} = \frac{y_{N_2}}{x_{N_2}} \cdot F_{feed}
-
-Substituting above mass balance to recovery equation then,
-
-.. math::
-
-    R_{H_2} = \frac{(1-y_{N_2})F_{feed} - (1-x_{N_2})F_{tail}}{(1-y_{N_2})F_{feed}} = 1 - \frac{y_{N_2}(1-x_{N_2})}{x_{N_2}(1-y_{N_2})}
+**Now, we can calculate hydrogen recovery for this system.** The results shows below. Finally, we found the best performance adsorbent.  
 
 .. code-block:: python
-   
-   for i in range(3):
-      y_N2 = y_feed[0]
-      x_N2 = results[i][0]
-      R_H2 = 1- (y_N2*(1-x_N2))/(x_N2*(1-y_N2))*100
-      print(f'Recovery of {Adsorbent[i]}: ', R_H2, '(%)' )
 
-**The results shows below. Finally, we found the best performance adsorbent.**
+   # Results plot
+   Adsorbent = ['Zeolite13X','Activated_carbon', 'Zeolite5A']
+   plt.figure(dpi=100, figsize=(5, 4))
+   plt.bar(Adsorbent, results, width=0.4, color='black')
+   plt.ylim([80, 95])
+   plt.ylabel('H$_2$ recovery (%)', fontsize=17)
+   plt.yticks(fontsize=13)
+   plt.xticks( fontsize=13)
+   plt.show()
 
 .. figure:: images/H2_results.png
    :figwidth: 49%
    :alt: H2_results
    :align: center
 
-**Additionally, sensitivity analysis was carried out.** Below figure shows the results of sensitivity analysis for each variable using the developed PSA process model. 
+
+**Additionally, sensitivity analysis was carried out.** Below figure shows the results of sensitivity analysis for each variable using the developed PSA process model.  
 
 .. figure:: images/example1_sa1.png
    :figwidth: 80%
    :alt: sa1
    :align: center
 
-The left, center, and right columns show the results for zeolite 13X, activated carbon, and zeolite 5A. The results show the difference in H\ :sub:`2`` recovery for adsorption (:math:`P_{f}`), regeneration pressure (:math:`P_{t}`), temperature ({:math:`T_{f}`}), and H\ :sub:`2`` composition (:math:`y_{H_2}`) of the feed flow, and H\ :sub:`2`` and N`_{2}` uptake (:math:`q`) were adjusted from -30 to +30%, respectively, while all other parameters were fixed. All three adsorbents reacted sensitively to H\ :sub:`2`` recovery according to the feed temperature, and in particular, in the case of zeolite 5A, when the temperature increased by 30 %, the H\ :sub:`2`` recovery rapidly decreased to approximately 50 %. 
+The left, center, and right columns show the results for zeolite 13X, activated carbon, and zeolite 5A. The results show the difference in H\ :sub:`2` recovery for adsorption (:math:`P_{f}`), regeneration pressure (:math:`P_{t}`), temperature (:math:`T_{f}`), and H\ :sub:`2` composition (:math:`y_{H_2}`) of the feed flow, and H\ :sub:`2` and N\ :sub:`2` uptake (:math:`q`) were adjusted from -30 to +30%, respectively, while all other parameters were fixed. All three adsorbents reacted sensitively to H\ :sub:`2` recovery according to the feed temperature, and in particular, in the case of zeolite 5A, when the temperature increased by 30 %, the H\ :sub:`2` recovery rapidly decreased to approximately 50 %. 
 
-Below figure shows the H\ :sub:`2`` recovery for the  five variables, except for the feed temperature, which further helped analyze the impact of other variables more clearly.
+Below figure shows the H\ :sub:`2` recovery for the  five variables, except for the feed temperature, which further helped analyze the impact of other variables more clearly.  
 
 .. figure:: images/example1_sa2.png
    :figwidth: 80%
    :alt: sa1
    :align: center
 
-Although the degree of sensitivity for each adsorbent is different, the recovery increases with :math:`P_{f}` and :math:`q_{N_2}`, and it tends to decrease as :math:`P_{t}`, :math:`y_{H_2}` and :math:`q_{H_2}` increase. Among all three adsorbents, :math:`T_{f}` had the most significant impact H\ :sub:`2`` recovery, followed by :math:`q_{H_2}`.
+Although the degree of sensitivity for each adsorbent is different, the recovery increases with :math:`P_{f}` and :math:`q_{N_2}`, and it tends to decrease as :math:`P_{t}`, :math:`y_{H_2}` and :math:`q_{H_2}` increase. Among all three adsorbents, :math:`T_{f}` had the most significant impact H\ :sub:`2` recovery, followed by :math:`q_{H_2}`.
 
 ------------------------------------------------------------------------
 
@@ -264,73 +257,78 @@ The goal of this example is the simulation of biogas upgrading process with comm
       q2 = CH4_iso(P[1])
       return q1, q2
 
-**Next, define and run a real PSA process. Most of the process parameters are the same as in the literature (ref). In this example, Skarstrom cycle which is the operation method for PSA process is simulated in four stages of adsorption-blowdown-purge-pressurization.**
+**Next, we define and run an actual PSA process.** A majority of the process parameters were the same as those in ref. In this example, Skarstrom cycle, which is the operation method for PSA process, is simulated in four stages of adsorption-blowdown-purge-pressurization.
 
 .. code-block:: python
 
    # Column design
-   N = 11
+   N = 21
    L = 1.35
    A_cros = np.pi*0.15**2
    CR1 = simsep.column(L, A_cros, n_component=2, N_node = N)
 
-   # Adsorbent parameters setting
-   voidfrac = 0.37      # (m^3/m^3)
-   D_particle = 12e-4   # (m)
-   rho = 1324           # (kg/m^3)
-   CR1.adsorbent_info(mix_iso_arr, voidfrac, D_particle, rho)
+   ### Sorbent prop
+   voidfrac = 0.37                  # (m^3/m^3)
+   D_particle = 12e-4               # (m)
+   rho = 1324                       # (kg/m^3)
+   CR1.adsorbent_info(MixIso, voidfrac, D_particle, rho)
 
-   # Feed condition setting
-   Mmol = [0.044, 0.016]            # kg/mol
-   mu_visco= [11.86E-6, 16.13E-6]   # (Pa sec) 
+   ### Gas prop
+   Mmol = [0.044, 0.016]            # (kg/mol)
+   mu_visco= [16.13E-6, 11.86E-6]   # (Pa s) 
    CR1.gas_prop_info(Mmol, mu_visco)
 
-   # Mass transfer information setting
-   k_MTC  = [1E-2, 1E-2]     # m/sec
-   a_surf = 1                # m2/m3
-   D_disp = [1E-2, 1E-2]     # m^2/sec 
+   ### Transfer prop
+   k_MTC  = [1E-2, 1E-2]            # (m/s)
+   a_surf = 1                       (m2/m3)
+   D_disp = [1E-2, 1E-2]            # (m^2/sec)
    CR1.mass_trans_info(k_MTC, a_surf, D_disp)
-
-   # Thermal information setting
-   dH_ads = [31.164e3,20.856e3]   # J/mol
+   dH_ads = [31.164e3,20.856e3]     # (J/mol)
    Cp_s = 900
-   Cp_g = [38.236, 35.8]          # J/mol/K
-   h_heat = 100                   # J/m2/K/s
+   Cp_g = [38.236, 35.8]            # (J/mol/K)
+   h_heat = 100                     # (J/m2/K/s)
    CR1.thermal_info(dH_ads, Cp_s, Cp_g, h_heat)
 
-   # Boundary condition setting
+The operating and initial conditions are required to solve the differential equations. An appropriate value must be set for better convergence of the model. **Each step of the Skarstrom cycle was implemented by adjusting the boundary and initial conditions. The parameter setting and simulation were repeated sequentially.** 
+
+.. code-block:: python
+   
+   ### Adsorption step ###
+   ### Operating conditions
    P_inlet = 9.5
    P_outlet = 9
    T_feed = 323
-   y_feed = [0.67,0.33]
+   y_feed = [0.33,0.67]
 
-   Cv_inlet = 0.02E-1             # inlet valve constant (m/sec/bar)
+   Cv_inlet = 0.2E-1             # inlet valve constant (m/sec/bar)
    Cv_outlet= 2.0E-1           # outlet valve constant (m/sec/bar)
+
    Q_feed = 0.05*A_cros  # volumetric flowrate (m^3/sec)
 
    CR1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
                      Cv_inlet, Cv_outlet,
                      Q_inlet = Q_feed,
-                     assigned_v_option = True)
+                     assigned_v_option = True,
+                     foward_flow_direction = True)
 
-   # Initial condition setting
-   P_init = 9.25*np.ones(N)                   # (bar)
+   ### Initial conditions
+   P_init = 9.25*np.ones(N)    # (bar)
    y_init = [0.001*np.ones(N), 0.999*np.ones(N)] # (mol/mol)
    T_init = T_feed*np.ones(N)
-   q_init = mix_iso_arr(P_init*np.array(y_init), T_init)
+   q_init = MixIso(P_init*np.array(y_init), T_init)
 
    CR1.initialC_info(P_init, T_init, T_init, y_init, q_init)
    print(CR1)
 
-This example considers the mass, momentum, and energy balance equations, therefore run_mamoen function is used to run the simulation.
+This example considers the mass, momentum, and energy balance equations, therefore **run_mamoen function is used to run the simulation.**
 
 .. code-block:: python
 
    # Simulation run
-   y_res, z_res, t_res = CR1.run_mamoen(25,n_sec = 20, 
+   y_res, z_res, t_res = CR1.run_mamoen(700,n_sec = 20, 
                                     CPUtime_print = True)
 
-The simulation of the adsorption step is completed. The final results of this stage would become the initial condition of the next step, the purge step, and the boundary condition should be modified. Repeat the initial condition update, modification of boundary conditions, and the simulation running until the last step, the pressurization step.
+Then, the adsorption step was simulated. **The final results of this stage become the initial condition of the next step; the purge step and the boundary condition should be modified accordingly.** After the simulation of the purge step, the blowdown step was implemented using the modified boundary condition and the final results of the previous step as an initial condition.
 
 .. code-block:: python
 
@@ -373,36 +371,44 @@ The simulation of the adsorption step is completed. The final results of this st
 
    y_res = CR1.run_mamoen(1000,n_sec = 10, CPUtime_print = True)
 
-To calculate the pressurization step, an iterative method is needed to stabilize the simulation. By using the iterative calculation, the column is pressurized from 1 bar to over 8 bar.
+To implement the final pressurization step, an iterative method is required in order to stabilize the simulation mainly because extreme pressure changes may result in calculation errors. The simulation was performed while repeatedly calculating a time of approximately 5 s, and the results of each iteration were stored to derive the final results for the pressurization step. **Using iterative calculation, the column was pressurized from 1 bar to over 9 bar.**
 
 .. code-block:: python
    
    ### Pressurization step ###
-   CR1.next_init()
+   N = 11
+   R_gas = 8.3145      # 8.3145 J/mol/K
 
    total_y = []
-   R_gas = 8.3145      # 8.3145 J/mol/K
+   CR4 = copy.deepcopy(CR3)
+   CR4.next_init()
    P_outlet = 1
    P_inlet = 2
-   Cv_outlet= 0E-1
-   T_feed = 323
-   y_feed = [0.33,0.67]
-   while P_outlet<8.1:
-      Cv_inlet =(P_inlet-P_outlet)*0.1
-      CR1.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
+   while P_outlet<9.1:
+      ### Operating conditions
+      T_feed = 323
+      y_feed = [0.33,0.67]
+
+      Cv_inlet =(P_inlet-P_outlet)*0.1             # inlet valve constant (m/sec/bar)
+      Cv_outlet= 0E-1           # outlet valve constant (m/sec/bar)
+
+      CR4.boundaryC_info(P_outlet, P_inlet, T_feed, y_feed,
                      Cv_inlet, Cv_outlet,
                      foward_flow_direction = True)
-      y_res = CR1.run_mamoen(5,n_sec = 10, CPUtime_print = True)
+      y_res = CR4.run_mamoen(5,n_sec = 10, 
+                                       CPUtime_print = True)
       total_y.append(y_res)
       
-      P = np.zeros(11)
+      P = np.zeros(N)
       for ii in range(2):
-         Tg_res = y_res[0][:,2*2*11 : 2*2*11+11]
-         P = P + y_res[0][:,(ii)*11:(ii+1)*11]*R_gas*Tg_res/1E5
+         Tg_res = y_res[0][:,2*2*N : 2*2*N+N]
+         P = P + y_res[0][:,(ii)*N:(ii+1)*N]*R_gas*Tg_res/1E5
          
       P_outlet = np.mean(P[-1])
       P_inlet = P_outlet+1.1
-      CR1.next_init()
+      # fig, ax = CR4.Graph_P(1, loc=[1.15,0.9])
+      # plt.show()
+      CR4.next_init()
 
 The simulation results at each step are shown in below figure.
 
@@ -410,3 +416,170 @@ The simulation results at each step are shown in below figure.
    :figwidth: 99%
    :alt: Example2_results
    :align: center
+
+------------------------------------------------------------------------
+
+
+3. Development of machine learning-based model for PSA process
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+**Background & Goal**
+
+In previous section, a rigorous PSA process model for the separation of CO\ :sub:`2` and CH\ :sub:`4` was developed to derive the dynamic behavior of the process. Developed high-fidelity model is time-consuming for analysis according to various operating and design conditions. To resolve this issue, this case study developed a machine learning (ML) based PSA process model to predict the CO\ :sub:`2` mole fraction of raffinate stream over time (t) and then estimate the breakthrough curve at each condition. This example consists of three steps: Dataset generation, model development, and application, as shown in figure below.
+
+.. figure:: images/example3.png
+   :figwidth: 100%
+   :alt: Example3
+   :align: center
+
+
+
+Before initiating this process, **pyAPEP packages and other open-source Python packages were imported for data treatment and visualization.** To develop a machine learning model for PSA process, scikit learn, and other analysis packages and modules are necessary. Additionally, the users are required to download an adsorption data file (Casestudy2\_Zeolite13X.csv and Casestudy3\_simsep\_res.csv).
+
+.. code-block:: python
+
+   # pyAPEP package import
+   import pyapep.isofit as isofit
+   import pyapep.simsep as simsep
+
+   # Data treatment package import
+   import numpy as np
+   import pandas as pd
+
+   # Data visualization package import
+   import matplotlib.pyplot as plt
+
+   # ML model development and evaluation module import
+   from sklearn.model_selection import train_test_split
+   from sklearn.ensemble import RandomForestRegressor
+   from sklearn.metrics import r2_score
+
+   # Results anaysis module import
+   from itertools import product
+   from scipy.interpolate import interp1d
+
+As in case study 2, **isotherm is derived from :math:`CO_2` and :math:`CH_4` pressure-adsorption data using** :py:mod:`isofit` **modules.** Then, for simplification, mixture isotherm is defined under the assumption that each component behaves independently.
+
+.. code-block:: python
+
+   # Data import, isotherm define
+   Data = pd.read_csv('Casestudy2_Zeolite13X.csv')
+
+   P_CO2 = Data['Pressure_CO2 (bar)'].dropna().values
+   q_CO2 = Data['Uptake_CO2 (mol/kg)'].dropna().values
+
+   P_CH4 = Data['Pressure_CH4 (bar)'].dropna().values
+   q_CH4 = Data['Uptake_CH4 (mol/kg)'].dropna().values
+
+   CO2_iso, CO2_p, CO2_name, CO2_err = isofit.best_isomodel(P_CO2, q_CO2)
+   CH4_iso, CH4_p, CO2_p, CH4_err = isofit.best_isomodel(P_CH4, q_CH4)
+   CO2_iso_ = lambda P,T: CO2_iso(P)
+   CH4_iso_ = lambda P,T: CH4_iso(P)
+
+   def MixIso(P, T):
+      q1 = CO2_iso(P[0])
+      q2 = CH4_iso(P[1])
+      return q1, q2
+
+Then, **import simulation results and split the data into train and test dataset.** The dataset was obtained by the dynamic simulation using :py:mod:`simsep`. A thousand repetitive calculations were performed by changing the length(L), radidus(R), and operating pressure (:math:`P_{high}`) of the packing column, which affect the breakthrough time a lot. Each input variable was randomly set under domain range :math:`1 \le L \le 10` (m), :math:`0.1 \le R \le 0.5` (m) and :math:`5 \le P_{high} \le 20` (bar). Output variables were set composition of raffinate stream at time t (100, 200, ..., 1900 s).
+
+.. code-block:: python
+
+   # Random data import
+   data = pd.read_csv('Casestudy3_simsep_res.csv')
+
+   # Train-test split
+   x_var = ['L', 'R', 'P_high']
+   y_var = [f't{i}' for i in range(1, 20)]
+
+   data_x = data[x_var]
+   data_y = data[y_var]
+
+   x_train, x_test, y_train, y_test = train_test_split(data_x, data_y, test_size=0.3, shuffle= True, random_state = 102)
+
+
+**Using a machine learning library, scikit learn, PSA process model for the prediction of raffinate gas composition is developed using random forest regression algorithm.** Because this example shows how to integrate :py:mod:`pyAPEP` with other Python packages, complex methods such as optimization of model structure and deep learning are not implemented. Based on compatibility with other packages shown in this example, users can apply the proposed package to various fields.
+
+.. code-block:: python
+
+   # Random forest regression model development and evaluation
+   model = RandomForestRegressor()
+   model.fit(x_train, y_train)
+
+   pred = model.predict(x_test)
+
+   plt.figure(dpi=200, figsize=(3*len(y_var),3))
+   for i in range(len(y_var)):
+      plt.subplot(1, len(y_var), i+1)
+      plt.scatter(y_test.iloc[:,i], pred[:,i], c='k', s = 1)
+      r2 = r2_score(y_test.iloc[:,i], pred[:,i])
+      plt.title(f'{(i+1)*100}s')
+      plt.xlabel('Actual')
+      plt.ylabel('Predict')
+   plt.tight_layout()
+   plt.show()
+   print('R2: ', r2)
+
+.. figure:: images/ex3_res1.png
+  :figwidth: 95%
+  :alt: ex3_res1
+  :align: center
+
+.. code-block:: python
+
+   # Model analysis in various conditions
+   L_dom = np.linspace(1, 5, 100)
+   P_dom = np.linspace(5, 20, 100)
+
+   LP_dom = np.array(list(product(L_dom, P_dom)))
+   x_dom = np.insert(LP_dom, 1, 0.25 ,axis= 1)
+
+   y_pred = model.predict(x_dom)
+   levels = np.linspace(0,y_pred.max(),100)
+
+   fig,ax=plt.subplots(1,len(y_var), figsize=(3*len(y_var),3), dpi=200)
+   for i in range(len(y_var)):
+      y_dom = (y_pred[:,i]).reshape(100, 100)
+      cp = ax[i].contourf(P_dom, L_dom, y_dom, cmap= 'Blues', levels=levels)
+      ax[i].set_xlabel('Pressure (bar)')
+      ax[i].set_ylabel('Length (m)')
+   fig.colorbar(cp, label=f'Molefraction (t={(i+1)*100}s)')
+   plt.tight_layout()
+   plt.show()
+
+.. figure:: images/ex3_res2.png
+  :figwidth: 95%
+  :alt: ex3_res2
+  :align: center
+
+**Using the developed machine learning model, the composition of the raffinate flow is predicted every 100 seconds, and a breakthrough curve is derived from the results.** In the graph, the point is the composition predicted by the machine learning model, and the line is a function derived by interpolating each point.
+
+.. code-block:: python
+
+   # breakthrough curve prediction
+   for i in range(len(pred)):
+      pred_tmp = pred[i,:]
+      bt_crv = interp1d(np.arange(100, 2000, 100), pred_tmp, kind = 'cubic' ) 
+      
+      t_dom = np.arange(100, 1900)
+      fn_pred = bt_crv(t_dom)
+      
+      if i%100 == 0:
+         plt.figure(dpi=200, figsize=(4,3))
+         plt.plot(t_dom, fn_pred, 'r',)
+         plt.plot(t_dom, 1-fn_pred, 'b')
+         plt.scatter(np.arange(100, 2000, 100), y_test.iloc[i,:], 
+                     s=10, c='r', label='Actual')
+         plt.scatter(np.arange(100, 2000, 100), 1-y_test.iloc[i,:], 
+                     s=10, c='b', label='Actual')
+         plt.xlabel('time (s)')
+         plt.ylabel('mole fraction (mol/mol)')
+         plt.tight_layout()
+         plt.show()
+
+.. figure:: images/ex3_res3.png
+  :figwidth: 90%
+  :alt: ex3_res3
+  :align: center
+
+------------------------------------------------------------------------------------------------

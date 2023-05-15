@@ -90,11 +90,13 @@ def change_node_fn(z_raw, y_raw, N_new):
 class column:
     """
     Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.
+    
     :param L: Length of column :math:`(m)`
     :param A_cross: Cross-sectional area of column :math:`(m^2)`
     :param n_component: Number of components 
     :param N_node: Number of nodes
     :param E_balance: Energy balance inclusion (default = True)  
+    
     """    
     def __init__(self, L, A_cross, n_component, 
                  N_node = 11, E_balance = True):
@@ -210,7 +212,7 @@ class column:
         """
         Mass transfer
         
-        :param k_mass_transfer: mass transfer coefficient :math:`(s^(-1))`
+        :param k_mass_transfer: mass transfer coefficient :math:`(s^{-1})`
         :param a_specific_surf: specific surface area :math:`(m^2/m^3)`
         :param D_dispersion: dispersion coefficient :math:`(m^2/s)`
         """

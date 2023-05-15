@@ -41,7 +41,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../pyAPEP.html">pyAPEP</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../Examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Case%20studies.html">Case studies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../FAQs.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Citation.html">Citation</a></li>
 </ul>
@@ -163,11 +163,13 @@
 <div class="viewcode-block" id="column"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column">[docs]</a><span class="k">class</span> <span class="nc">column</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.</span>
+<span class="sd">    </span>
 <span class="sd">    :param L: Length of column :math:`(m)`</span>
 <span class="sd">    :param A_cross: Cross-sectional area of column :math:`(m^2)`</span>
 <span class="sd">    :param n_component: Number of components </span>
 <span class="sd">    :param N_node: Number of nodes</span>
 <span class="sd">    :param E_balance: Energy balance inclusion (default = True)  </span>
+<span class="sd">    </span>
 <span class="sd">    &quot;&quot;&quot;</span>    
 <div class="viewcode-block" id="column.__init__"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="p">,</span> <span class="n">A_cross</span><span class="p">,</span> <span class="n">n_component</span><span class="p">,</span> 
                  <span class="n">N_node</span> <span class="o">=</span> <span class="mi">11</span><span class="p">,</span> <span class="n">E_balance</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
@@ -283,7 +285,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Mass transfer</span>
 <span class="sd">        </span>
-<span class="sd">        :param k_mass_transfer: mass transfer coefficient :math:`(s^(-1))`</span>
+<span class="sd">        :param k_mass_transfer: mass transfer coefficient :math:`(s^{-1})`</span>
 <span class="sd">        :param a_specific_surf: specific surface area :math:`(m^2/m^3)`</span>
 <span class="sd">        :param D_dispersion: dispersion coefficient :math:`(m^2/s)`</span>
 <span class="sd">        &quot;&quot;&quot;</span>

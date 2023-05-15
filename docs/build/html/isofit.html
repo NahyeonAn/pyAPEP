@@ -52,7 +52,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#developing-mixuture-isotherm-with-iast">3. Developing mixuture isotherm with IAST</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#f-py-mod-unction-structures">F:py:mod:{unction structures</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#function-structures">Function structures</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#finding-best-isotherm-function-algorithm">Finding best isotherm function algorithm</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#adosption-at-different-temperature-using-heat-of-adsorption">Adosption at different temperature (using heat of adsorption)</a></li>
@@ -97,16 +97,13 @@
              
   <section id="isotherm-fitting-module-pyapep-isofit">
 <h1>Isotherm fitting module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>)<a class="headerlink" href="#isotherm-fitting-module-pyapep-isofit" title="Permalink to this heading"></a></h1>
-<blockquote>
-<div><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit</span></code> is a module used to define isotherm functions from pressure and uptake data samples. Three main functions are developed in this module—<code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">diff_T</span></code>, and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IAST</span></code>. <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code> automatically finds the best isotherm function for the pure component. <code class="xref py py-mod docutils literal notranslate"><span class="pre">diff_T</span></code> derives isotherms according to temperature and pressure, and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IAST</span></code> derives mixture isotherms using single isotherms, respectively.</p>
-</div></blockquote>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit</span></code> is a module used to define isotherm functions from pressure and uptake data samples. Three main functions are developed in this module—<code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>, <code class="xref py py-mod docutils literal notranslate"><span class="pre">diff_T</span></code>, and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IAST</span></code>. <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code> automatically finds the best isotherm function for the pure component. <code class="xref py py-mod docutils literal notranslate"><span class="pre">diff_T</span></code> derives isotherms according to temperature and pressure, and <code class="xref py py-mod docutils literal notranslate"><span class="pre">IAST</span></code> derives mixture isotherms using single isotherms, respectively.</p>
 <p>First, import isofit into Python after installation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyapep.isofit</span> <span class="k">as</span> <span class="nn">isofit</span>
 </pre></div>
 </div>
 <p>In this module, three main functions exist.</p>
 <blockquote>
-<div><blockquote>
 <div><ol class="arabic simple">
 <li><p>Finding best isotherm function (<code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit.best_isomodel</span></code>)</p></li>
 <li><p>Fitting isotherm for different temperature (<code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit.fit_diffT</span></code>)</p></li>
@@ -114,15 +111,12 @@
 </ol>
 </div></blockquote>
 <p>Detailed description of each function are described in next senction. The explanation include function usage, algorithm (or related theroy), and function structure.</p>
-</div></blockquote>
 <hr class="docutils" />
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h2>
 <section id="finding-best-isotherm-function">
 <h3>1. Finding best isotherm function<a class="headerlink" href="#finding-best-isotherm-function" title="Permalink to this heading"></a></h3>
-<blockquote>
-<div><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code> automatically finds the best isotherm function from a given pressure-uptake dataset with multiple isotherm and optimizer candidates. In this usage example, the isotherm function is found from a dummy dataset with gas uptake at four pressures (2, 3, 4, 5 bar). The function <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code> returns 4 elements: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model.</p>
-</div></blockquote>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code> automatically finds the best isotherm function from a given pressure-uptake dataset with multiple isotherm and optimizer candidates. In this usage example, the isotherm function is found from a dummy dataset with gas uptake at four pressures (2, 3, 4, 5 bar). The function <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code> returns 4 elements: isotherm function, estimated parameters of isotherm function, the type of isotherm, and validation error of the model.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Package import</span>
 <span class="kn">import</span> <span class="nn">pyapep.isofit</span> <span class="k">as</span> <span class="nn">isofit</span>
 
@@ -137,9 +131,7 @@
 </section>
 <section id="fitting-isotherm-for-different-temperature">
 <h3>2. Fitting isotherm for different temperature<a class="headerlink" href="#fitting-isotherm-for-different-temperature" title="Permalink to this heading"></a></h3>
-<blockquote>
-<div><p>To reflect the temperature influence on the adsorption equilibrium, adsorption isotherm data measured at different pressure and temperatures should be used in composing an isotherm model. <code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_diffT</span></code> finds the isotherm model considering both pressure and temperature effects.</p>
-</div></blockquote>
+<p>To reflect the temperature influence on the adsorption equilibrium, adsorption isotherm data measured at different pressure and temperatures should be used in composing an isotherm model. <code class="xref py py-mod docutils literal notranslate"><span class="pre">fit_diffT</span></code> finds the isotherm model considering both pressure and temperature effects.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a data dummy data</span>
 <span class="n">qm_dum</span> <span class="o">=</span> <span class="mf">4.5</span> <span class="c1"># mol/kg</span>
 <span class="n">K1_dum</span> <span class="o">=</span> <span class="mf">3.0</span> <span class="c1"># 1/bar</span>
@@ -176,9 +168,7 @@
 </section>
 <section id="developing-mixuture-isotherm-with-iast">
 <h3>3. Developing mixuture isotherm with IAST<a class="headerlink" href="#developing-mixuture-isotherm-with-iast" title="Permalink to this heading"></a></h3>
-<blockquote>
-<div><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">IAST</span></code> provides Ideal adsorbed solution theory (IAST) calculation. IAST is widely used for predicting the isotherm of multiple components using pure isotherm models for each gas component.</p>
-</div></blockquote>
+<p><code class="xref py py-mod docutils literal notranslate"><span class="pre">IAST</span></code> provides Ideal adsorbed solution theory (IAST) calculation. IAST is widely used for predicting the isotherm of multiple components using pure isotherm models for each gas component.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pure isotherm functions</span>
 <span class="k">def</span> <span class="nf">iso1</span><span class="p">(</span><span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">):</span>
    <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">0.3</span><span class="o">*</span><span class="n">P</span>
@@ -217,8 +207,8 @@
 </section>
 </section>
 <hr class="docutils" />
-<section id="f-py-mod-unction-structures">
-<h2>F:py:mod:{unction structures<a class="headerlink" href="#f-py-mod-unction-structures" title="Permalink to this heading"></a></h2>
+<section id="function-structures">
+<h2>Function structures<a class="headerlink" href="#function-structures" title="Permalink to this heading"></a></h2>
 <dl class="py function">
 <dt class="sig sig-object py" id="pyAPEP.isofit.best_isomodel">
 <span class="sig-prename descclassname"><span class="pre">pyAPEP.isofit.</span></span><span class="sig-name descname"><span class="pre">best_isomodel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">P</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_par_nums</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[2,</span> <span class="pre">3,</span> <span class="pre">4]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_fun_lists</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iso_fun_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/isofit.html#best_isomodel"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.isofit.best_isomodel" title="Permalink to this definition"></a></dt>
@@ -260,7 +250,7 @@
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>var_return (isotherm function, isotherm parameters, errors, calculated heat of adsorption, reference temperature, a list of :math:`        heta_{T_{j}}`)</p>
+<dd class="field-even"><p>var_return (isotherm function, isotherm parameters, errors, calculated heat of adsorption, reference temperature, a list of :math:`        heta_{T_j}`)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -289,9 +279,7 @@
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
 <section id="finding-best-isotherm-function-algorithm">
 <h3>Finding best isotherm function algorithm<a class="headerlink" href="#finding-best-isotherm-function-algorithm" title="Permalink to this heading"></a></h3>
-<blockquote>
-<div><p>A primary function, <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>, automatically determines the best isotherm function from a given pressure-uptake dataset. Figure below shows the algorithm of <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>. The algorithm consists of three main stages. First, the parameter was estimated using a given isotherm function and an optimization solver. In the next stage, the best optimization solver with the least error was identified by repeatedly solving the objective problems using five optimization solvers. Finally, the best isotherm function among the five isotherm candidates was found by repeating the first and second stages. A detailed explanation of each stage is provided below:</p>
-</div></blockquote>
+<p>A primary function, <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>, automatically determines the best isotherm function from a given pressure-uptake dataset. Figure below shows the algorithm of <code class="xref py py-mod docutils literal notranslate"><span class="pre">best_isomodel</span></code>. The algorithm consists of three main stages. First, the parameter was estimated using a given isotherm function and an optimization solver. In the next stage, the best optimization solver with the least error was identified by repeatedly solving the objective problems using five optimization solvers. Finally, the best isotherm function among the five isotherm candidates was found by repeating the first and second stages. A detailed explanation of each stage is provided below:</p>
 <a class="reference internal image-reference" href="_images/algorithm.png"><img alt="Isotherm fitting algorithm" class="align-center" src="_images/algorithm.png" style="width: 500px;" /></a>
 <p>Figure shows the algorithm of <code class="xref py py-mod docutils literal notranslate"><span class="pre">isofit.best_isomodel</span></code>. The algorithm consists of three stages. First, the parameter estimation is carried out with a given isotherm function and an optimization solver. The next stage finds the best optimization solver with the least error by repeatedly solving the objective problems with five optimization solvers. Lastly, the best isotherm function is found among five isotherm candidates by repeating the first and second stages. A detailed explanation of each stage is described followings.</p>
 <p>Parameters estimation of the isotherm function is the same as solving an optimization problem as followings:</p>
@@ -414,8 +402,7 @@
 \[\min_{x_{1}, x_{2}, \dots}{\sum_{j = 1}^{n}\left( {h_{j}(x_{j}, y_{j}, P, T)- {h_{1}(x_{1}, y_{1}, P, T)}} \right)^{2} }\]</div>
 <div class="math notranslate nohighlight">
 \[\pi_{i} = h_{i}(x_{i}, y_{j}, P, T)\]</div>
-<p>Suppose that the function <span class="math notranslate nohighlight">\(h_j\)</span> is the computations of the spreading pressure of
-component <span class="math notranslate nohighlight">\(j(π_i)\)</span>. The function <span class="math notranslate nohighlight">\(h_j\)</span> is a function of the given initial guess of solid phase mole fraction (<span class="math notranslate nohighlight">\(x_j\)</span>), gas phase mole fraction <span class="math notranslate nohighlight">\(y_j\)</span>, pressure(<span class="math notranslate nohighlight">\(P\)</span>), and temperature(<span class="math notranslate nohighlight">\(T\)</span>).</p>
+<p>Suppose that the function <span class="math notranslate nohighlight">\(h_j\)</span> is the computations of the spreading pressure of component <span class="math notranslate nohighlight">\(j(π_i)\)</span>. The function <span class="math notranslate nohighlight">\(h_j\)</span> is a function of the given initial guess of solid phase mole fraction (<span class="math notranslate nohighlight">\(x_j\)</span>), gas phase mole fraction <span class="math notranslate nohighlight">\(y_j\)</span>, pressure(<span class="math notranslate nohighlight">\(P\)</span>), and temperature(<span class="math notranslate nohighlight">\(T\)</span>).</p>
 <p>For efficient computation, this work suggests a new method. Selecting the initial guess of solid phase mole fraction (<span class="math notranslate nohighlight">\(x_{j}\)</span>) is the most important part. To find the initial guess in an efficient way, this work proposes a new method. The method uses the extended Langmuir isotherm model for the initial guess.</p>
 <p>Since the extended Langmuir isotherm has explicit equation structure, it takes significantly short time to calculate the Langmuir isotherm equation solution. However, the problem is that the extended Langmuir isotherm model is not applicable to the other isotherm models than Langmuir model as a pure isotherm model. For example, if one component follows Freundlich isotherm model, the Langmuir isotherm model parameters cannot be found.</p>
 <p>To overcome this problem, the method proposed in this work estimates effective values of the Langmuir isotherm model parameters (<span class="math notranslate nohighlight">\(q_{m,eff,i}\)</span> and <span class="math notranslate nohighlight">\(b_{eff,i}\)</span>). This method firstly assumes that the isotherm model behaves in the similar way of Langmuir isotherm model. For given isotherm model <span class="math notranslate nohighlight">\(f_{i}(P_{i})\)</span>, the effective Langmuir parameters are found as following equations.</p>

@@ -96,7 +96,9 @@
 <h1>Ideal PSA simulation module (<a class="reference internal" href="#module-pyAPEP.simide" title="pyAPEP.simide"><code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code></a>)<a class="headerlink" href="#ideal-psa-simulation-module-pyapep-simide" title="Permalink to this heading"></a></h1>
 <p>This module enables ideal PSA simulation using isotherm function and operating conditions.</p>
 <p>First, import simide into Python after installation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pyAPEP.simide</span> <span class="k">as</span> <span class="nn">simide</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Package import</span>
+ <span class="kn">import</span> <span class="nn">pyapep.isofit</span> <span class="k">as</span> <span class="nn">isofit</span>
+ <span class="kn">import</span> <span class="nn">pyapep.simide</span> <span class="k">as</span> <span class="nn">simide</span>
 </pre></div>
 </div>
 <dl class="simple">
@@ -116,15 +118,27 @@
 <section id="mixture-isotherm-function-definition">
 <h3>1. Mixture isotherm function definition<a class="headerlink" href="#mixture-isotherm-function-definition" title="Permalink to this heading"></a></h3>
 <p>Here, we define the mixture isotherm function with <code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.isofit</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isof</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
-<span class="c1"># iso1 and iso2 == Pure isotherm function of each componet.</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate dummy data</span>
+<span class="n">P</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
+<span class="n">q_comp1</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>     <span class="c1"># Gas adsorption of component 1</span>
+<span class="n">q_comp2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>    <span class="c1"># Gas adsorption of component 2</span>
+
+<span class="c1"># Define pure isotherm of each component</span>
+<span class="n">iso1</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">fntype1</span><span class="p">,</span> <span class="n">err1</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_comp1</span><span class="p">)</span>
+<span class="n">iso2</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span> <span class="n">fntype2</span><span class="p">,</span> <span class="n">err2</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_comp2</span><span class="p">)</span>
+
+<span class="c1"># Mixture isotherm function definition</span>
+<span class="c1"># iso1 and iso2 == Pure isotherm function of each component.</span>
+<span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isofit</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="ideal-column-definition">
 <h3>2. Ideal column definition<a class="headerlink" href="#ideal-column-definition" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num_comp</span> <span class="o">=</span> <span class="mi">2</span>                                       <span class="c1"># The number of components</span>
-<span class="n">Column1</span> <span class="o">=</span> <span class="n">simi</span><span class="o">.</span><span class="n">IdealColumn</span><span class="p">(</span><span class="n">num_comp</span><span class="p">,</span> <span class="n">iso_mix</span><span class="p">,</span> <span class="p">)</span>    <span class="c1"># Ideal column definition</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># The number of components</span>
+<span class="n">num_comp</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="c1"># Ideal column definition</span>
+<span class="n">Column1</span> <span class="o">=</span> <span class="n">simide</span><span class="o">.</span><span class="n">IdealColumn</span><span class="p">(</span><span class="n">num_comp</span><span class="p">,</span> <span class="n">iso_mix</span> <span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                     <span class="c1"># Chek input condition</span>
 </pre></div>
 </div>

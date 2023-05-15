@@ -214,7 +214,7 @@ def fit_diffT(p_list, q_list, T_list, i_ref,
     :param iso_fun_index: Each name for iso_fun_lists
     :param tol: Tolerance
     
-    :return: var_return (isotherm function, isotherm parameters, errors, calculated heat of adsorption, reference temperature, a list of :math:`\theta_{T_{j}}`)
+    :return: var_return (isotherm function, isotherm parameters, errors, calculated heat of adsorption, reference temperature, a list of :math:`\theta_{T_j}`)
     """
 
     p_ref = p_list[i_ref]

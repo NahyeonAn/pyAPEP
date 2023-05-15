@@ -21,7 +21,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="Examples.html" />
+    <link rel="next" title="Case studies" href="Case%20studies.html" />
     <link rel="prev" title="Ideal PSA simulation module (pyAPEP.simide)" href="simide.html" /> 
 </head>
 
@@ -65,12 +65,17 @@
 <li class="toctree-l4"><a class="reference internal" href="#id1">Real PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simsep</span></code>)</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#mass-balance">Mass balance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id2">Momentum balance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#id3">Energy balance</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="Examples.html">Examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="Case%20studies.html">Case studies</a></li>
 <li class="toctree-l1"><a class="reference internal" href="FAQs.html">FAQs</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Citation.html">Citation</a></li>
 </ul>
@@ -137,16 +142,23 @@
 </pre></div>
 </div>
 <p>Then, define some parameters of the extended Langmuir isotherm.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">qm1</span> <span class="o">=</span> <span class="mi">1</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define parameters of extended Langmuir isotherm</span>
+<span class="n">qm1</span> <span class="o">=</span> <span class="mi">1</span>
 <span class="n">qm2</span> <span class="o">=</span> <span class="mf">0.1</span>
 <span class="n">b1</span> <span class="o">=</span> <span class="mf">0.5</span>
 <span class="n">b2</span> <span class="o">=</span> <span class="mf">0.05</span>
+
+<span class="n">dH1</span> <span class="o">=</span> <span class="mi">10000</span>     <span class="c1"># J/mol</span>
+<span class="n">dH2</span> <span class="o">=</span> <span class="mi">15000</span>     <span class="c1"># J/mol</span>
+<span class="n">R_gas</span> <span class="o">=</span> <span class="mf">8.3145</span> <span class="c1"># J/mol/K</span>
+<span class="n">T_ref</span> <span class="o">=</span> <span class="mi">300</span>    <span class="c1"># K</span>
 </pre></div>
 </div>
 <p>The isotherm is defined as follows.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">extLang</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-    <span class="n">P1</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">P2</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the isotherm</span>
+<span class="k">def</span> <span class="nf">extLang</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
+    <span class="n">P1</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">dH1</span><span class="o">/</span><span class="n">R_gas</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">T_ref</span><span class="p">))</span>
+    <span class="n">P2</span> <span class="o">=</span> <span class="n">P</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">dH1</span><span class="o">/</span><span class="n">R_gas</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">T</span><span class="o">-</span><span class="mi">1</span><span class="o">/</span><span class="n">T_ref</span><span class="p">))</span>
     <span class="n">deno</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">b1</span><span class="o">*</span><span class="n">P1</span> <span class="o">+</span> <span class="n">b2</span><span class="o">*</span><span class="n">P2</span>
     <span class="n">q1</span> <span class="o">=</span> <span class="n">qm1</span><span class="o">*</span><span class="n">b1</span><span class="o">*</span><span class="n">P1</span> <span class="o">/</span> <span class="n">deno</span>
     <span class="n">q2</span> <span class="o">=</span> <span class="n">qm2</span><span class="o">*</span><span class="n">b2</span><span class="o">*</span><span class="n">P2</span> <span class="o">/</span> <span class="n">deno</span>
@@ -156,11 +168,14 @@
 </section>
 <section id="column-design">
 <h3>2. Column design<a class="headerlink" href="#column-design" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">col_len</span>         <span class="o">=</span> <span class="mi">1</span>                                          <span class="c1"># Length of the bed (m)</span>
-<span class="n">cross_sect_area</span> <span class="o">=</span> <span class="mf">0.0314</span>                                     <span class="c1"># Cross sectional area (m^2)</span>
-<span class="n">num_comp</span>        <span class="o">=</span> <span class="mi">2</span>                                          <span class="c1"># The number of components</span>
-<span class="n">Column1</span> <span class="o">=</span> <span class="n">simsep</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col_len</span><span class="p">,</span> <span class="n">cross_sect_area</span><span class="p">,</span> <span class="n">num_comp</span><span class="p">)</span>  <span class="c1"># Ideal column definition</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">Column1</span><span class="p">)</span>                                               <span class="c1"># Check</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set the design parameter of a column</span>
+<span class="n">col_len</span>         <span class="o">=</span> <span class="mi">1</span>      <span class="c1"># (m)</span>
+<span class="n">cross_sect_area</span> <span class="o">=</span> <span class="mf">0.0314</span> <span class="c1"># (m^2)</span>
+<span class="n">num_comp</span>        <span class="o">=</span> <span class="mi">2</span>
+<span class="n">node</span> <span class="o">=</span> <span class="mi">41</span>                <span class="c1"># The number of nodes</span>
+
+<span class="c1"># Column definition</span>
+<span class="n">Column1</span> <span class="o">=</span> <span class="n">simsep</span><span class="o">.</span><span class="n">column</span><span class="p">(</span><span class="n">col_len</span><span class="p">,</span> <span class="n">cross_sect_area</span><span class="p">,</span> <span class="n">num_comp</span><span class="p">,</span> <span class="n">N_node</span><span class="o">=</span> <span class="n">node</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -195,7 +210,7 @@
 </section>
 <section id="thermal-information">
 <h3>6. Thermal information<a class="headerlink" href="#thermal-information" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dH_ads</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1000</span><span class="p">,</span><span class="mi">1000</span><span class="p">]</span>    <span class="c1"># Heat of adsorption (J/mol)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dH_ads</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000</span><span class="p">,</span><span class="mi">16000</span><span class="p">]</span>  <span class="c1"># Heat of adsorption (J/mol)</span>
 <span class="n">Cp_s</span> <span class="o">=</span> <span class="mi">5</span>                <span class="c1"># Solid heat capacity (J/kg K)</span>
 <span class="n">Cp_g</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">]</span>          <span class="c1"># Gas heat capacity (J/mol K)</span>
 <span class="n">h_heat</span> <span class="o">=</span> <span class="mi">10</span>             <span class="c1"># Heat transfer coefficient between solid and gas (J/m^2 K s)</span>
@@ -219,10 +234,10 @@
 </section>
 <section id="initial-condition-setting">
 <h3>8. Initial condition setting<a class="headerlink" href="#initial-condition-setting" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_init</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>                       <span class="c1"># Initial pressure (bar)</span>
-<span class="n">y_init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">),</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)]</span>  <span class="c1"># Gas phase mol fraction (mol/mol)</span>
-<span class="n">Tg_init</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>                    <span class="c1"># Initial gas temperature (K)</span>
-<span class="n">Ts_init</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">11</span><span class="p">)</span>                    <span class="c1"># Initial solid temperature (K)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">P_init</span> <span class="o">=</span> <span class="mi">8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>                       <span class="c1"># Initial pressure (bar)</span>
+<span class="n">y_init</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="mf">0.8</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">node</span><span class="p">)]</span>  <span class="c1"># Gas phase mol fraction (mol/mol)</span>
+<span class="n">Tg_init</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>                    <span class="c1"># Initial gas temperature (K)</span>
+<span class="n">Ts_init</span> <span class="o">=</span> <span class="mi">300</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>                    <span class="c1"># Initial solid temperature (K)</span>
 
 <span class="n">P_partial</span> <span class="o">=</span> <span class="p">[</span><span class="n">P_init</span><span class="o">*</span><span class="n">y_init</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">P_init</span><span class="o">*</span><span class="n">y_init</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="c1"># Partial pressure (bar)</span>
 <span class="n">q_init</span> <span class="o">=</span> <span class="n">extLang</span><span class="p">(</span><span class="n">P_partial</span><span class="p">,</span> <span class="n">Ts_init</span><span class="p">)</span>             <span class="c1"># Solid phase uptake (mol/kg)</span>
@@ -240,29 +255,19 @@
 </section>
 <section id="graph">
 <h3>10. Graph<a class="headerlink" href="#graph" title="Permalink to this heading"></a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Column1</span><span class="o">.</span><span class="n">Graph_P</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>                                                                            <span class="c1"># Graph 1</span>
-<span class="n">Column1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span><span class="s1">&#39;Gas Concentration (mol/m$^3$)&#39;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>           <span class="c1"># Graph 2</span>
-<span class="n">Column1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span><span class="s1">&#39;Soild concentration (uptake) (mol/kg)&#39;</span><span class="p">,</span> <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.95</span><span class="p">])</span>   <span class="c1"># Graph 3</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simulation result: Pressure according to z-domain</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">Graph_P</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span><span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="c1"># Simulation result: Gas concentration according to z-domain</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span>
+<span class="s1">&#39;Gas Concentration (mol/m$^3$)&#39;</span><span class="p">,</span><span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
+<span class="c1"># Simulation result: Solid concentration according to z-domain</span>
+<span class="n">Column1</span><span class="o">.</span><span class="n">Graph</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">yaxis_label</span><span class="o">=</span>
+<span class="s1">&#39;Soild concentration (uptake) (mol/kg)&#39;</span><span class="p">,</span><span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>The results are shown in Fig. 1,2, and 3.</p>
-<figure class="align-center" id="id2" style="width: 60%">
-<img alt="simsep graph 1" src="_images/simsep_graph_1.png" />
-<figcaption>
-<p><span class="caption-text">Fig. 1. Simsep graph 1</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id3" style="width: 60%">
-<img alt="simsep graph 2" src="_images/simsep_graph_2.png" />
-<figcaption>
-<p><span class="caption-text">Fig. 2. Simsep graph 2</span><a class="headerlink" href="#id3" title="Permalink to this image"></a></p>
-</figcaption>
-</figure>
-<figure class="align-center" id="id4" style="width: 60%">
-<img alt="simsep graph 3" src="_images/simsep_graph_3.png" />
-<figcaption>
-<p><span class="caption-text">Fig. 3. Simsep graph 3</span><a class="headerlink" href="#id4" title="Permalink to this image"></a></p>
-</figcaption>
+<p>The results are shown in Fig. (a)–(c)</p>
+<figure class="align-center" style="width: 60%">
+<img alt="simsep graph 1" src="_images/simsep_res2.png" />
 </figure>
 </section>
 </section>
@@ -274,12 +279,18 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyAPEP.simsep.</span></span><span class="sig-name descname"><span class="pre">column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column" title="Permalink to this definition"></a></dt>
-<dd><p>Instantiation. A <cite>Column</cite> class is for simulating packed bed column or pressure swing adsroption process.
-:param L: Length of column <span class="math notranslate nohighlight">\((m)\)</span>
-:param A_cross: Cross-sectional area of column <span class="math notranslate nohighlight">\((m^2)\)</span>
-:param n_component: Number of components
-:param N_node: Number of nodes
-:param E_balance: Energy balance inclusion (default = True)</p>
+<dd><p>Instantiation. A <cite>Column</cite> class is for simulating packed bed column or pressure swing adsroption process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>L</strong> – Length of column <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><strong>A_cross</strong> – Cross-sectional area of column <span class="math notranslate nohighlight">\((m^2)\)</span></p></li>
+<li><p><strong>n_component</strong> – Number of components</p></li>
+<li><p><strong>N_node</strong> – Number of nodes</p></li>
+<li><p><strong>E_balance</strong> – Energy balance inclusion (default = True)</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyAPEP.simsep.column.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">L</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">A_cross</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_component</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N_node</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">11</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">E_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyAPEP/simsep.html#column.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyAPEP.simsep.column.__init__" title="Permalink to this definition"></a></dt>
@@ -330,7 +341,7 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>k_mass_transfer</strong> – mass transfer coefficient <span class="math notranslate nohighlight">\((s^(-1))\)</span></p></li>
+<li><p><strong>k_mass_transfer</strong> – mass transfer coefficient <span class="math notranslate nohighlight">\((s^{-1})\)</span></p></li>
 <li><p><strong>a_specific_surf</strong> – specific surface area <span class="math notranslate nohighlight">\((m^2/m^3)\)</span></p></li>
 <li><p><strong>D_dispersion</strong> – dispersion coefficient <span class="math notranslate nohighlight">\((m^2/s)\)</span></p></li>
 </ul>
@@ -561,7 +572,8 @@
 <hr class="docutils" />
 <section id="theory">
 <h2>Theory<a class="headerlink" href="#theory" title="Permalink to this heading"></a></h2>
-<p>Mass balance</p>
+<section id="mass-balance">
+<h3>Mass balance<a class="headerlink" href="#mass-balance" title="Permalink to this heading"></a></h3>
 <p>The mass balance relationship, shown below, is used to describe the pressure swing adsorption process.</p>
 <div class="math notranslate nohighlight">
 \[\frac{\partial C_{i}}{\partial t} = -\frac{\partial (uC_{i})}{\partial z} + D_{dis} \frac{\partial^2 C_{i}}{\partial z^2} - \rho_{s}\frac{(1-\epsilon)}{\epsilon}\frac{\partial q_{i}}{\partial z_{i}}\]</div>
@@ -577,10 +589,45 @@
 <li><p><span class="math notranslate nohighlight">\(q_{i} =\)</span> Uptake of component i <span class="math notranslate nohighlight">\((mol/kg)\)</span></p></li>
 </ul>
 </div></blockquote>
-<p><a class="reference external" href="https://doi.org/10.1016/j.compchemeng.2016.11.021">Energy balance</a></p>
+</section>
+<section id="id2">
+<h3><a class="reference external" href="http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf">Momentum balance</a><a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p>In the adsorption process simulation, the pressure drop <span class="math notranslate nohighlight">\(\Delta P\)</span> should be considered to solve the momentum balance along the length of the bed. In 1952, Ergun proposed an equation to consider <span class="math notranslate nohighlight">\(\Delta P\)</span> in a packed bed, and the same equation was used to solve the momentum balance in this package, similar to many previous studies.</p>
+<p>The Ergun equation represents the relationship between the pressure drop and resultant fluid flow in packed beds, as shown below. The equation was derived from experimental measurements and theoretical postulates.</p>
+<div class="math notranslate nohighlight">
+\[- \frac{\partial P}{\partial z} = \frac{180 \mu }{d_{p}^2 } \frac{(1 - \varepsilon)^2}{\varepsilon^3} u + \frac{7}{4} \frac{\rho_{f}}{d_{P}} \frac{1 - \varepsilon}{\varepsilon^3} u|{u}|\]</div>
+<p>where</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\partial P =\)</span> Pressure drop <span class="math notranslate nohighlight">\((bar)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(L =\)</span> Height of the bed <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\mu =\)</span> Fluid viscosity <span class="math notranslate nohighlight">\((Pa \cdot s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\varepsilon =\)</span> Void space of the bed</p></li>
+<li><p><span class="math notranslate nohighlight">\(u =\)</span> Fluid superficial velocity <span class="math notranslate nohighlight">\((m/s)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d_{P} =\)</span> Particle diameter <span class="math notranslate nohighlight">\((m)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\rho_{f} =\)</span> Density of Fluid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="id3">
+<h3><a class="reference external" href="https://doi.org/10.1016/j.compchemeng.2016.11.021">Energy balance</a><a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
 <p>The energy balance, shown below, is also used to describe the pressure swing adsorption process.</p>
 <div class="math notranslate nohighlight">
-\[CC_{p, g}\frac{\partial T_{g}}{\partial t}=-CC_{p,g}u\frac{\partial T_{g}}{\partial z} + \frac{h}{\epsilon}a_{surf}(T_{s}-T_{g})+\sum_{i=1}^{n}(-C_{p,i}T_{g}D_{dis,i}\frac{\partial^2 C_{i}}{\partial z^2}+C_{p,i}T_{g}\rho_{s}\frac{(1-\epsilon)}{\epsilon}\frac{\partial q_{i}}{\partial z}\]</div>
+\[Convection = -CC_{p,g}u\frac{\partial T_{g}}{\partial z} \frac{h}{\varepsilon}a_{surf}(T_{s}-T_{g})\]</div>
+<div class="math notranslate nohighlight">
+\[Conduction =  \lambda_{cond} \frac{\partial^{2} T_{s}}{\partial z^{2}}\]</div>
+<div class="math notranslate nohighlight">
+\[Generation = \sum_{i=1}^{n}(-\Delta H_{ad,i})\rho_{s} (1-\varepsilon) \frac{\partial q_{i}}{\partial t}\]</div>
+<p><strong>The overall energy balance under the boundary condition for the gas phase:</strong></p>
+<div class="math notranslate nohighlight">
+\[\sum_{i=1}^{n}C_{i}C_{p,i}\frac{\partial T_{g}}{\partial t}
+= h a_{surf} (T_{s} - T_{g})
+-\sum_{i=1}^{n}uC_{i}C_{p,i}\frac{\partial T_{g}}{\partial z}\]</div>
+<p><strong>The overall energy balance under the boundary condition for the solid phase:</strong></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left( (1-\varepsilon) \rho_{s} \sum_{i=1}^{n} (q_{i} C_{p,i}) + \rho_{s}C_{p,s}  \right) &amp;\frac{\partial T_{s}}{\partial t}
+= h a_{surf}(T_{g} - T_{s}) + \lambda_{cond} \frac{\partial^{2} T_{s}}{\partial z^{2}}\\
++&amp;\sum_{i=1}^{n}(-\Delta H_{ad,i})\rho_{s} (1-\varepsilon) \frac{\partial q_{i}}{\partial t}\end{split}\]</div>
 <p>where</p>
 <blockquote>
 <div><ul class="simple">
@@ -591,33 +638,15 @@
 <li><p><span class="math notranslate nohighlight">\(u =\)</span> Velocity <span class="math notranslate nohighlight">\((m/s)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(z =\)</span> Length in axial direction <span class="math notranslate nohighlight">\((m)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(h =\)</span> Enthalpy <span class="math notranslate nohighlight">\((J/m^2 \cdot K \cdot s)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void fraction <span class="math notranslate nohighlight">\((m^3/m^3)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\varepsilon =\)</span> Void fraction <span class="math notranslate nohighlight">\((m^3/m^3)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(a_{surf} =\)</span> Interfacial area concentration <span class="math notranslate nohighlight">\((m^2/m^3)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(D_{dis,i} =\)</span> Dispersion coefficient <span class="math notranslate nohighlight">\((m^2/s)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(T_{s} =\)</span> Solid temperature <span class="math notranslate nohighlight">\((K)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(\rho_{s} =\)</span> Density of solid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(q_{i} =\)</span> Uptake of component i <span class="math notranslate nohighlight">\((mol/kg)\)</span></p></li>
 </ul>
 </div></blockquote>
-<p><a class="reference external" href="http://dns2.asia.edu.tw/~ysho/YSHO-English/2000%20Engineering/PDF/Che%20Eng%20Pro48,%2089.pdf">Ergun equation</a></p>
-<p>The Ergun equation, shown below, is used to describe the flow.</p>
-<div class="math notranslate nohighlight">
-\[\frac{\vartriangle P}{L} = \frac{180 \mu }{d_{p}^2 } \frac{(1 - \epsilon)^2}{\epsilon^3} u + \frac{7}{4} \frac{\rho_{f}}{d_{P}} \frac{1 - \epsilon}{\epsilon^3} u^2\]</div>
-<p>where</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\vartriangle P =\)</span> Pressure drop <span class="math notranslate nohighlight">\((bar)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(L =\)</span> Height of the bed <span class="math notranslate nohighlight">\((m)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\mu =\)</span> Fluid viscosity <span class="math notranslate nohighlight">\((Pa \cdot s)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\epsilon =\)</span> Void space of the bed</p></li>
-<li><p><span class="math notranslate nohighlight">\(u =\)</span> Fluid superficial velocity <span class="math notranslate nohighlight">\((m/s)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(d_{P} =\)</span> Particle diameter <span class="math notranslate nohighlight">\((m)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\rho_{f} =\)</span> Density of Fluid <span class="math notranslate nohighlight">\((kg/m^3)\)</span></p></li>
-</ul>
-</div></blockquote>
-<p>The Ergun equation represents the relationship between pressure drop and resultant fluid flow in packed beds.
-The equation was developed by Sabri Ergun and he derived it from experimental measurments and theoretical postulates.</p>
 <hr class="docutils" />
+</section>
 </section>
 </section>
 
@@ -626,7 +655,7 @@ The equation was developed by Sabri Ergun and he derived it from experimental me
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="simide.html" class="btn btn-neutral float-left" title="Ideal PSA simulation module (pyAPEP.simide)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="Examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="Case%20studies.html" class="btn btn-neutral float-right" title="Case studies" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
