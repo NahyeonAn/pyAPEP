@@ -12,11 +12,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,12 +30,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #BED2E0" >
-            <a href="index.html">
-            <img src="_static/pyAPEP.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="index.html">
+            
+              <img src="_static/pyAPEP.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -55,7 +59,10 @@
 <li class="toctree-l4"><a class="reference internal" href="#simulation-run">5. Simulation run</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simide">Class documentation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-pyAPEP.simide">Class documentation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyAPEP.simide.IdealColumn"><code class="docutils literal notranslate"><span class="pre">IdealColumn</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a></li>
 </ul>
 </li>
@@ -80,9 +87,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="pyAPEP.html">pyAPEP</a> &raquo;</li>
-      <li>Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="pyAPEP.html">pyAPEP</a></li>
+      <li class="breadcrumb-item active">Ideal PSA simulation module (<code class="xref py py-mod docutils literal notranslate"><span class="pre">pyAPEP.simide</span></code>)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/simide.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -127,9 +134,17 @@
 <span class="n">iso1</span><span class="p">,</span> <span class="n">param1</span><span class="p">,</span> <span class="n">fntype1</span><span class="p">,</span> <span class="n">err1</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_comp1</span><span class="p">)</span>
 <span class="n">iso2</span><span class="p">,</span> <span class="n">param2</span><span class="p">,</span> <span class="n">fntype2</span><span class="p">,</span> <span class="n">err2</span> <span class="o">=</span> <span class="n">isofit</span><span class="o">.</span><span class="n">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q_comp2</span><span class="p">)</span>
 
+<span class="c1"># Using heat of adsorptoin</span>
+<span class="c1"># Make the adsorption isotherm as a function of both P and T (Updated, Aug 2, 2023)</span>
+<span class="n">dH1</span> <span class="o">=</span> <span class="mi">15000</span>
+<span class="n">dH2</span> <span class="o">=</span> <span class="mi">5000</span>
+<span class="n">T_ref</span> <span class="o">=</span> <span class="mi">300</span>
+<span class="n">iso1_ther</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">iso1</span><span class="p">(</span><span class="n">P</span><span class="o">*</span><span class="n">isofit</span><span class="o">.</span><span class="n">Arrh</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dH1</span><span class="p">,</span> <span class="n">T_ref</span><span class="p">))</span>
+<span class="n">iso2_ther</span><span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">iso2</span><span class="p">(</span><span class="n">P</span><span class="o">*</span><span class="n">isofit</span><span class="o">.</span><span class="n">Arrh</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">dH2</span><span class="p">,</span> <span class="n">T_ref</span><span class="p">))</span>
+
 <span class="c1"># Mixture isotherm function definition</span>
-<span class="c1"># iso1 and iso2 == Pure isotherm function of each component.</span>
-<span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isofit</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1</span><span class="p">,</span> <span class="n">iso2</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
+<span class="c1"># iso1_ther and iso2_ther == Pure isotherm function of each component.</span>
+<span class="n">iso_mix</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">P</span><span class="p">,</span><span class="n">T</span><span class="p">:</span> <span class="n">isofit</span><span class="o">.</span><span class="n">IAST</span><span class="p">([</span><span class="n">iso1_ther</span><span class="p">,</span> <span class="n">iso2_ther</span><span class="p">],</span> <span class="n">P</span><span class="p">,</span> <span class="n">T</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>

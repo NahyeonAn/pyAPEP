@@ -11,11 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -26,12 +26,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #BED2E0" >
-            <a href="../../index.html">
-            <img src="../../_static/pyAPEP.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/pyAPEP.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -59,9 +63,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>pyAPEP.isofit</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyAPEP.isofit</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -194,8 +198,8 @@
 <span class="c1">#%% Single Isotherm 4: Fitting with diff. isotherm models</span>
 <div class="viewcode-block" id="best_isomodel"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.best_isomodel">[docs]</a><span class="k">def</span> <span class="nf">best_isomodel</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">iso_par_nums</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> 
 <span class="n">iso_fun_lists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">iso_fun_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0E-5</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to automatically find best isotherm model for given datast with multiple isotherm and optimizer candidates.</span>
 <span class="sd">    </span>
 <span class="sd">    Models supported are as follows. Here, :math:`q` is the gas uptake,</span>
@@ -225,7 +229,7 @@
         <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Langmuir&quot;</span><span class="p">,</span><span class="s2">&quot;Freundlich&quot;</span><span class="p">])</span>
         <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Quadratic&quot;</span><span class="p">,</span><span class="s2">&quot;Sips&quot;</span><span class="p">])</span>
         <span class="n">iso_fun_index</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;Dual-site Langmuire&quot;</span><span class="p">])</span>
-        <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">        for isolii in iso_fun_lists:</span>
 <span class="sd">            indx_tmp = list(range(len(isolii)))</span>
 <span class="sd">            iso_fun_index.append(indx_tmp)</span>
@@ -274,8 +278,8 @@
         <span class="n">iso_fun_lists</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
         <span class="n">iso_fun_index</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">tol</span> <span class="o">=</span> <span class="mf">1.0E-5</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to fit isotherm model for given datast based on the different temperatures.</span>
 <span class="sd">    </span>
 <span class="sd">    :param p_list: Partial pressure list</span>
@@ -392,8 +396,8 @@
 
 <span class="c1">#%% RAST 2: RAST mixture isotherm model</span>
 <span class="k">def</span> <span class="nf">rast</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span><span class="n">P_i</span><span class="p">,</span><span class="n">T</span><span class="p">,</span> <span class="n">Lamb</span><span class="p">,</span> <span class="n">C</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to develop mixture isotherm model with RAST.</span>
 <span class="sd">    </span>
 <span class="sd">    :param isotherm_list: Pure isotherm function list of each components</span>
@@ -413,7 +417,7 @@
         <span class="k">return</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">N</span> <span class="o">=</span> <span class="n">Lamb</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    def spreading_pressure(iso, P_max):</span>
 <span class="sd">        P_ran = np.linspace(0.0001,P_max)</span>
 <span class="sd">        q_ov_P = iso(P_ran)/P_ran</span>
@@ -556,8 +560,8 @@
 
 <span class="c1"># %% IAST funciton</span>
 <div class="viewcode-block" id="IAST"><a class="viewcode-back" href="../../isofit.html#pyAPEP.isofit.IAST">[docs]</a><span class="k">def</span> <span class="nf">IAST</span><span class="p">(</span><span class="n">isotherm_list</span><span class="p">,</span> <span class="n">P_i</span><span class="p">,</span> <span class="n">T</span><span class="p">):</span>
-    
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Function to develop the mixture isotherm model for given datast.</span>
 <span class="sd">    </span>
 <span class="sd">    :param isotherm_list: Pure isotherm function list of each components</span>
@@ -761,7 +765,7 @@
     <span class="n">res_diffT_test</span> <span class="o">=</span> <span class="n">fit_diffT</span><span class="p">(</span><span class="n">p_list_test</span><span class="p">,</span> <span class="n">q_list_test</span><span class="p">,</span> <span class="n">T_list_test</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">res_diffT_test</span><span class="p">)</span>
 
-    <span class="sd">&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    R_gas = 8.3145</span>
 <span class="sd">    Arrh =  lambda dH,T,Tref: np.exp(abs(dH/R_gas)*(1/T - 1/Tref))</span>
 <span class="sd">    def Lang_PTdH(P,T,par,dH,Tref):</span>

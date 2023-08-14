@@ -11,11 +11,11 @@
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
         <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
         <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -26,12 +26,16 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search"  style="background: #BED2E0" >
-            <a href="../../index.html">
-            <img src="../../_static/pyAPEP.png" class="logo" alt="Logo"/>
+
+          
+          
+          <a href="../../index.html">
+            
+              <img src="../../_static/pyAPEP.png" class="logo" alt="Logo"/>
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -59,9 +63,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../index.html">Module code</a> &raquo;</li>
-      <li>pyAPEP.simsep</li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyAPEP.simsep</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -161,7 +165,7 @@
 
 <span class="c1"># %% Column class</span>
 <div class="viewcode-block" id="column"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column">[docs]</a><span class="k">class</span> <span class="nc">column</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Instantiation. A `Column` class is for simulating packed bed column or pressure swing adsroption process.</span>
 <span class="sd">    </span>
 <span class="sd">    :param L: Length of column :math:`(m)`</span>
@@ -229,7 +233,7 @@
  <span class="c1">### Before running the simulations ###</span>
 
 <div class="viewcode-block" id="column.adsorbent_info"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.adsorbent_info">[docs]</a>    <span class="k">def</span> <span class="nf">adsorbent_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">iso_fn</span><span class="p">,</span> <span class="n">epsi</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">D_particle</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span> <span class="n">rho_s</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span><span class="n">P_test_range</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="n">T_test_range</span> <span class="o">=</span> <span class="p">[</span><span class="mi">273</span><span class="p">,</span><span class="mi">373</span><span class="p">]):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Adsorbent information</span>
 <span class="sd">        </span>
 <span class="sd">        :param iso_fn: Isothem function (Type: n_comp.N array, N array [pressure, temperature])</span>
@@ -262,7 +266,7 @@
         
         
 <div class="viewcode-block" id="column.gas_prop_info"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.gas_prop_info">[docs]</a>    <span class="k">def</span> <span class="nf">gas_prop_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Mass_molar</span><span class="p">,</span> <span class="n">mu_viscosity</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Gas property information</span>
 <span class="sd">        </span>
 <span class="sd">        :param Mass_molar: Molar mass :math:`(mol/kg)`</span>
@@ -282,7 +286,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_mu</span> <span class="o">=</span> <span class="n">mu_viscosity</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_required</span><span class="p">[</span><span class="s1">&#39;gas_prop_info&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></div>
 <div class="viewcode-block" id="column.mass_trans_info"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.mass_trans_info">[docs]</a>    <span class="k">def</span> <span class="nf">mass_trans_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k_mass_transfer</span><span class="p">,</span> <span class="n">a_specific_surf</span><span class="p">,</span> <span class="n">D_dispersion</span> <span class="o">=</span> <span class="mf">1E-8</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Mass transfer</span>
 <span class="sd">        </span>
 <span class="sd">        :param k_mass_transfer: mass transfer coefficient :math:`(s^{-1})`</span>
@@ -316,7 +320,7 @@
 <div class="viewcode-block" id="column.thermal_info"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.thermal_info">[docs]</a>    <span class="k">def</span> <span class="nf">thermal_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dH_adsorption</span><span class="p">,</span>
                      <span class="n">Cp_solid</span><span class="p">,</span> <span class="n">Cp_gas</span><span class="p">,</span> <span class="n">h_heat_transfer</span><span class="p">,</span>
                      <span class="n">k_conduct</span> <span class="o">=</span> <span class="mf">0.0001</span><span class="p">,</span> <span class="n">h_heat_ambient</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">T_ambient</span> <span class="o">=</span> <span class="mf">298.15</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Thermal information</span>
 <span class="sd">        </span>
 <span class="sd">        :param dH_adsorption: Heat of adsorption :math:`(J/mol)`</span>
@@ -355,7 +359,7 @@
     <span class="n">P_inlet</span><span class="p">,</span><span class="n">T_inlet</span><span class="p">,</span><span class="n">y_inlet</span><span class="p">,</span> <span class="n">Cv_in</span><span class="o">=</span><span class="mf">1E-1</span><span class="p">,</span><span class="n">Cv_out</span><span class="o">=</span><span class="mf">1E-3</span><span class="p">,</span>
       <span class="n">Q_inlet</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">assigned_v_option</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> 
       <span class="n">foward_flow_direction</span> <span class="o">=</span>  <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Boundary condition information</span>
 <span class="sd">        </span>
 <span class="sd">        :param P_outlet: Outlet pressure :math:`(bar)` [scalar]</span>
@@ -406,7 +410,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The inlet composition should be a list/narray with shape (2, ).&#39;</span><span class="p">)</span>    </div>
  
 <div class="viewcode-block" id="column.initialC_info"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.initialC_info">[docs]</a>    <span class="k">def</span> <span class="nf">initialC_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">P_initial</span><span class="p">,</span> <span class="n">Tg_initial</span><span class="p">,</span><span class="n">Ts_initial</span><span class="p">,</span> <span class="n">y_initial</span><span class="p">,</span><span class="n">q_initial</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initial condition</span>
 <span class="sd">        </span>
 <span class="sd">        :param P_initial: Initial pressure :math:`(bar)` [N array]</span>
@@ -442,7 +446,7 @@
 
 <span class="c1">## Run mass &amp; momentum balance equations</span>
 <div class="viewcode-block" id="column.run_mamo"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.run_mamo">[docs]</a>    <span class="k">def</span> <span class="nf">run_mamo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">n_sec</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">CPUtime_print</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run mass &amp; momentum balance equations</span>
 <span class="sd">        </span>
 <span class="sd">        :param t_max: Maximum time domain value </span>
@@ -572,7 +576,7 @@
 <span class="c1">## Run mass &amp; momentum &amp; energy balance equations</span>
 
 <div class="viewcode-block" id="column.run_mamoen_alt"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.run_mamoen_alt">[docs]</a>    <span class="k">def</span> <span class="nf">run_mamoen_alt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">n_sec</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">CPUtime_print</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run mass &amp; momentum balance alternative</span>
 <span class="sd">        </span>
 <span class="sd">        :param t_max: Maximum time domain value </span>
@@ -749,7 +753,7 @@
 
 
 <div class="viewcode-block" id="column.run_mamoen"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.run_mamoen">[docs]</a>    <span class="k">def</span> <span class="nf">run_mamoen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="n">n_sec</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">CPUtime_print</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Run mass &amp; momentum &amp; energy balance </span>
 <span class="sd">        </span>
 <span class="sd">        :param t_max: Maximum time domain value </span>
@@ -939,7 +943,7 @@
 
 <span class="c1">## Functions for after-run processing</span>
 <div class="viewcode-block" id="column.next_init"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.next_init">[docs]</a>    <span class="k">def</span> <span class="nf">next_init</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change_init</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Next initalization</span>
 <span class="sd">        </span>
 <span class="sd">        :param change_init: Replace inital condition with previous result at final time [boolean]</span>
@@ -989,7 +993,7 @@
         <span class="k">return</span> <span class="n">P_init</span><span class="p">,</span> <span class="n">Tg_init</span><span class="p">,</span> <span class="n">Ts_init</span> <span class="p">,</span> <span class="n">y_init</span><span class="p">,</span> <span class="n">q_init</span></div>
     
 <div class="viewcode-block" id="column.change_init_node"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.change_init_node">[docs]</a>    <span class="k">def</span> <span class="nf">change_init_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">N_new</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Initial node change</span>
 <span class="sd">        </span>
 <span class="sd">        :param N_new: New number of nodes</span>
@@ -1043,7 +1047,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_dd</span> <span class="o">=</span> <span class="n">dd</span></div>
 
 <div class="viewcode-block" id="column.Q_valve"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.Q_valve">[docs]</a>    <span class="k">def</span> <span class="nf">Q_valve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_graph</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Q valve</span>
 <span class="sd">        </span>
 <span class="sd">        :param draw_graph: Show graph [boolean] </span>
@@ -1098,7 +1102,7 @@
         <span class="k">return</span> <span class="n">Q_0</span><span class="p">,</span> <span class="n">Q_L</span></div>
     
 <div class="viewcode-block" id="column.breakthrough"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.breakthrough">[docs]</a>    <span class="k">def</span> <span class="nf">breakthrough</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">draw_graph</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Breakthrough</span>
 <span class="sd">       </span>
 <span class="sd">     </span>
@@ -1140,7 +1144,7 @@
               <span class="n">loc</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">yaxis_label</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
               <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
               <span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">85</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Making graph</span>
 <span class="sd">        </span>
 <span class="sd">        :param every_n_sec: Number of points in graph </span>
@@ -1192,7 +1196,7 @@
                 <span class="n">yaxis_label</span> <span class="o">=</span> <span class="s1">&#39;Pressure (bar)&#39;</span><span class="p">,</span>
                 <span class="n">file_name</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> 
                 <span class="n">figsize</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span> <span class="n">dpi</span> <span class="o">=</span> <span class="mi">85</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Making graph of partial pressure</span>
 <span class="sd">        </span>
 <span class="sd">        :param every_n_sec: Number of points in graph </span>
@@ -1236,7 +1240,7 @@
         <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span>    </div>
     <span class="c1">## Copy the         </span>
 <div class="viewcode-block" id="column.copy"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.column.copy">[docs]</a>    <span class="k">def</span> <span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Copy</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="kn">import</span> <span class="nn">copy</span>
@@ -1248,7 +1252,7 @@
 
 <div class="viewcode-block" id="step_P_eq_alt1"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.step_P_eq_alt1">[docs]</a><span class="k">def</span> <span class="nf">step_P_eq_alt1</span><span class="p">(</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span>
 <span class="n">n_sec</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">Cv_btw</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">valve_select</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">CPUtime_print</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd"> </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span> <span class="c1"># in minute</span>
@@ -1685,7 +1689,7 @@
 
 <div class="viewcode-block" id="step_P_eq_alt2"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.step_P_eq_alt2">[docs]</a><span class="k">def</span> <span class="nf">step_P_eq_alt2</span><span class="p">(</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span>
 <span class="n">n_sec</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">Cv_btw</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">valve_select</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">CPUtime_print</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span> <span class="c1"># in minute</span>
     <span class="n">P_sum1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">column1</span><span class="o">.</span><span class="n">_P_init</span><span class="p">)</span>
@@ -2014,7 +2018,7 @@
 
 <div class="viewcode-block" id="step_P_eq"><a class="viewcode-back" href="../../simsep.html#pyAPEP.simsep.step_P_eq">[docs]</a><span class="k">def</span> <span class="nf">step_P_eq</span><span class="p">(</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span>
 <span class="n">n_sec</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">Cv_btw</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">valve_select</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span> <span class="n">CPUtime_print</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">tic</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">/</span> <span class="mi">60</span> <span class="c1"># in minute</span>
@@ -2371,7 +2375,7 @@
     <span class="n">A_cros</span> <span class="o">=</span> <span class="mf">0.031416</span>
     <span class="n">L</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">c1</span> <span class="o">=</span> <span class="n">column</span><span class="p">(</span><span class="n">L</span><span class="p">,</span><span class="n">A_cros</span><span class="p">,</span> <span class="n">n_component</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span><span class="n">N_node</span> <span class="o">=</span> <span class="n">N</span><span class="p">)</span>
-    <span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1">## Adsorbent</span>
     <span class="n">isopar1</span> <span class="o">=</span> <span class="p">[</span><span class="mf">3.0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>

@@ -41,9 +41,17 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
     iso1, param1, fntype1, err1 = isofit.best_isomodel(P, q_comp1)
     iso2, param2, fntype2, err2 = isofit.best_isomodel(P, q_comp2)
 
+    # Using heat of adsorptoin
+    # Make the adsorption isotherm as a function of both P and T (Updated, Aug 2, 2023)
+    dH1 = 15000
+    dH2 = 5000
+    T_ref = 300
+    iso1_ther= lambda P,T: iso1(P*isofit.Arrh(T, dH1, T_ref))
+    iso2_ther= lambda P,T: iso2(P*isofit.Arrh(T, dH2, T_ref))
+
     # Mixture isotherm function definition
-    # iso1 and iso2 == Pure isotherm function of each component.
-    iso_mix = lambda P,T: isofit.IAST([iso1, iso2], P, T)
+    # iso1_ther and iso2_ther == Pure isotherm function of each component.
+    iso_mix = lambda P,T: isofit.IAST([iso1_ther, iso2_ther], P, T)
 
 2. Ideal column definition
 ''''''''''''''''''''''''''''''''''''''''''''''
