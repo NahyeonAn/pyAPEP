@@ -41,7 +41,7 @@ Here, we define the mixture isotherm function with :py:mod:`pyAPEP.isofit`.
     iso1, param1, fntype1, err1 = isofit.best_isomodel(P, q_comp1)
     iso2, param2, fntype2, err2 = isofit.best_isomodel(P, q_comp2)
 
-    # Using heat of adsorptoin
+    # Using heat of adsorption
     # Make the adsorption isotherm as a function of both P and T (Updated, Aug 2, 2023)
     dH1 = 15000
     dH2 = 5000
